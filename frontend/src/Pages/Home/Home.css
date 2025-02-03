@@ -1,0 +1,245 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  height: 100vh;
+  background: url('/src/Pages/Home/homebg.jpg') no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+  background-attachment: fixed; /* Parallax effect */
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 800px;
+  padding: 30px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.hero h1 {
+  font-size: 4rem;
+  color: #f39c12;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+  animation: fadeInUp 1s ease-out;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  color: #ecf0f1;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  font-weight: 300;
+  animation: fadeInUp 1.5s ease-out;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  animation: fadeInUp 2s ease-out;
+}
+
+/* Button Styling */
+.cta-buttons button {
+  background-color: #3498db; /* Bright blue color */
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  padding: 15px 40px;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  width: 250px;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
+
+.cta-buttons button:hover {
+  background-color: #2980b9;
+  transform: scale(1.1);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Keep "Get Involved" button yellow */
+.cta-buttons .get-involved {
+  background-color: #f39c12;
+  color: white;
+}
+
+.cta-buttons .get-involved:hover {
+  background-color: #e67e22;
+}
+
+.cta-buttons button:focus {
+  outline: none;
+}
+
+/* Buttons for Hospital, Volunteer, NGO, and Restaurant */
+.cta-buttons .hospital,
+.cta-buttons .volunteer,
+.cta-buttons .ngo,
+.cta-buttons .restaurant {
+  background-color: #2ecc71; /* Green button */
+  color: white;
+}
+
+.cta-buttons .hospital:hover,
+.cta-buttons .volunteer:hover,
+.cta-buttons .ngo:hover,
+.cta-buttons .restaurant:hover {
+  background-color: #27ae60; /* Darker green */
+  transform: scale(1.05);
+}
+
+.cta-buttons button:focus {
+  outline: none;
+}
+
+/* Hover animation for buttons */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 3rem;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .cta-buttons button {
+    font-size: 1.2rem;
+    padding: 12px 30px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .cta-buttons button {
+    font-size: 1.1rem;
+    padding: 10px 25px;
+  }
+}
+
+/* Footer Styles */
+footer {
+  background-color: #333;
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+  position: relative;
+}
+
+footer h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+footer p {
+  font-size: 1rem;
+  margin-bottom: 30px;
+  color: #bbb;
+}
+
+footer .social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+footer .social-icons a {
+  color: white;
+  font-size: 1.5rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+footer .social-icons a:hover {
+  color: #f39c12;
+}
+
+footer .social-icons a:focus {
+  outline: none;
+}
+
+footer .contact-info {
+  font-size: 1rem;
+  color: #bbb;
+  margin-top: 20px;
+}
+
+footer .contact-info p {
+  margin: 10px 0;
+}
+
+/* Footer responsive */
+@media (max-width: 768px) {
+  footer {
+    padding: 30px 15px;
+  }
+
+  footer h2 {
+    font-size: 1.5rem;
+  }
+
+  footer .social-icons a {
+    font-size: 1.3rem;
+  }
+
+  footer .contact-info {
+    font-size: 0.9rem;
+  }
+}
