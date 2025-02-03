@@ -1,7 +1,7 @@
 // src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { ClerkProvider, SignedIn, SignedOut, SignIn, SignUp } from '@clerk/clerk-react';
+import { ClerkProvider} from '@clerk/clerk-react';
 import Navbar from './Components/Navbar'; // Ensure Navbar is correctly imported
 import Login from './Pages/Login/Login';
 
