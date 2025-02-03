@@ -1,14 +1,20 @@
+// src/App.js
 import React from 'react';
-import './App.css';
-import Navbar from './Components/Navbar';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './Components/Navbar'; // Make sure to import the Navbar
+import Login from './Pages/Login/Login';
 
-
-function App() {
+const App = () => {
   return (
-    <div className="App">
+    <Router>
+      {/* Include Navbar so it's available on all pages */}
       <Navbar />
-    </div>
+      <Routes>
+        <Route path="/" element={<h1>Home</h1>} />
+        <Route path="/Login" element={<Login />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
