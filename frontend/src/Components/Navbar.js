@@ -1,17 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Navbar.css"; // Import the CSS file
 import { Link } from "react-router-dom"; // Import React Router for navigation
-import LoginModal from "../Pages/Login/Login"; // Import the login popup component
-import { signOut, onAuthStateChanged } from "firebase/auth";
+import { useUser, useClerk, UserButton } from "@clerk/clerk-react"; // Import Clerk authentication
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [showLogin, setShowLogin] = useState(false);
-  const [user, setUser] = useState(null); // ✅ Track user authentication
-  const [dropdownOpen, setDropdownOpen] = useState(false); // ✅ Track dropdown state
-
-  const dropdownRef = useRef(null); // ✅ To detect clicks outside
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const { openSignIn, signOut } = useClerk(); // Clerk sign-in and sign-out functions
+  const { isSignedIn } = useUser(); // Get user authentication state
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -19,7 +17,6 @@ const Navbar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ✅ Handle Click Outside Dropdown to Close It
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -52,15 +49,17 @@ const Navbar = () => {
             <li><Link className="navbar-link" to="/about">About</Link></li>
             <li><Link className="navbar-link" to="/contact">Contact</Link></li>
           </ul>
-          <button className="navbar-login">Login</button>
+          {isSignedIn ? (
+            <div className="navbar-profile" ref={dropdownRef}>
+              <button className="profile-icon" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                <UserButton afterSignOutUrl="/" />
+              </button>
+            </div>
+          ) : (
+            <button className="navbar-login" onClick={() => openSignIn()}>Login</button>
+          )}
         </div>
-        
-
-        
       </nav>
-
-      {/* ✅ Show Login Popup when "Login" is clicked */}
-      {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
     </>
   );
 };
