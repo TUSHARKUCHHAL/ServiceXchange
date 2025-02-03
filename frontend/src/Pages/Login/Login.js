@@ -3,13 +3,13 @@ import {
   auth,
   googleProvider,
   appleProvider
-} from "../firebase-config";
+} from "../../firebase-config";
 import {
   signInWithPopup,
   RecaptchaVerifier,
   signInWithPhoneNumber
 } from "firebase/auth";
-import { CustomAlert } from "../Utils/CustomAlert/CustomAlert";
+import { CustomAlert } from "../../Utils/CustomAlert/CustomAlert";
 import "./Login.css"; // Create this file to style the login component
 
 const Login = ({ onClose }) => {
@@ -175,7 +175,7 @@ const Login = ({ onClose }) => {
           {loading ? "Logging in..." : "Login with Apple"}
         </button>
 
-        <hr className="divider" />
+        <hr className="line" />
 
         {/* Phone Number Login */}
         <input
