@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Navbar.css"; // Import the CSS file
 import { Link } from "react-router-dom"; // Import React Router for navigation
-import LoginModal from "../Pages/Login/Login"; // Import the login popup component
-import { auth } from "../firebase-config"; // Import Firebase authentication
-import { signOut, onAuthStateChanged } from "firebase/auth";
+import { useUser, useClerk, UserButton } from "@clerk/clerk-react"; // Import Clerk authentication
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [showLogin, setShowLogin] = useState(false);
-  const [user, setUser] = useState(null); // ✅ Track user authentication
-  const [dropdownOpen, setDropdownOpen] = useState(false); // ✅ Track dropdown state
-
-  const dropdownRef = useRef(null); // ✅ To detect clicks outside
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const { openSignIn, signOut } = useClerk(); // Clerk sign-in and sign-out functions
+  const { isSignedIn } = useUser(); // Get user authentication state
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -20,16 +17,6 @@ const Navbar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    // Listen for authentication state changes
-    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-      setUser(authUser);
-    });
-
-    return () => unsubscribe(); // Cleanup listener on unmount
-  }, []);
-
-  // ✅ Handle Click Outside Dropdown to Close It
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -39,12 +26,6 @@ const Navbar = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  const handleLogout = async () => {
-    await signOut(auth);
-    setUser(null);
-    setDropdownOpen(false);
-  };
 
   return (
     <>
@@ -68,33 +49,17 @@ const Navbar = () => {
             <li><Link className="navbar-link" to="/about">About</Link></li>
             <li><Link className="navbar-link" to="/contact">Contact</Link></li>
           </ul>
-
-          {/* ✅ Show Profile Picture & Dropdown Menu */}
-          {user ? (
-            <div className="profile-container" ref={dropdownRef}>
-              <img
-                src={user.photoURL || "/default-profile.png"}
-                alt="Profile"
-                className="profile-icon"
-                onClick={() => setDropdownOpen(!dropdownOpen)} // Toggle dropdown
-              />
-
-              <div className={`dropdown-menu ${dropdownOpen ? "active" : ""}`}>
-                <Link to="/profile" className="dropdown-item">Profile</Link>
-                <Link to="/settings" className="dropdown-item">Settings</Link>
-                <button className="dropdown-item logout-btn" onClick={handleLogout}>Logout</button>
-              </div>
+          {isSignedIn ? (
+            <div className="navbar-profile" ref={dropdownRef}>
+              <button className="profile-icon" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                <UserButton afterSignOutUrl="/" />
+              </button>
             </div>
           ) : (
-            <button className="navbar-login" onClick={() => setShowLogin(true)}>
-              Login
-            </button>
+            <button className="navbar-login" onClick={() => openSignIn()}>Login</button>
           )}
         </div>
       </nav>
-
-      {/* ✅ Show Login Popup when "Login" is clicked */}
-      {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
     </>
   );
 };
