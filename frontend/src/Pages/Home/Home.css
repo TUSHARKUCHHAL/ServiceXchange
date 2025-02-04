@@ -6,7 +6,6 @@
   font-family: 'Poppins', sans-serif;
 }
 
-/* Hero Section */
 .hero {
   position: relative;
   height: 100vh;
@@ -17,7 +16,7 @@
   text-align: center;
   color: white;
   overflow: hidden;
-  background-attachment: fixed; /* Parallax effect */
+  background-attachment: fixed; 
 }
 
 .hero::before {

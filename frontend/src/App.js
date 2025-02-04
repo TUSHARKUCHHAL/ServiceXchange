@@ -1,27 +1,7 @@
-// src/App.js
-<<<<<<< HEAD
-import React from "react";
-import Navbar from "./Components/Navbar";
-import Footer from "./Components/Footer";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-// Import your page components
-import Home from "./Pages/Home/Home";
-
-
-function App() {
-  return (
-    <Router>
-      <Navbar />
-      <Routes>
-        {/* Main Home Page */}
-        <Route path="/" element={<Home />} />
-      
-      </Routes>
-      <Footer />
-    </Router>
-=======
 import React from 'react';
+import Home from './Pages/Home/Home'
+import Footer from "./Components/Footer"
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ClerkProvider} from '@clerk/clerk-react';
 import Navbar from './Components/Navbar'; // Ensure Navbar is correctly imported
@@ -35,12 +15,14 @@ const App = () => {
       <Router>
         <Navbar /> {/* Navbar will be present on all pages */}
         <Routes>
-          <Route path="/" element={<h1>Home</h1>} />
+          <Route path="/" element={<Home />} />
+          
           <Route path="/login" element={<Login />} />
         </Routes>
+        <Footer/>
       </Router>
     </ClerkProvider>
->>>>>>> 562e3d7bfeeb2535ebf1c98afe8372a0a67af20d
+
   );
 }
 
