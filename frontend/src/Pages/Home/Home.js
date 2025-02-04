@@ -3,9 +3,7 @@ import "./Home.css";
 import Footer from "../../Components/Footer";  // Footer import
 
 const Home = () => {
-  const [activeSection, setActiveSection] = useState("home"); // default to home section
-
-  // Function to change the active section
+  const [activeSection, setActiveSection] = useState("home"); // 
   const changeSection = (section) => {
     setActiveSection(section);
   };
