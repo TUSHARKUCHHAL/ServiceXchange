@@ -1,0 +1,144 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  background-color: #E3F2FD;
+  font-family: 'Poppins', sans-serif;
+}
+
+.dashboard-main {
+  flex: 1;
+  padding: 32px;
+  background-color: #FAFAFA;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 20px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #2C3E50;
+}
+
+.dashboard-button {
+  padding: 14px 28px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.dashboard-button:hover {
+  background-color: #0056b3;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.dashboard-card {
+  padding: 24px;
+  color: white;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 14px;
+  font-size: 20px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: scale(1.05);
+}
+
+.dashboard-progress-bar {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  height: 14px;
+  margin-top: 10px;
+}
+
+.dashboard-progress {
+  background-color: white;
+  height: 100%;
+  border-radius: 6px;
+}
+
+.join-us-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding-bottom: 40px;
+}
+
+.join-us-container {
+  text-align: center;
+}
+
+.join-us-text {
+  font-size: 64px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  color: #1A237E;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.dashboard-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+
+.register-button {
+  padding: 18px 36px;
+  background-color: #FF6F00;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.register-button:hover {
+  background-color: #E65100;
+}
+
+.vertical-line {
+  margin-top: 70px;
+  width: 4px;
+  height: 120px;
+  background-color: #2C3E50;
+}
+
+.login-button {
+  margin-top: 70px;
+  padding: 20px 40px;
+  background-color: #FF4081;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.login-button:hover {
+  background-color: #D81B60;
+  transform: scale(1.05);
+}
