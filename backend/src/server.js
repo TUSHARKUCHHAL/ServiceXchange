@@ -1,71 +1,92 @@
+const express = require("express");
+const mysql = require("mysql");
+const cors = require("cors");
+require("dotenv").config();
 
-
-// Patches
-const {inject, errorHandler} = require('express-custom-error');
-inject(); // Patch express in order to use async / await syntax
-
-// Require Dependencies
-
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const helmet = require('helmet');
-
-
-const logger = require('./util/logger');
-
-// Load .env Enviroment Variables to process.env
-
-require('mandatoryenv').load([
-    'DB_HOST',
-    'DB_DATABASE',
-    'DB_USER',
-    'DB_PASSWORD',
-    'PORT',
-    'SECRET'
-]);
-
-const { PORT } = process.env;
-
-
-// Instantiate an Express Application
 const app = express();
-
-
-// Configure Express App Instance
-app.use(express.json( { limit: '50mb' } ));
-app.use(express.urlencoded( { extended: true, limit: '10mb' } ));
-
-// Configure custom logger middleware
-app.use(logger.dev, logger.combined);
-
-app.use(cookieParser());
 app.use(cors());
-app.use(helmet());
+app.use(express.json());
 
-// This middleware adds the json header to every response
-app.use('*', (req, res, next) => {
-    res.setHeader('Content-Type', 'application/json');
-    next();
-})
+const { DB_HOST, DB_DATABASE, DB_USER, DB_PASSWORD } = process.env;
 
-// Assign Routes
+// Database Connection
+const db = mysql.createConnection({
+  host: DB_HOST,
+    database: DB_DATABASE,
+    user: DB_USER,
+    password: DB_PASSWORD
+});
 
-app.use('/', require('./routes/router.js'));
+db.connect((err) => {
+  if (err) {
+    console.error("Database connection failed:", err);
+  } else {
+    console.log("Connected to MySQL database");
+  }
+});
 
+// Create Hospitals Table
+const createHospitalTableQuery = `
+  CREATE TABLE IF NOT EXISTS hospitals (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    address TEXT NOT NULL,
+    contact VARCHAR(20) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    services TEXT NOT NULL
+  );
+`;
 
-// Handle errors
-app.use(errorHandler());
+db.query(createHospitalTableQuery, (err) => {
+  if (err) console.error("Error creating hospital table:", err);
+});
 
-// Handle not valid route
-app.use('*', (req, res) => {
-    res
-    .status(404)
-    .json( {status: false, message: 'Endpoint Not Found'} );
-})
+// Create NGOs Table
+const createNGOTableQuery = `
+  CREATE TABLE IF NOT EXISTS ngos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    poc_name VARCHAR(255) NOT NULL,
+    poc_number VARCHAR(20) NOT NULL,
+    email VARCHAR(100) NOT NULL
+  );
+`;
 
-// Open Server on selected Port
-app.listen(
-    PORT,
-    () => console.info('Server listening on port ', PORT)
-);
+db.query(createNGOTableQuery, (err) => {
+  if (err) console.error("Error creating NGO table:", err);
+});
+
+// API Endpoint to Store Hospital Data
+app.post("/api/hospital", (req, res) => {
+  const { name, address, contact, email, services } = req.body;
+  const query = "INSERT INTO hospitals (name, address, contact, email, services) VALUES (?, ?, ?, ?, ?)";
+  
+  db.query(query, [name, address, contact, email, services], (err, result) => {
+    if (err) {
+      res.status(500).json({ message: "Database error", error: err });
+    } else {
+      res.status(200).json({ message: "Hospital registered successfully" });
+    }
+  });
+});
+
+// API Endpoint to Store NGO Data
+app.post("/api/ngo", (req, res) => {
+  const { name, city, pocName, pocNumber, email } = req.body;
+  const query = "INSERT INTO ngos (name, city, poc_name, poc_number, email) VALUES (?, ?, ?, ?, ?)";
+
+  db.query(query, [name, city, pocName, pocNumber, email], (err, result) => {
+    if (err) {
+      res.status(500).json({ message: "Database error", error: err });
+    } else {
+      res.status(200).json({ message: "NGO registered successfully" });
+    }
+  });
+});
+
+// Start Server
+const PORT = 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
