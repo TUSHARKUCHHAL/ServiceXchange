@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Home.css";
 import Footer from "../../Components/Footer";
 import axios from "axios";
+//Vanshika//
 
 const SERVER_URL = `${process.env.REACT_APP_SERVER_URL}`;
 
@@ -175,7 +176,6 @@ const Home = () => {
         </div>
       )}
 
-      <Footer />
     </div>
   );
 };
