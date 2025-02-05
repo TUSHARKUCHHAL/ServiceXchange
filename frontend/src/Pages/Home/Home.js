@@ -29,8 +29,7 @@ const Home = () => {
 
       {/* Get Involved Section */}
       <section id="get-involved" className="section">
-        <h2>How You Can Get Involved</h2>
-        <p>Choose an option below to contribute to the cause!</p>
+       
         <div className="cta-buttons">
           <button className="hospital" onClick={() => changeSection("hospital")}>Hospital</button>
           <button className="volunteer" onClick={() => changeSection("volunteer")}>Volunteer</button>
