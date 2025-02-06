@@ -1,5 +1,6 @@
 import React from 'react';
 import Home from './Pages/Home/Home'
+import NGODashboard from './Pages/NGODashboard/NGODashboard'
 import Footer from "./Components/Footer"
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ClerkProvider} from '@clerk/clerk-react';
@@ -15,7 +16,8 @@ const App = () => {
         <Navbar /> {/* Navbar will be present on all pages */}
         <Routes>
           <Route path="/" element={<Home />} />
-          
+          <Route path="/NGODashboard" element={<NGODashboard />} />
+          {/*<Route path="/Service" element={<Service />} /> */}
           <Route path="/login" element={<Login />} />
         </Routes>
         <Footer/>
