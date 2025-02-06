@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ClerkProvider} from '@clerk/clerk-react';
 import Navbar from './Components/Navbar'; // Ensure Navbar is correctly imported
 import Login from './Pages/Login/Login';
+import About from './Pages/About/About';
 import axios from 'axios';
 
 const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY; // Access Clerk public key from environment variable
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/NGODashboard" element={<NGODashboard />} />
           {/*<Route path="/Service" element={<Service />} /> */}
+          {<Route path="/About" element={<About />} /> }
           <Route path="/login" element={<Login />} />
         </Routes>
         <Footer/>
