@@ -1,16 +1,18 @@
-require("dotenv").config();
 const mysql = require('mysql2');
 
-// Destructuring database credentials from environment variables
-const { DB_HOST, DB_DATABASE, DB_USER, DB_PASSWORD } = process.env;
-
-// Create a MySQL connection pool
-const pool = mysql.createPool({
-    host: DB_HOST,
-    database: DB_DATABASE,
-    user: DB_USER,
-    password: DB_PASSWORD
+const db = mysql.createConnection({
+  host: process.env.DB_HOST, // replace with your RDS endpoint
+  user: process.env.DB_USER, // master username from AWS RDS
+  password: process.env.DB_PASSWORD, // master password from AWS RDS
+  database: process.env.DB_DATABASE // the name of the database you created
 });
 
-// Export the pool for use in server.js
-module.exports = pool.promise();
+db.connect((err) => {
+  if (err) {
+    console.error('Error connecting to the database:', err.stack);
+    return;
+  }
+  console.log('Connected to the MySQL database');
+});
+
+module.exports = db;
