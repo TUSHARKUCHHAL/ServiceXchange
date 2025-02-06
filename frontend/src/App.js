@@ -6,8 +6,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ClerkProvider} from '@clerk/clerk-react';
 import Navbar from './Components/Navbar'; // Ensure Navbar is correctly imported
 import Login from './Pages/Login/Login';
+import axios from 'axios';
 
-const clerkPubKey = "pk_test_bXVzaWNhbC1hbW9lYmEtOTIuY2xlcmsuYWNjb3VudHMuZGV2JA"; // Replace with your actual Clerk public key
+const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY; // Access Clerk public key from environment variable
 
 const App = () => {
   return (
