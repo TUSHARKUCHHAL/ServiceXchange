@@ -1,3 +1,4 @@
+/* Dashboard Container */
 .dashboard-container {
   display: flex;
   height: 100vh;
@@ -5,6 +6,7 @@
   font-family: 'Poppins', sans-serif;
 }
 
+/* Main Dashboard */
 .dashboard-main {
   flex: 1;
   padding: 32px;
@@ -15,6 +17,7 @@
   border-radius: 20px;
 }
 
+/* Header Section */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
@@ -25,6 +28,7 @@
   color: #2C3E50;
 }
 
+/* Dashboard Button */
 .dashboard-button {
   padding: 14px 28px;
   background-color: #007bff;
@@ -34,19 +38,22 @@
   cursor: pointer;
   font-size: 18px;
   font-weight: bold;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .dashboard-button:hover {
   background-color: #0056b3;
+  transform: scale(1.05);
 }
 
+/* Dashboard Grid Layout */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
 }
 
+/* Dashboard Cards */
 .dashboard-card {
   padding: 24px;
   color: white;
@@ -54,13 +61,15 @@
   border-radius: 14px;
   font-size: 20px;
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .dashboard-card:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
 }
 
+/* Progress Bar */
 .dashboard-progress-bar {
   width: 100%;
   background-color: rgba(255, 255, 255, 0.3);
@@ -75,6 +84,7 @@
   border-radius: 6px;
 }
 
+/* Join Us Section */
 .join-us-section {
   display: flex;
   align-items: center;
@@ -101,6 +111,7 @@
   gap: 24px;
 }
 
+/* Register Button */
 .register-button {
   padding: 18px 36px;
   background-color: #FF6F00;
@@ -110,13 +121,15 @@
   cursor: pointer;
   font-size: 22px;
   font-weight: bold;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .register-button:hover {
   background-color: #E65100;
+  transform: scale(1.05);
 }
 
+/* Vertical Line */
 .vertical-line {
   margin-top: 70px;
   width: 4px;
@@ -124,6 +137,7 @@
   background-color: #2C3E50;
 }
 
+/* Login Button */
 .login-button {
   margin-top: 70px;
   padding: 20px 40px;
@@ -140,5 +154,137 @@
 
 .login-button:hover {
   background-color: #D81B60;
+  transform: scale(1.08);
+}
+
+/* ------------------------- */
+/* MODAL STYLES (New Check-in Popup) - Enhanced */
+/* ------------------------- */
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-in-out;
+  backdrop-filter: blur(8px);
+}
+
+/* Modal Content */
+.modal-content {
+  background: white;
+  padding: 30px;
+  width: 450px;
+  border-radius: 16px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  position: relative;
+  transform: scale(0.9);
+  animation: zoomIn 0.3s ease-in-out forwards;
+}
+
+/* Close Button */
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #2C3E50;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.close-btn:hover {
+  color: #D32F2F;
+  transform: scale(1.1);
+}
+
+/* Form Styling */
+.modal-content input {
+  width: 100%;
+  padding: 14px;
+  margin: 12px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.modal-content input:focus {
+  border-color: #4A148C;
+  box-shadow: 0 0 8px rgba(74, 20, 140, 0.3);
+  outline: none;
+}
+
+/* Modal Buttons */
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* Submit and Close Button Styling */
+.modal-buttons button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+/* Submit Button */
+.modal-buttons button[type="submit"] {
+  background-color: #4A148C;
+  color: white;
+}
+
+.modal-buttons button[type="submit"]:hover {
+  background-color: #6A1B9A;
   transform: scale(1.05);
+}
+
+/* Close Button */
+.modal-buttons button[type="button"] {
+  background-color: #D32F2F;
+  color: white;
+}
+
+.modal-buttons button[type="button"]:hover {
+  background-color: #B71C1C;
+  transform: scale(1.05);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.9);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Responsive Modal */
+@media screen and (max-width: 768px) {
+  .modal-content {
+    width: 90%;
+  }
 }
