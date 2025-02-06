@@ -2,6 +2,7 @@ const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 require("dotenv").config();
+const axios = require('axios'); // Add axios for making HTTP requests
 
 const app = express();
 app.use(cors());
@@ -10,10 +11,10 @@ app.use(express.json());
 const PORT = process.env.PORT || 5000;
 
 // ✅ Environment Variables with Defaults
-const DB_HOST = process.env.DB_HOST || "your-db-host";
-const DB_DATABASE = process.env.DB_DATABASE || "your-database-name";
-const DB_USER = process.env.DB_USER || "your-db-username";
-const DB_PASSWORD = process.env.DB_PASSWORD || "your-db-password";
+const DB_HOST = process.env.REACT_APP_DB_HOST || "your-db-host";
+const DB_DATABASE = process.env.REACT_APP_DB_DATABASE || "your-database-name";
+const DB_USER = process.env.REACT_APP_DB_USER || "your-db-username";
+const DB_PASSWORD = process.env.REACT_APP_DB_PASSWORD || "your-db-password";
 
 // ✅ Use MySQL Connection Pooling for Stability
 const db = mysql.createPool({
@@ -110,6 +111,22 @@ app.post("/api/ngo", (req, res) => {
 // ✅ Test Route
 app.get("/", (req, res) => {
   res.send("✅ Backend is running successfully!");
+});
+
+// ✅ New API Route to Get Instance Metadata (Optional)
+app.get("/api/instance-info", async (req, res) => {
+  try {
+    const metadataUrl = "http://169.254.169.254/latest/meta-data/";
+    
+    // Fetch EC2 instance metadata
+    const instanceMetadata = await axios.get(metadataUrl);
+    
+    // Send metadata in response
+    res.json({ instanceInfo: instanceMetadata.data });
+  } catch (error) {
+    console.error("❌ Failed to fetch instance metadata:", error);
+    res.status(500).json({ message: "Failed to fetch instance metadata", error: error.message });
+  }
 });
 
 // ✅ Start Server (Allow External Access on AWS)
