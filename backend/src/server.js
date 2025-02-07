@@ -130,6 +130,6 @@ app.get("/api/instance-info", async (req, res) => {
 });
 
 // ✅ Start Server (Allow External Access on AWS)
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(5000,  () => {
   console.log(`🚀 Server running on http://your-ec2-public-ip:${PORT}`);
 });
