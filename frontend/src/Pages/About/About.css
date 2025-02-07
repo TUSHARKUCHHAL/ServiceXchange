@@ -1,53 +1,131 @@
-.about-container {
-    max-width: 900px;
+.about-page {
+    max-width: 1000px;
     margin: auto;
-    padding: 40px;
+    padding: 50px 20px;
     text-align: center;
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .about-title {
-    font-size: 2.5rem;
-    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
     color: #2c3e50;
-    margin-bottom: 20px;
   }
   
-  .about-mission {
-    font-size: 1.2rem;
+  .about-page .about-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #e74c3c;
+    margin-bottom: 10px;
+  }
+  
+  .about-page .about-mission {
+    font-size: 1.4rem;
+    font-weight: 500;
     color: #555;
     margin-bottom: 30px;
   }
   
-  .about-section {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
+  .about-page .about-section {
+    background: #f9f9f9;
+    padding: 30px;
+    border-radius: 12px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
   }
   
-  .about-section h2 {
+  .about-page .about-section:hover {
+    transform: scale(1.02);
+  }
+  
+  .about-page .about-section h2 {
     color: #34495e;
-    font-size: 1.8rem;
+    font-size: 2rem;
+    margin-bottom: 10px;
   }
   
-  .about-section p {
+  .about-page .about-section p {
     color: #666;
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 1.1rem;
+    line-height: 1.8;
   }
   
-  .cta-button {
+  .about-page .cta-button {
     background: #e74c3c;
     color: white;
-    padding: 12px 20px;
+    padding: 14px 24px;
     font-size: 1.2rem;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
+    margin-top: 20px;
     transition: 0.3s;
   }
   
-  .cta-button:hover {
+  .about-page .cta-button:hover {
     background: #c0392b;
   }
+  
+  .about-page .success-message {
+    font-size: 1.2rem;
+    color: #27ae60;
+    font-weight: 600;
+    margin-top: 20px;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .about-page ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .about-page ul li {
+    font-size: 1.1rem;
+    padding: 5px 0;
+    color: #555;
+    font-weight: 500;
+  }
+  
+  .about-page .testimonial-container {
+    background: #ecf0f1;
+    padding: 30px;
+    border-radius: 10px;
+    margin-top: 30px;
+  }
+  
+  .about-page .testimonial {
+    font-style: italic;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .about-page .faq-section {
+    margin-top: 30px;
+  }
+  
+  .about-page .faq-question {
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #f1f1f1;
+    border-radius: 6px;
+  }
+  
+  .about-page .faq-answer {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 20px;
+    display: none;
+  }
+  
+  .about-page .faq-question.active + .faq-answer {
+    display: block;
+  }
+  
