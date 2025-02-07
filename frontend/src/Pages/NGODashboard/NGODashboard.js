@@ -57,23 +57,20 @@ export default function Dashboard() {
             </div>
           ))}
         </div>
-        
-        <div className="join-us-section">
-          <div className="join-us-container">
-            <h2 className="join-us-text">Join Us</h2>
-            <div className="dashboard-buttons">
-              <button className="register-button" onClick={() => navigate('/register-volunteer')}>
-                Become a Volunteer
-              </button>
-              <button className="register-button" onClick={() => navigate('/register-student')}>
-                Student Certification
-              </button>
-            </div>
-          </div>
-          <div className="vertical-line"></div>
-          <button className="login-button" onClick={() => navigate('/login')}>Login</button>
-        </div>
 
+        <div className="student-certification-section">
+          <div className="certification-container">
+            <button className="certification-button" onClick={() => window.location.href = '/student-certification'}>
+              Student Certification
+            </button>
+            <button className="learn-more">
+              <span className="circle" aria-hidden="true">
+                <span className="icon arrow"></span>
+              </span>
+              <span className="button-text">Learn More</span>
+            </button>
+          </div>
+        </div>
         {/* Modal for check-in */}
         {showModal && (
           <div className="modal-overlay">
