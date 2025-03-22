@@ -16,6 +16,7 @@ import Volunteer from "./Pages/Restaurant/Volunteer";
 import Hospital from './Pages/Hospital/Hospital';
 import NeedBlood from './Pages/Hospital/NeedBlood';
 import DonateBlood from './Pages/Hospital/DonateBlood';
+import TermsOfService from './Utils/TermsOfService/TermsOfService';
 
 import axios from 'axios';
 
@@ -40,6 +41,7 @@ const App = () => {
           <Route path="/restaurant" element={<Restaurant />} />
           <Route path="/restaurant/excess-food" element={<ExcessFoodRequest />} />
           <Route path="/restaurant/volunteer" element={<Volunteer />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
         </Routes>
         <Footer />
       </Router>
