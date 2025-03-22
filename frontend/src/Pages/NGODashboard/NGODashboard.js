@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import "./NGODashboard.css";
+import TaskList from "../TaskList/TaskList";
+import Analytics from "../Analytics/Analytics";
 
 export default function Dashboard() {
   const [projects, setProjects] = useState([
