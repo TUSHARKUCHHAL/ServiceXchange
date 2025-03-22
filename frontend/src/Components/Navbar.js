@@ -1,67 +1,87 @@
-import React, { useState, useEffect, useRef } from "react";
-import "./Navbar.css"; // Import the CSS file
-import { Link } from "react-router-dom"; // Import React Router for navigation
-import { useUser, useClerk, UserButton } from "@clerk/clerk-react"; // Import Clerk authentication
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import './Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
-  const { openSignIn, signOut } = useClerk(); // Clerk sign-in and sign-out functions
-  const { isSignedIn } = useUser(); // Get user authentication state
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  
+  // Check if current path needs dark background
+  const isDarkBg = location.pathname !== '/' && location.pathname !== '/home';
 
+  // Handle scroll event to change navbar appearance
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
+  // Toggle menu open/closed
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+    // Optional: prevent body scroll when menu is open
+    document.body.style.overflow = !isOpen ? 'hidden' : 'auto';
+  };
+
+  // Close menu when a link is clicked
+  const closeMenu = () => {
+    setIsOpen(false);
+    document.body.style.overflow = 'auto';
+  };
+
   return (
-    <>
-      <nav className="navbar">
-        {/* Logo and Brand Name */}
-        <div className="navbar-logo">
-          <img src="/logo512.png" alt="Logo" className="navbar-logo-img" />
-          <Link className="navbar-brand" to="/">ServiceXchange</Link>
-        </div>
+    <nav className={`navbar ${scrolled ? 'scrolled' : ''} ${isDarkBg ? 'dark-bg' : ''}`}>
+      <div className="navbar-container">
+        <Link to="/" className="navbar-logo">
+          <img src="/logo512.png" alt="Your Logo" className="logo-image" />
+          <span className="logo-text">ServiceXchange</span>
+        </Link>
 
-        {isMobile && (
-          <button className="navbar-toggle" onClick={() => setIsOpen(!isOpen)}>
-            ☰
-          </button>
-        )}
 
-        <div className={`navbar-menu ${isMobile ? (isOpen ? "open" : "") : ""}`}>
-          <ul className="navbar-list">
-            <li><Link className="navbar-link" to="/">Home</Link></li>
-            <li><Link className="navbar-link" to="/NGODashboard">NGODashboard</Link></li>
-            <li><Link className="navbar-link" to="/services">Services</Link></li>
-            <li><Link className="navbar-link" to="/about">About</Link></li>
-            <li><Link className="navbar-link" to="/contact">Contact</Link></li>
-          </ul>
-          {isSignedIn ? (
-            <div className="navbar-profile" ref={dropdownRef}>
-              <button className="profile-icon" onClick={() => setDropdownOpen(!dropdownOpen)}>
-                <UserButton afterSignOutUrl="/" />
-              </button>
-            </div>
-          ) : (
-            <button className="navbar-login" onClick={() => openSignIn()}>Login</button>
-          )}
+        
+        <div 
+          className={`hamburger ${isOpen ? 'active' : ''}`} 
+          onClick={toggleMenu}
+        >
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
         </div>
-      </nav>
-    </>
+        
+        <ul className={`nav-menu ${isOpen ? 'active' : ''}`}>
+          <li className="nav-item">
+            <Link to="/" className="nav-link" onClick={closeMenu}>Home</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/NGODashbaord" className="nav-link" onClick={closeMenu}>NGODashboard</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/About" className="nav-link" onClick={closeMenu}>About Us</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/services" className="nav-link" onClick={closeMenu}>Services</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/contact" className="nav-link" onClick={closeMenu}>Contact Us</Link>
+          </li>
+          
+          <div className="nav-buttons">
+            <Link to="/login" className="login-btn" onClick={closeMenu}>Login</Link>
+            <Link to="/signup" className="signup-btn" onClick={closeMenu}>Sign Up</Link>
+          </div>
+        </ul>
+      </div>
+    </nav>
   );
 };
 
