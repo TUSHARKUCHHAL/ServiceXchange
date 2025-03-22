@@ -12,6 +12,7 @@ export default function Dashboard() {
 
   const [showModal, setShowModal] = useState(false);
   const [checkinData, setCheckinData] = useState({ motive: "", city: "", image: null });
+  const [imagePreview, setImagePreview] = useState(null); // To show image preview
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -20,15 +21,42 @@ export default function Dashboard() {
   };
 
   const handleImageUpload = (e) => {
-    setCheckinData((prev) => ({ ...prev, image: e.target.files[0] }));
+    const file = e.target.files[0];
+    if (file) {
+      setCheckinData((prev) => ({ ...prev, image: file }));
+      setImagePreview(URL.createObjectURL(file)); // Generate preview URL
+    }
   };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Check-in Data:", checkinData);
-    setShowModal(false);
-    navigate("/checkin-details"); // Redirect to check-in details page
+  
+    const formData = new FormData();
+    formData.append("motive", checkinData.motive);
+    formData.append("city", checkinData.city);
+    formData.append("image", checkinData.image); // Append the image file
+  
+    try {
+      const response = await fetch("http://localhost:5000/upload", {
+        method: "POST",
+        body: formData,
+      });
+  
+      const result = await response.json();
+  
+      if (result.success) {
+        alert("Check-in created successfully!");
+        setShowModal(false);
+        setCheckinData({ motive: "", city: "", image: null }); // Reset form
+        setImagePreview(null);
+      } else {
+        alert("Failed to save check-in data.");
+      }
+    } catch (error) {
+      console.error("Error saving check-in:", error);
+      alert("An error occurred while saving the check-in.");
+    }
   };
+  
 
   return (
     <div className="dashboard-container">
@@ -40,7 +68,7 @@ export default function Dashboard() {
             Create a new check-in
           </button>
         </div>
-        
+
         <div className="dashboard-grid">
           {projects.map((project, index) => (
             <div key={index} className="dashboard-card" style={{ backgroundColor: project.color }}>
@@ -60,7 +88,10 @@ export default function Dashboard() {
 
         <div className="student-certification-section">
           <div className="certification-container">
-            <button className="certification-button" onClick={() => window.location.href = '/student-certification'}>
+            <button
+              className="certification-button"
+              onClick={() => (window.location.href = "/student-certification")}
+            >
               Student Certification
             </button>
             <button className="learn-more">
@@ -71,18 +102,48 @@ export default function Dashboard() {
             </button>
           </div>
         </div>
+
         {/* Modal for check-in */}
         {showModal && (
           <div className="modal-overlay">
             <div className="modal-content">
               <h2>New Check-in</h2>
               <form onSubmit={handleSubmit}>
-                <input type="text" name="motive" placeholder="Drive Motive" onChange={handleChange} required />
-                <input type="text" name="city" placeholder="City" onChange={handleChange} required />
-                <input type="file" name="image" accept="image/*" onChange={handleImageUpload} required />
+                <input
+                  type="text"
+                  name="motive"
+                  placeholder="Drive Motive"
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="text"
+                  name="city"
+                  placeholder="City"
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  required
+                />
+                {imagePreview && (
+                  <div className="image-preview">
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      style={{ width: "100%", height: "auto", marginTop: "10px" }}
+                    />
+                  </div>
+                )}
                 <div className="modal-buttons">
                   <button type="submit">Submit</button>
-                  <button type="button" onClick={() => setShowModal(false)}>Close</button>
+                  <button type="button" onClick={() => setShowModal(false)}>
+                    Close
+                  </button>
                 </div>
               </form>
             </div>

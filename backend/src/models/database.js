@@ -1,18 +1,18 @@
-const mysql = require('mysql2');
+const { Pool } = require('pg');
+require('dotenv').config();
 
-const db = mysql.createConnection({
-  host: process.env.DB_HOST, // replace with your RDS endpoint
-  user: process.env.DB_USER, // master username from AWS RDS
-  password: process.env.DB_PASSWORD, // master password from AWS RDS
-  database: process.env.DB_DATABASE // the name of the database you created
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: 5432,
+  ssl: false // Set false to allow non-SSL connections
 });
 
-db.connect((err) => {
-  if (err) {
-    console.error('Error connecting to the database:', err.stack);
-    return;
-  }
-  console.log('Connected to the MySQL database');
-});
+pool.connect()
+  .then(() => console.log('Connected to PostgreSQL'))
+  .catch(err => console.error('Database connection error:', err));
 
-module.exports = db;
+
+module.exports = pool;

@@ -1,0 +1,187 @@
+/* 🌟 Overall Page Background - Dark Luxurious Theme */
+.restaurant-container {
+    text-align: center;
+    padding: 30px;
+    background: linear-gradient(180deg, #1a1a2e, #16213e); /* Dark Blue Gradient */
+    min-height: 100vh;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* 🔥 Banner Section - Neon Glow */
+.restaurant-banner {
+    background: url('https://source.unsplash.com/1600x500/?luxury,dining') center/cover;
+    color: white;
+    padding: 80px 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.restaurant-banner h1 {
+    font-size: 42px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.restaurant-banner p {
+    font-size: 22px;
+    font-style: italic;
+    opacity: 0.9;
+}
+
+/* 🎯 Content Section */
+.restaurant-content {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+    margin: 25px auto;
+    width: 80%;
+}
+
+.restaurant-content h2 {
+    font-size: 30px;
+    margin-bottom: 15px;
+    color: #ffcc00; /* Gold */
+    text-transform: uppercase;
+}
+
+.restaurant-content p {
+    font-size: 18px;
+    color: #ddd;
+    margin-bottom: 25px;
+}
+
+/* 🍽️ Buttons Section - Neon Glow Effect */
+.restaurant-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.restaurant-buttons button {
+    width: 300px;
+    padding: 16px;
+    font-size: 20px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #ffcc00, #ff9900);
+    color: #111;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-shadow: 0 4px 15px rgba(255, 204, 0, 0.5);
+}
+
+.restaurant-buttons button:hover {
+    background: linear-gradient(135deg, #ffaa00, #ff6600);
+    transform: scale(1.08);
+    box-shadow: 0 6px 18px rgba(255, 204, 0, 0.8);
+}
+
+/* 🔥 FontAwesome Icons */
+.restaurant-buttons i {
+    font-size: 24px;
+}
+
+/* 📸 Image Section */
+.restaurant-image {
+    margin-top: 35px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.restaurant-image img {
+    width: 80%;
+    max-width: 600px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+}
+
+/* 🌍 Motivational Section */
+.motivational-section {
+    margin-top: 40px;
+    padding: 25px;
+    background: linear-gradient(135deg, #ff5733, #c70039); /* Red Gradient */
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+    text-align: center;
+}
+
+.motivational-section h3 {
+    font-size: 24px;
+    color: white;
+    margin-bottom: 12px;
+}
+
+.motivational-section p {
+    font-size: 20px;
+    font-style: italic;
+    color: #ffe6e6;
+}
+
+/* 🎉 Quote Styling */
+.quote {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffcc00;
+    margin-top: 15px;
+    text-align: center;
+}
+
+/* 🎉 Modal Styles - Glassmorphism */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 15px;
+    width: 450px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.close {
+    color: red;
+    font-size: 28px;
+    font-weight: bold;
+    float: right;
+    cursor: pointer;
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 768px) {
+    .restaurant-content {
+        width: 95%;
+    }
+
+    .restaurant-buttons button {
+        width: 90%;
+    }
+    
+    .restaurant-image img {
+        width: 95%;
+    }
+}

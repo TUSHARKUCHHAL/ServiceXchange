@@ -1,180 +1,113 @@
-import React, { useState } from "react";
-import "./Home.css";
-import Footer from "../../Components/Footer";
-import axios from "axios";
-
-const SERVER_URL = `${process.env.REACT_APP_SERVER_URL}`;
+import React, { useRef } from 'react';
+import './Home.css';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
-  const [activeSection, setActiveSection] = useState("home");
-  const [showHospitalForm, setShowHospitalForm] = useState(false);
-  const [showNGOForm, setShowNGOForm] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    address: "",
-    contact: "",
-    email: "",
-    services: "",
-  });
-  const [ngoFormData, setNGOFormData] = useState({
-    name: "",
-    city: "",
-    pocName: "",
-    pocNumber: "",
-    email: "",
-  });
+  const buttonsSectionRef = useRef(null);
 
-  const [formStatus, setFormStatus] = useState(null);
-
-  const changeSection = (section) => {
-    setActiveSection(section);
-    if (section === "hospital") {
-      setShowHospitalForm(true);
-      setShowNGOForm(false);
-    } else if (section === "ngo") {
-      setShowNGOForm(true);
-      setShowHospitalForm(false);
-    }
-  };
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleNGOChange = (e) => {
-    setNGOFormData({ ...ngoFormData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setFormStatus("Submitting...");
-    
-    try {
-      const response = await fetch(`${SERVER_URL}/api/hospital`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
-      if (response.ok) {
-        setFormStatus("Hospital registered successfully!");
-        setShowHospitalForm(false);
-      } else {
-        setFormStatus(result.message);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      setFormStatus("An error occurred. Please try again.");
-    }
-  };
-
-  const handleNGOSubmit = async (e) => {
-    e.preventDefault();
-    setFormStatus("Submitting...");
-    
-    try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/ngo`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(ngoFormData),
-      });
-
-      const result = await response.json();
-      if (response.ok) {
-        setFormStatus("NGO registered successfully!");
-        setShowNGOForm(false);
-      } else {
-        setFormStatus(result.message);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      setFormStatus("An error occurred. Please try again.");
-    }
+  const scrollToButtons = () => {
+    buttonsSectionRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <div>
-      <section id="home" className="hero">
+    <div className="home-container">
+      {/* Hero Section */}
+      <div className="hero-section">
         <div className="hero-content">
-          <h1>Empowering Communities Through Social Service</h1>
-          <p>Join us to create a positive impact</p>
-          <div className="cta-buttons">
-            <button className="get-involved" onClick={() => setActiveSection("get-involved")}>
-              Get Involved
-            </button>
+          <h1 className="hero-title">Connecting Hearts, Building Futures</h1>
+          <p className="hero-subtitle">
+            Join our community of changemakers and help create a world where everyone has access to the
+            resources they need. Together, we can make a difference that lasts generations.
+          </p>
+          <button className="get-involved-btn" onClick={scrollToButtons}>
+            Get Involved
+          </button>
+        </div>
+      </div>
+
+      {/* Category Buttons Section */}
+      <div className="categories-section" ref={buttonsSectionRef}>
+        <h2>How Would You Like to Help?</h2>
+        <p>Choose your path to making a difference in our community</p>
+        
+        <div className="categories-grid">
+          <Link to="/hospital" className="category-card">
+            <div className="category-icon hospital-icon">
+              <i className="fas fa-hospital"></i>
+            </div>
+            <h3>Hospitals</h3>
+            <p>Support healthcare facilities and patients in need</p>
+          </Link>
+          
+          <Link to="/volunteer" className="category-card">
+            <div className="category-icon volunteer-icon">
+              <i className="fas fa-hands-helping"></i>
+            </div>
+            <h3>Volunteer</h3>
+            <p>Offer your time and skills to community projects</p>
+          </Link>
+          
+          <Link to="/ngo" className="category-card">
+            <div className="category-icon ngo-icon">
+              <i className="fas fa-globe-americas"></i>
+            </div>
+            <h3>NGOs</h3>
+            <p>Connect with organizations making global impact</p>
+          </Link>
+          
+          <Link to="/restaurant" className="category-card">
+            <div className="category-icon restaurant-icon">
+              <i className="fas fa-utensils"></i>
+            </div>
+            <h3>Restaurants</h3>
+            <p>Partner with food services to reduce waste and feed communities</p>
+          </Link>
+        </div>
+      </div>
+
+      {/* Impact Section */}
+      <div className="impact-section">
+        <h2>Our Impact</h2>
+        <div className="impact-stats">
+          <div className="stat-box">
+            <h3>10K+</h3>
+            <p>Volunteers</p>
+          </div>
+          <div className="stat-box">
+            <h3>250+</h3>
+            <p>Partner NGOs</p>
+          </div>
+          <div className="stat-box">
+            <h3>75+</h3>
+            <p>Hospitals</p>
+          </div>
+          <div className="stat-box">
+            <h3>120+</h3>
+            <p>Restaurants</p>
           </div>
         </div>
-      </section>
+      </div>
 
-      <section id="get-involved" className="section">
-        <div className="cta-buttons">
-          <button className="hospital" onClick={() => changeSection("hospital")}>
-            Hospital
-          </button>
-          <button className="volunteer" onClick={() => changeSection("volunteer")}>
-            Volunteer
-          </button>
-          <button className="ngo" onClick={() => changeSection("ngo")}>
-            Support an NGO
-          </button>
-          <button className="restaurant" onClick={() => changeSection("restaurant")}>
-            Partner with a Restaurant
-          </button>
-        </div>
-      </section>
-
-      {/* Popup Modal for Hospital Form */}
-      {showHospitalForm && (
-        <div className="overlay active">
-          <div className="form-popup active">
-            <span className="close-btn" onClick={() => setShowHospitalForm(false)}>
-              &times;
-            </span>
-            <h2>Register Your Hospital</h2>
-            <form onSubmit={handleSubmit}>
-              <input type="text" name="name" placeholder="Hospital Name" onChange={handleChange} required />
-              <input type="text" name="address" placeholder="Address" onChange={handleChange} required />
-              <input type="text" name="contact" placeholder="Contact Number" onChange={handleChange} required />
-              <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-              <textarea name="services" placeholder="Services Provided" onChange={handleChange} required></textarea>
-              <button type="submit">Submit</button>
-            </form>
+      {/* Testimonials Section */}
+      <div className="testimonials-section">
+        <h2>Voices of Change</h2>
+        <div className="testimonial-slider">
+          <div className="testimonial-card">
+            <p>"Connecting through this platform has allowed our hospital to receive critical volunteer support during peak times. The impact has been tremendous."</p>
+            <div className="testimonial-author">
+              <h4>Dr. Sarah Johnson</h4>
+              <p>City General Hospital</p>
+            </div>
           </div>
         </div>
-      )}
+      </div>
 
-      {/* Popup Modal for NGO Form */}
-      {showNGOForm && (
-        <div className="overlay active">
-          <div className="form-popup active">
-            <span className="close-btn" onClick={() => setShowNGOForm(false)}>
-              &times;
-            </span>
-            <h2>Register Your NGO</h2>
-            <form onSubmit={handleNGOSubmit}>
-              <input type="text" name="name" placeholder="NGO Name" onChange={handleNGOChange} required />
-              <input type="text" name="city" placeholder="City" onChange={handleNGOChange} required />
-              <input type="text" name="pocName" placeholder="POC Name" onChange={handleNGOChange} required />
-              <input type="text" name="pocNumber" placeholder="POC Number" onChange={handleNGOChange} required />
-              <input type="email" name="email" placeholder="Email" onChange={handleNGOChange} required />
-              <button type="submit">Submit</button>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Form Status Message */}
-      {formStatus && (
-        <div className="form-status">
-          <p>{formStatus}</p>
-        </div>
-      )}
-
+      {/* Call to Action */}
+      <div className="cta-section">
+        <h2>Ready to Make a Difference?</h2>
+        <p>Join thousands of others who are already changing lives in their communities</p>
+        <button className="primary-button" onClick={scrollToButtons}>Start Now</button>
+      </div>
     </div>
   );
 };
