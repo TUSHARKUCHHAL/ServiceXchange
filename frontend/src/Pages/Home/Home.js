@@ -47,7 +47,7 @@ const Home = () => {
             <p>Offer your time and skills to community projects</p>
           </Link>
           
-          <Link to="/ngo" className="category-card">
+          <Link to="/NGOdashboard" className="category-card">
             <div className="category-icon ngo-icon">
               <i className="fas fa-globe-americas"></i>
             </div>
