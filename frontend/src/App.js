@@ -1,15 +1,16 @@
 import React from 'react';
-import Home from './Pages/Home/Home'
-import NGODashboard from './Pages/NGODashboard/NGODashboard'
-import Footer from "./Components/Footer"
+import Home from './Pages/Home/Home';
+import NGODashboard from './Pages/NGODashboard/NGODashboard';
+import Footer from "./Components/Footer";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { ClerkProvider} from '@clerk/clerk-react';
+import { ClerkProvider } from '@clerk/clerk-react';
 import Navbar from './Components/Navbar'; // Ensure Navbar is correctly imported
 import Login from './Pages/Login/Login';
 import About from './Pages/About/About';
 import Services from './Pages/Services/Services';
 import TaskList from './Pages/TaskList/TaskList';
 import Contact from './Pages/Contact/Contact';
+
 import Restaurant from "./Pages/Restaurant/Restaurant";
 import ExcessFoodRequest from "./Pages/Restaurant/ExcessFoodRequest";
 import Volunteer from "./Pages/Restaurant/Volunteer";
@@ -18,6 +19,9 @@ import Volunteer from "./Pages/Restaurant/Volunteer";
 import Hospital from './Pages/Hospital/Hospital';
 import NeedBlood from './Pages/Hospital/NeedBlood';
 import DonateBlood from './Pages/Hospital/DonateBlood';
+
+import Analytics from './Pages/Analytics/Analytics'; // Import Analytics page
+
 import axios from 'axios';
 
 const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY; // Access Clerk public key from environment variable
@@ -43,12 +47,14 @@ const App = () => {
         <Route path="/restaurant/excess-food" element={<ExcessFoodRequest />} />
         <Route path="/restaurant/volunteer" element={<Volunteer />} />
        
+          <Route path="/Login" element={<Login />} />
+          <Route path="/Analytics" element={<Analytics />} /> {/* Add Analytics Route */}
+
         </Routes>
-        <Footer/>
+        <Footer />
       </Router>
     </ClerkProvider>
-
   );
-}
+};
 
 export default App;
