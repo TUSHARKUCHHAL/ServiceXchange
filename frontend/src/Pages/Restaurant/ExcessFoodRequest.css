@@ -1,0 +1,60 @@
+/* ExcessFoodRequest.css */
+.excess-food-container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #fff3e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .excess-food-container h1 {
+    color: #ff7043;
+    font-size: 26px;
+    margin-bottom: 15px;
+  }
+  
+  .food-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .food-form input,
+  .food-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ff8a65;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+  
+  .food-form button {
+    background: #ff7043;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .food-form button:hover {
+    background: #e64a19;
+  }
+  
+  .food-preview {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .food-preview img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 2px solid #ff8a65;
+  }
+  

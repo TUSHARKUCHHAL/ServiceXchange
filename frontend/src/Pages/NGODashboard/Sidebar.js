@@ -1,18 +1,23 @@
-// Sidebar.js
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 
-export default function Sidebar() {
+const Sidebar = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="sidebar">
       <h2>NGO Dashboard</h2>
       <ul>
-        <li>Dashboard</li>
-        <li>Analytics</li>
-        <li>Task List</li>
-        <li>Tracking</li>
-        <li>Settings</li>
+        <li onClick={() => navigate("/")}>🏠 Home</li>
+        <li onClick={() => navigate("/dashboard")}>📊 Dashboard</li>
+        <li onClick={() => navigate("/tasklist")}>✅ Task List</li>
+        <li onClick={() => navigate("/notifications")}>🔔 Notifications</li>
+        <li onClick={() => navigate("/profile")}>👤 Profile</li>
+        <li onClick={() => navigate("/logout")}>🚪 Logout</li>
       </ul>
     </div>
   );
-}
+};
+
+export default Sidebar;
