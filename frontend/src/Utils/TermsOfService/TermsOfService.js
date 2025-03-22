@@ -212,7 +212,7 @@ const TermsOfService = () => {
             <p>
               For inquiries about these Terms of Service, contact us at:
               <br />
-              Email: info@servicexexchange.com
+              Email: servicexchange1@gmail.com
             </p>
           </div>
         </div>
@@ -236,11 +236,12 @@ const TermsOfService = () => {
         </button>
       </div>
 
-      {showBackToTop && (
-        <button className="back-to-top" onClick={scrollToTop}>
-          ↑
-        </button>
-      )}
+      <button 
+        className={`back-to-top ${showBackToTop ? 'visible' : ''}`}
+        onClick={scrollToTop}
+      >
+        ↑
+      </button>
     </div>
   );
 };

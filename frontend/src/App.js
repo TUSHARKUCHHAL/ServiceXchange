@@ -17,6 +17,7 @@ import Hospital from './Pages/Hospital/Hospital';
 import NeedBlood from './Pages/Hospital/NeedBlood';
 import DonateBlood from './Pages/Hospital/DonateBlood';
 import TermsOfService from './Utils/TermsOfService/TermsOfService';
+import PrivacyPolicy from './Utils/PrivacyPolicy/PrivacyPolicy';
 
 import axios from 'axios';
 
@@ -42,6 +43,7 @@ const App = () => {
           <Route path="/restaurant/excess-food" element={<ExcessFoodRequest />} />
           <Route path="/restaurant/volunteer" element={<Volunteer />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Routes>
         <Footer />
       </Router>
