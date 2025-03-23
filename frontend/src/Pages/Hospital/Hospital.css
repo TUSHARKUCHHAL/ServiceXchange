@@ -2,7 +2,7 @@
 .hospital-container {
     font-family: 'Poppins', sans-serif;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 100px auto;
     padding: 0;
     color: #333;
     background-color: #f8f9fa;
@@ -18,12 +18,15 @@
   .hospital-container.loaded {
     opacity: 1;
     transform: translateY(0);
+    height: auto;
+    border-radius: 20px;
   }
   
   /* Header Styles */
-  .hospital-header {
+  .hospital-container .hospital-header {
     display: flex;
     justify-content: space-between;
+    justify-items: center;
     align-items: center;
     padding: 20px 40px;
     background-color: white;
@@ -32,13 +35,13 @@
     margin-bottom: 30px;
   }
   
-  .logo-container {
+  .hospital-container .logo-container {
     display: flex;
     align-items: center;
     gap: 12px;
   }
   
-  .logo-icon {
+  .hospital-container .logo-icon {
     background: linear-gradient(135deg, #e63946, #9d0208);
     width: 40px;
     height: 40px;
@@ -51,7 +54,7 @@
     animation: pulse 2s infinite;
   }
   
-  .hospital-header h1 {
+  .hospital-container .hospital-header h1 {
     font-size: 24px;
     font-weight: 700;
     margin: 0;
@@ -61,12 +64,12 @@
     color: transparent;
   }
   
-  .hospital-nav {
+  .hospital-container .hospital-nav {
     display: flex;
     gap: 15px;
   }
   
-  .hospital-nav button {
+  .hospital-container .hospital-nav button {
     background: none;
     border: none;
     color: #555;
@@ -77,11 +80,11 @@
     transition: color 0.3s ease;
   }
   
-  .hospital-nav button:hover {
+  .hospital-container .hospital-nav button:hover {
     color: #e63946;
   }
   
-  .hospital-nav button::after {
+  .hospital-container .hospital-nav button::after {
     content: '';
     position: absolute;
     width: 0;
@@ -92,7 +95,7 @@
     transition: width 0.3s ease;
   }
   
-  .hospital-nav button:hover::after {
+  .hospital-container .hospital-nav button:hover::after {
     width: 100%;
   }
   
@@ -100,7 +103,7 @@
   /* Add these styles to your existing CSS file */
 
 /* Hero Section - Modified for Liquid Effect */
-.hospital-hero {
+.hospital-container .hospital-hero {
     position: relative;
     overflow: hidden;
     /* Keep your existing styles */
@@ -118,7 +121,7 @@
   }
   
   /* Liquid Blood Effect Container */
-  .liquid-container {
+  .hospital-container .liquid-container {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -133,7 +136,7 @@
   
   /* Liquid Wave Effect */
   /* Enhanced Liquid Wave Effect */
-.liquid-wave {
+.hospital-container .liquid-wave {
     position: absolute;
     top: -20px;
     left: 0;
@@ -145,7 +148,7 @@
   }
   
   /* Add a second wave for more dynamic effect */
-  .liquid-wave::before {
+  .hospital-container .liquid-wave::before {
     content: '';
     position: absolute;
     top: 5px;
@@ -168,7 +171,7 @@
   }
   
   /* Add some additional dynamic effects to the liquid container */
-  .liquid-container {
+  .hospital-container .liquid-container {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -184,7 +187,7 @@
   }
   
   /* More dynamic bubbles */
-  .bubble {
+  .hospital-container .bubble {
     position: absolute;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2));
     border-radius: 50%;
@@ -194,7 +197,7 @@
   }
   
   /* Hero content needs higher z-index */
-  .hero-content {
+  .hospital-container .hero-content {
     position: relative;
     z-index: 1;
     padding: 0 40px;
@@ -248,11 +251,11 @@
   
   /* Ensure responsive behavior of liquid effect */
   @media (max-width: 480px) {
-    .hospital-hero {
+    .hospital-container .hospital-hero {
       height: 300px;
     }
     
-    .liquid-container {
+    .hospital-container .liquid-container {
       animation: fill-up 6s ease-in-out forwards;
     }
     
@@ -266,13 +269,13 @@
     }
   }
   
-  .hero-content {
+  .hospital-container .hero-content {
     padding: 0 40px;
     z-index: 1;
     max-width: 600px;
   }
   
-  .animated-title {
+  .hospital-container .animated-title {
     font-size: 48px;
     font-weight: 800;
     margin-bottom: 20px;
@@ -281,7 +284,7 @@
     animation: fadeIn 1s forwards 0.5s;
   }
   
-  .hospital-hero p {
+  .hospital-container .hospital-hero p {
     font-size: 20px;
     margin-bottom: 30px;
     opacity: 0;
@@ -289,13 +292,13 @@
     animation: fadeIn 1s forwards 0.8s;
   }
   
-  .hero-cta {
+  .hospital-container .hero-cta {
     opacity: 0;
     transform: translateY(20px);
     animation: fadeIn 1s forwards 1.1s;
   }
   
-  .primary-btn {
+  .hospital-container .primary-btn {
     background: linear-gradient(135deg, #e63946, #9d0208);
     color: white;
     border: none;
@@ -308,24 +311,24 @@
     box-shadow: 0 4px 20px rgba(230, 57, 70, 0.4);
   }
   
-  .primary-btn:hover {
+  .hospital-container .primary-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 25px rgba(230, 57, 70, 0.5);
   }
   
-  .pulse-animation {
+  .hospital-container .pulse-animation {
     animation: pulse 2s infinite;
   }
   
   /* Stats Section */
-  .stats-container {
+  .hospital-container .stats-container {
     display: flex;
     justify-content: space-between;
     margin-bottom: 40px;
     padding: 0 20px;
   }
   
-  .stat-card {
+  .hospital-container .stat-card {
     background: white;
     border-radius: 12px;
     padding: 25px 20px;
@@ -336,18 +339,18 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   
-  .stat-card:hover {
+  .hospital-container .stat-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   }
   
-  .stat-card i {
+  .hospital-container .stat-card i {
     font-size: 24px;
     color: #e63946;
     margin-bottom: 15px;
   }
   
-  .stat-value {
+  .hospital-container .stat-value {
     font-size: 36px;
     font-weight: 700;
     margin-bottom: 5px;
@@ -357,18 +360,18 @@
     color: transparent;
   }
   
-  .stat-label {
+  .hospital-container .stat-label {
     font-size: 16px;
     color: #666;
   }
   
   /* Services Section */
-  .services-section {
+  .hospital-container .services-section {
     margin-bottom: 50px;
     padding: 0 20px;
   }
   
-  .services-section h3 {
+  .hospital-container .services-section h3 {
     font-size: 30px;
     text-align: center;
     margin-bottom: 30px;
@@ -376,7 +379,7 @@
     padding-bottom: 15px;
   }
   
-  .services-section h3::after {
+  .hospital-container .services-section h3::after {
     content: '';
     position: absolute;
     width: 80px;
@@ -387,14 +390,14 @@
     transform: translateX(-50%);
   }
   
-  .service-cards {
+  .hospital-container .service-cards {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 25px;
   }
   
-  .service-card {
+  .hospital-container .service-card {
     background: white;
     border-radius: 15px;
     padding: 30px;
@@ -407,7 +410,7 @@
     overflow: hidden;
   }
   
-  .service-card::before {
+  .hospital-container .service-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -418,16 +421,16 @@
     transition: height 0.3s ease;
   }
   
-  .service-card:hover {
+  .hospital-container .service-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
   }
   
-  .service-card:hover::before {
+  .hospital-container .service-card:hover::before {
     height: 10px;
   }
   
-  .card-icon {
+  .hospital-container .card-icon {
     width: 70px;
     height: 70px;
     border-radius: 50%;
@@ -437,38 +440,38 @@
     margin: 0 auto 20px;
   }
   
-  .need-icon {
+  .hospital-container .need-icon {
     background-color: rgba(230, 57, 70, 0.1);
     color: #e63946;
   }
   
-  .donate-icon {
+  .hospital-container .donate-icon {
     background-color: rgba(42, 157, 143, 0.1);
     color: #2a9d8f;
   }
   
-  .learn-icon {
+  .hospital-container .learn-icon {
     background-color: rgba(233, 196, 106, 0.1);
     color: #e9c46a;
   }
   
-  .card-icon i {
+  .hospital-container .card-icon i {
     font-size: 28px;
   }
   
-  .service-card h4 {
+  .hospital-container .service-card h4 {
     font-size: 20px;
     margin-bottom: 15px;
   }
   
-  .service-card p {
+  .hospital-container .service-card p {
     font-size: 14px;
     color: #666;
     margin-bottom: 20px;
     line-height: 1.6;
   }
   
-  .card-btn {
+  .hospital-container .card-btn {
     border: none;
     border-radius: 25px;
     padding: 10px 20px;
@@ -478,38 +481,38 @@
     transition: all 0.3s ease;
   }
   
-  .need-blood-btn {
+  .hospital-container .need-blood-btn {
     background-color: rgba(230, 57, 70, 0.1);
     color: #e63946;
   }
   
-  .need-blood-btn:hover {
+  .hospital-container .need-blood-btn:hover {
     background-color: #e63946;
     color: white;
   }
   
-  .donate-blood-btn {
+  .hospital-container .donate-blood-btn {
     background-color: rgba(42, 157, 143, 0.1);
     color: #2a9d8f;
   }
   
-  .donate-blood-btn:hover {
+  .hospital-container .donate-blood-btn:hover {
     background-color: #2a9d8f;
     color: white;
   }
   
-  .learn-more-btn {
+  .hospital-container .learn-more-btn {
     background-color: rgba(233, 196, 106, 0.1);
     color: #e9c46a;
   }
   
-  .learn-more-btn:hover {
+  .hospital-container .learn-more-btn:hover {
     background-color: #e9c46a;
     color: white;
   }
   
   /* Blood Inventory Status */
-  .inventory-section {
+  .hospital-container .inventory-section {
     background-color: white;
     padding: 40px 30px;
     border-radius: 15px;
@@ -517,38 +520,38 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   }
   
-  .inventory-section h3 {
+  .hospital-container .inventory-section h3 {
     text-align: center;
     margin-bottom: 10px;
     font-size: 28px;
   }
   
-  .inventory-section p {
+  .hospital-container .inventory-section p {
     text-align: center;
     color: #666;
     margin-bottom: 30px;
   }
   
-  .blood-types-container {
+  .hospital-container .blood-types-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 20px;
   }
   
-  .blood-type-item {
+  .hospital-container .blood-type-item {
     width: calc(25% - 20px);
     margin-bottom: 20px;
   }
   
-  .blood-type-label {
+  .hospital-container .blood-type-label {
     font-weight: 700;
     font-size: 18px;
     margin-bottom: 8px;
     text-align: center;
   }
   
-  .blood-level-bar-container {
+  .hospital-container .blood-level-bar-container {
     height: 12px;
     background-color: #e9ecef;
     border-radius: 6px;
@@ -556,50 +559,50 @@
     margin-bottom: 5px;
   }
   
-  .blood-level-bar {
+  .hospital-container .blood-level-bar {
     height: 100%;
     border-radius: 6px;
     transition: width 1.5s ease-out;
   }
   
-  .blood-level-bar.critical {
+  .hospital-container .blood-level-bar.critical {
     background-color: #e63946;
   }
   
-  .blood-level-bar.low {
+  .hospital-container .blood-level-bar.low {
     background-color: #e9c46a;
   }
   
-  .blood-level-bar.stable {
+  .hospital-container .blood-level-bar.stable {
     background-color: #2a9d8f;
   }
   
-  .blood-status {
+  .hospital-container .blood-status {
     text-align: right;
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
   }
   
-  .blood-status.critical {
+  .hospital-container .blood-status.critical {
     color: #e63946;
   }
   
-  .blood-status.low {
+  .hospital-container .blood-status.low {
     color: #e9c46a;
   }
   
-  .blood-status.stable {
+  .hospital-container .blood-status.stable {
     color: #2a9d8f;
   }
   
   /* Testimonials */
-  .testimonials-section {
+  .hospital-container .testimonials-section {
     margin-bottom: 50px;
     padding: 0 20px;
   }
   
-  .testimonials-section h3 {
+  .hospital-container .testimonials-section h3 {
     text-align: center;
     margin-bottom: 30px;
     font-size: 28px;
@@ -607,7 +610,7 @@
     padding-bottom: 15px;
   }
   
-  .testimonials-section h3::after {
+  .hospital-container .testimonials-section h3::after {
     content: '';
     position: absolute;
     width: 80px;
@@ -618,13 +621,13 @@
     transform: translateX(-50%);
   }
   
-  .testimonial-cards {
+  .hospital-container .testimonial-cards {
     display: flex;
     justify-content: center;
     gap: 30px;
   }
   
-  .testimonial-card {
+  .hospital-container .testimonial-card {
     background: white;
     border-radius: 15px;
     padding: 30px;
@@ -634,11 +637,11 @@
     transition: transform 0.3s ease;
   }
   
-  .testimonial-card:hover {
+  .hospital-container .testimonial-card:hover {
     transform: translateY(-5px);
   }
   
-  .testimonial-img {
+  .hospital-container .testimonial-img {
     width: 70px;
     height: 70px;
     border-radius: 50%;
@@ -649,25 +652,25 @@
     background-color: #e9ecef;
   }
   
-  .testimonial-img i {
+  .hospital-container .testimonial-img i {
     font-size: 40px;
     color: #adb5bd;
   }
   
-  .testimonial-card p {
+  .hospital-container .testimonial-card p {
     font-style: italic;
     margin-bottom: 15px;
     color: #555;
     line-height: 1.6;
   }
   
-  .testimonial-card h5 {
+  .hospital-container .testimonial-card h5 {
     font-weight: 700;
     color: #e63946;
   }
   
   /* FAQ Section */
-  .faq-section {
+  .hospital-container .faq-section {
     background-color: white;
     padding: 40px 30px;
     border-radius: 15px;
@@ -675,18 +678,18 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   }
   
-  .faq-section h3 {
+  .hospital-container .faq-section h3 {
     text-align: center;
     margin-bottom: 30px;
     font-size: 28px;
   }
   
-  .faq-item {
+  .hospital-container .faq-item {
     border-bottom: 1px solid #dee2e6;
     margin-bottom: 15px;
   }
   
-  .faq-item summary {
+  .hospital-container .faq-item summary {
     font-weight: 600;
     font-size: 18px;
     padding: 15px 0;
@@ -696,7 +699,7 @@
     list-style: none;
   }
   
-  .faq-item summary::after {
+  .hospital-container .faq-item summary::after {
     content: '+';
     position: absolute;
     right: 0;
@@ -706,177 +709,79 @@
     transition: transform 0.3s ease;
   }
   
-  .faq-item[open] summary::after {
+  .hospital-container .faq-item[open] summary::after {
     content: '-';
   }
   
-  .faq-content {
+  .hospital-container .faq-content {
     padding: 0 0 15px;
   }
   
-  .faq-content p {
+  .hospital-container .faq-content p {
     margin: 0;
     line-height: 1.6;
     color: #666;
   }
-  
-  /* Footer */
-  .hospital-footer {
-    background-color: #343a40;
-    color: white;
-    border-radius: 15px;
-    overflow: hidden;
-  }
-  
-  .footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 40px;
-    flex-wrap: wrap;
-  }
-  
-  .footer-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 20px;
-    font-weight: 700;
-  }
-  
-  .footer-logo i {
-    font-size: 24px;
-    color: #e63946;
-  }
-  
-  .footer-contact p {
-    margin: 10px 0;
-    font-size: 14px;
-  }
-  
-  .footer-contact i {
-    margin-right: 10px;
-    color: #e63946;
-  }
-  
-  .footer-social {
-    display: flex;
-    gap: 15px;
-  }
-  
-  .footer-social i {
-    font-size: 20px;
-    cursor: pointer;
-    transition: color 0.3s ease;
-  }
-  
-  .footer-social i:hover {
-    color: #e63946;
-  }
-  
-  .footer-bottom {
-    background-color: #212529;
-    padding: 15px;
-    text-align: center;
-    font-size: 14px;
-  }
-  
-  /* Animations */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  @keyframes pulse {
-    0% {
-      box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.4);
-    }
-    70% {
-      box-shadow: 0 0 0 10px rgba(230, 57, 70, 0);
-    }
-    100% {
-      box-shadow: 0 0 0 0 rgba(230, 57, 70, 0);
-    }
-  }
+
   
   /* Responsive Design */
   @media (max-width: 992px) {
-    .service-card {
+    .hospital-container .service-card {
       width: calc(50% - 25px);
     }
     
-    .blood-type-item {
+    .hospital-container .blood-type-item {
       width: calc(33.33% - 20px);
     }
   }
   
   @media (max-width: 768px) {
-    .hospital-header {
+    .hospital-container .hospital-header {
       flex-direction: column;
       gap: 15px;
     }
     
-    .stats-container {
+    .hospital-container .stats-container {
       flex-direction: column;
       gap: 20px;
     }
     
-    .stat-card {
+    .hospital-container .stat-card {
       margin: 0;
     }
     
-    .service-card {
+    .hospital-container .service-card {
       width: 100%;
     }
     
-    .testimonial-cards {
+    .hospital-container .testimonial-cards {
       flex-direction: column;
       gap: 20px;
     }
     
-    .testimonial-card {
+    .hospital-container .testimonial-card {
       width: 100%;
     }
     
-    .blood-type-item {
+    .hospital-container .blood-type-item {
       width: calc(50% - 20px);
-    }
-    
-    .footer-content {
-      flex-direction: column;
-      gap: 30px;
-      text-align: center;
-    }
-    
-    .footer-logo {
-      justify-content: center;
-    }
-    
-    .footer-social {
-      justify-content: center;
     }
   }
   
   @media (max-width: 480px) {
-    .hospital-hero {
+    .hospital-container .hospital-hero {
       height: 300px;
     }
     
-    .animated-title {
+    .hospital-container .animated-title {
       font-size: 36px;
     }
     
-    .hospital-hero p {
+    .hospital-container .hospital-hero p {
       font-size: 16px;
     }
     
-    .blood-type-item {
+    .hospital-container .blood-type-item {
       width: 100%;
     }
   }
