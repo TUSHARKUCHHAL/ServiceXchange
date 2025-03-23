@@ -50,11 +50,10 @@
   font-size: 3.5rem;
   font-weight: 800;
   text-align: left;
-  margin: 50px auto;
+  margin-left: 50px;
   margin-top: 10px;
   margin-bottom: 15px;
   letter-spacing: -0.5px;
-  text-justify: center;
   color: white;
 }
 
