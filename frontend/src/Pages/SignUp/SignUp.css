@@ -217,6 +217,10 @@
   }
 }
 
+.element {
+  animation: pulse 2s infinite;
+}
+
 .title {
   font-size: 1.875rem;
   font-weight: 800;
