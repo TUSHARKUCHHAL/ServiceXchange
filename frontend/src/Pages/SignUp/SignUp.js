@@ -1,33 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, EyeOff, User, Lock, Heart, Users, Phone } from 'lucide-react';
-import './Login.css';
+import { Eye, EyeOff, User, Lock, Heart, Mail, Users, Phone, UserPlus } from 'lucide-react';
+import './SignUp.css';
 
-const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const SignupPage = () => {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [animateElements, setAnimateElements] = useState(false);
+  const [passwordMatch, setPasswordMatch] = useState(true);
 
   useEffect(() => {
     // Trigger animation on load
     setTimeout(() => setAnimateElements(true), 500);
   }, []);
 
+  useEffect(() => {
+    // Check if passwords match
+    if (formData.confirmPassword) {
+      setPasswordMatch(formData.password === formData.confirmPassword);
+    }
+  }, [formData.password, formData.confirmPassword]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    if (formData.password !== formData.confirmPassword) {
+      setPasswordMatch(false);
+      return;
+    }
+    
     setIsLoading(true);
     
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      console.log('Login submitted:', { email, password });
-      // Add your actual login logic here
+      console.log('Signup submitted:', formData);
+      // Add your actual signup logic here
     }, 1500);
   };
 
   return (
-    <div className="login-container">
+    <div className="signup-container">
       {/* Background animation elements */}
       <div class="bg-animation">
       <div class="bg-element element-1"></div>
@@ -41,17 +69,17 @@ const LoginPage = () => {
       <div class="decor-element decor-4"></div>
       <div class="decor-element decor-5"></div>
   
-  <div class="bg-gradient"></div>
-      </div>
+      <div class="bg-gradient"></div>
+</div>
 
-      <div className={`login-card ${animateElements ? 'animate-in' : ''}`}>
+      <div className={`signup-card ${animateElements ? 'animate-in' : ''}`}>
         {/* Logo and Title */}
         <div className="logo-container">
           <div className="logo-wrapper">
-            <Heart size={36} className="logo-icon" />
+            <UserPlus size={36} className="logo-icon" />
           </div>
           <h1 className="title">ServiceXchange</h1>
-          <p className="subtitle">Login to access your account</p>
+          <p className="subtitle">Create your account and start connecting</p>
         </div>
 
         {/* Floating icons */}
@@ -63,15 +91,50 @@ const LoginPage = () => {
           <Users size={18} className={`float-icon icon-5 ${animateElements ? 'animate' : ''}`} />
         </div>
 
-        <form className="login-form" onSubmit={handleSubmit}>
+        <form className="signup-form" onSubmit={handleSubmit}>
+          <div className="name-fields">
+            <div className="input-group">
+              <div className="input-icon">
+                <User size={20} />
+              </div>
+              <input
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+                className="input-field"
+                placeholder="First Name"
+              />
+              <div className="focus-indicator"></div>
+            </div>
+
+            <div className="input-group">
+              <div className="input-icon">
+                <User size={20} />
+              </div>
+              <input
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+                className="input-field"
+                placeholder="Last Name"
+              />
+              <div className="focus-indicator"></div>
+            </div>
+          </div>
+
           <div className="input-group">
             <div className="input-icon">
-              <User size={20} />
+              <Mail size={20} />
             </div>
             <input
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
               required
               className="input-field"
               placeholder="Email address"
@@ -85,8 +148,9 @@ const LoginPage = () => {
             </div>
             <input
               type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
               required
               className="input-field"
               placeholder="Password"
@@ -101,30 +165,50 @@ const LoginPage = () => {
             <div className="focus-indicator"></div>
           </div>
 
-          <div className="form-options">
-            <div className="remember-me">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="checkbox"
-              />
-              <label htmlFor="remember-me" className="checkbox-label">
-                Remember me
-              </label>
+          <div className="input-group">
+            <div className="input-icon">
+              <Lock size={20} />
             </div>
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+              className={`input-field ${!passwordMatch && formData.confirmPassword ? 'password-error' : ''}`}
+              placeholder="Confirm Password"
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+            <div className="focus-indicator"></div>
+          </div>
+          
+          {!passwordMatch && formData.confirmPassword && (
+            <div className="error-message">Passwords do not match</div>
+          )}
 
-            <div className="forgot-password">
-              <a href="#" className="text-link">
-                Forgot your password?
-              </a>
-            </div>
+          <div className="terms-check">
+            <input
+              id="terms-agreement"
+              name="terms"
+              type="checkbox"
+              required
+              className="checkbox"
+            />
+            <label htmlFor="terms-agreement" className="checkbox-label">
+              I agree to the <a href="/terms-of-service" className="text-link">Terms of Service</a> and <a href="/privacy-policy" className="text-link">Privacy Policy</a>
+            </label>
           </div>
 
           <div className="submit-container">
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || (formData.confirmPassword && !passwordMatch)}
               className="submit-button"
             >
               <span className="button-ripple"></span>
@@ -134,24 +218,24 @@ const LoginPage = () => {
                   <path className="spinner-path" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
               ) : (
-                "Login"
+                "Sign Up"
               )}
             </button>
           </div>
         </form>
 
-        <div className="register-prompt">
+        <div className="login-prompt">
           <p>
-            Don't have an account?{' '}
-            <a href="/signup" className="text-link">
-              Sign Up
+            Already have an account?{' '}
+            <a href="/login" className="text-link">
+              Login
             </a>
           </p>
         </div>
         
-        <div className="social-login">
+        <div className="social-signup">
           <div className="divider">
-            <span className="divider-text">Or login with</span>
+            <span className="divider-text">Or sign up with</span>
           </div>
 
           <div className="social-buttons">
@@ -172,7 +256,7 @@ const LoginPage = () => {
 
         {/* Stats */}
         <div className="service-stats">
-          <p>Connecting services since 2023</p>
+          <p>Join our growing community today</p>
           <div className="stats-container">
             <span className="stat-item">
               <Users size={12} className="stat-icon" /> 
@@ -189,4 +273,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;
