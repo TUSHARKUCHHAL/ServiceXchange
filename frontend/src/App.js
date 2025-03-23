@@ -3,9 +3,10 @@ import Home from './Pages/Home/Home';
 import NGODashboard from './Pages/NGODashboard/NGODashboard';
 import Footer from "./Components/Footer";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { ClerkProvider } from '@clerk/clerk-react';
+import { ClerkProvider, SignUp } from '@clerk/clerk-react';
 import Navbar from './Components/Navbar'; // Ensure Navbar is correctly imported
 import Login from './Pages/Login/Login';
+import Signup from './Pages/SignUp/SignUp';
 import About from './Pages/About/About';
 import Services from './Pages/Services/Services';
 import TaskList from './Pages/TaskList/TaskList';
@@ -35,7 +36,8 @@ const App = () => {
           <Route path='/Contact' element={<Contact />} />
           <Route path="/Services" element={<Services />} />
           <Route path="/About" element={<About />} />
-          <Route path="/lgin" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/hospital" element={<Hospital />} />
           <Route path="/hospital/need-blood" element={<NeedBlood />} />
           <Route path="/hospital/donate-blood" element={<DonateBlood />} />
