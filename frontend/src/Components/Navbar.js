@@ -62,9 +62,9 @@ const Navbar = () => {
           <li className="nav-item">
             <Link to="/" className="nav-link" onClick={closeMenu}>Home</Link>
           </li>
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <Link to="/NGOdashboard" className="nav-link" onClick={closeMenu}>NGODashboard</Link>
-          </li>
+          </li> */}
           <li className="nav-item">
             <Link to="/About" className="nav-link" onClick={closeMenu}>About Us</Link>
           </li>
