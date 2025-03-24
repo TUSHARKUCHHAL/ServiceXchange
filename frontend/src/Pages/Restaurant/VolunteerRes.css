@@ -1,0 +1,130 @@
+/* Volunteer.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #fafafa;
+  color: #424242;
+}
+
+.volunteer-container {
+  max-width: 900px;
+  margin: 100px auto;
+  padding: 30px;
+  background: #ffe5dc;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(255, 138, 128, 0.1);
+  text-align: center;
+}
+
+.volunteer-container h1 {
+  color: #ff5252;
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  position: relative;
+  display: inline-block;
+}
+
+.volunteer-container h1::after {
+  content: '';
+  position: absolute;
+  width: 50%;
+  height: 3px;
+  background-color: #ff8a80;
+  bottom: -8px;
+  left: 25%;
+  border-radius: 10px;
+}
+
+.volunteer-container .volunteer-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 30px;
+}
+
+.volunteer-container .volunteer-item {
+  background: #ffffff;
+  padding: 16px 20px;
+  margin: 15px 0;
+  border-left: 5px solid #ffab91;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.volunteer-container .volunteer-item.confirmed {
+  border-left-color: #ff5252;
+  background-color: #f8f8f8;
+}
+
+.volunteer-container .volunteer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.volunteer-container .volunteer-name {
+  font-weight: 500;
+  color: #424242;
+  font-size: 18px;
+}
+
+.volunteer-container .volunteer-status {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.volunteer-container .volunteer-status.available {
+  background-color: #ffccbc;
+  color: #424242;
+}
+
+.volunteer-container .volunteer-status.confirmed {
+  background-color: #ff8a80;
+  color: #ffffff;
+}
+
+.volunteer-container .volunteer-button {
+  background: linear-gradient(45deg, #ff5252, #ff8a80);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(255, 82, 82, 0.2);
+}
+
+.volunteer-container .volunteer-button:hover {
+  background: linear-gradient(45deg, #ff1744, #ff5252);
+  box-shadow: 0 5px 15px rgba(255, 82, 82, 0.3);
+}
+
+@media (max-width: 768px) {
+  .volunteer-container {
+    margin: 20px 10px;
+    padding: 20px;
+  }
+  
+  .volunteer-container .volunteer-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .volunteer-container .volunteer-button {
+    align-self: flex-end;
+  }
+}
