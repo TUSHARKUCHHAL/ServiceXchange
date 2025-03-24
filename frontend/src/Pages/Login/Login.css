@@ -10,7 +10,7 @@
 }
 
 /* Updated Background Animation */
-.bg-animation {
+.login-container .bg-animation {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -20,7 +20,7 @@
 }
 
 /* Replace the bubbles with a more dynamic animation */
-.bg-element {
+.login-container .bg-element {
   position: absolute;
   border-radius: 50%;
   background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(231, 76, 60, 0.2) 100%);
@@ -29,7 +29,7 @@
   transform-origin: center center;
 }
 
-.element-1 {
+.login-container .element-1 {
   width: 300px;
   height: 300px;
   left: -50px;
@@ -37,7 +37,7 @@
   animation: moveBg 12s infinite alternate ease-in-out;
 }
 
-.element-2 {
+.login-container .element-2 {
   width: 200px;
   height: 200px;
   right: -30px;
@@ -45,7 +45,7 @@
   animation: moveBg 15s infinite alternate-reverse ease-in-out;
 }
 
-.element-3 {
+.login-container .element-3 {
   width: 250px;
   height: 250px;
   left: 30%;
@@ -54,7 +54,7 @@
   animation-delay: 2s;
 }
 
-.element-4 {
+.login-container .element-4 {
   width: 180px;
   height: 180px;
   right: 20%;
@@ -64,7 +64,7 @@
 }
 
 /* Smaller decorative elements */
-.decor-element {
+.login-container .decor-element {
   position: absolute;
   background-color: rgba(231, 76, 60, 0.1);
   border-radius: 10px;
@@ -73,7 +73,7 @@
   animation: floatAndRotate 8s infinite ease-in-out;
 }
 
-.decor-1 {
+.login-container .decor-1 {
   width: 40px;
   height: 40px;
   left: 15%;
@@ -81,7 +81,7 @@
   animation-delay: 0s;
 }
 
-.decor-2 {
+.login-container .decor-2 {
   width: 30px;
   height: 30px;
   right: 25%;
@@ -89,7 +89,7 @@
   animation-delay: 2s;
 }
 
-.decor-3 {
+.login-container .login-container .decor-3 {
   width: 25px;
   height: 25px;
   left: 65%;
@@ -97,7 +97,7 @@
   animation-delay: 4s;
 }
 
-.decor-4 {
+.login-container .decor-4 {
   width: 20px;
   height: 20px;
   left: 35%;
@@ -105,7 +105,7 @@
   animation-delay: 1s;
 }
 
-.decor-5 {
+.login-container .decor-5 {
   width: 15px;
   height: 15px;
   right: 10%;
@@ -152,7 +152,7 @@
 }
 
 /* Add a subtle gradient overlay */
-.bg-gradient {
+.login-container .bg-gradient {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -163,7 +163,7 @@
 }
 
 /* Login card */
-.login-card {
+.login-container .login-card {
   position: relative;
   z-index: 2; /* Ensure the card stays above the background animation */
   margin: 130px auto;
@@ -178,18 +178,18 @@
   transition: all 0.7s ease-out;
 }
 
-.login-card.animate-in {
+.login-container .login-card.animate-in {
   transform: translateY(0);
   opacity: 1;
 }
 
 /* Logo and title */
-.logo-container {
+.login-container .logo-container {
   text-align: center;
   margin-bottom: 1.5rem;
 }
 
-.logo-wrapper {
+.login-container .logo-wrapper {
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -201,7 +201,7 @@
   animation: pulse 2s infinite;
 }
 
-.logo-icon {
+.login-container .logo-icon {
   color: #e74c3c;
 }
 
@@ -217,7 +217,7 @@
   }
 }
 
-.title {
+.login-container .title {
   font-size: 1.875rem;
   font-weight: 800;
   letter-spacing: -0.025em;
@@ -225,19 +225,19 @@
   margin: 0.5rem 0 0.25rem;
 }
 
-.subtitle {
+.login-container .subtitle {
   color: #666;
   font-size: 0.875rem;
 }
 
 /* Floating icons */
-.floating-icons {
+.login-container .floating-icons {
   position: relative;
   height: 3rem;
   margin-bottom: 1rem;
 }
 
-.float-icon {
+.login-container .float-icon {
   position: absolute;
   color: #e74c3c;
   opacity: 0;
@@ -245,49 +245,49 @@
   transition: all 1s ease-out;
 }
 
-.float-icon.animate {
+.login-container .float-icon.animate {
   opacity: 0.7;
   transform: translateY(0);
 }
 
-.icon-1 {
+.login-container .icon-1 {
   left: 10%;
   transition-delay: 0s;
 }
 
-.icon-2 {
+.login-container .icon-2 {
   left: 30%;
   transition-delay: 0.3s;
 }
 
-.icon-3 {
+.login-container .icon-3 {
   left: 50%;
   transition-delay: 0.5s;
 }
 
-.icon-4 {
+.login-container .icon-4 {
   left: 70%;
   transition-delay: 0.7s;
 }
 
-.icon-5 {
+.login-container .icon-5 {
   left: 85%;
   transition-delay: 0.9s;
 }
 
 /* Form */
-.login-form {
+.login-container .login-form {
   margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.input-group {
+.login-container .input-group {
   position: relative;
 }
 
-.input-icon {
+.login-container .input-icon {
   position: absolute;
   left: 1rem;
   top: 50%;
@@ -296,7 +296,7 @@
   pointer-events: none;
 }
 
-.input-field {
+.login-container .input-field {
   width: 100%;
   padding: 1rem 3rem;
   background-color: #f9f9f9;
@@ -306,17 +306,17 @@
   transition: all 0.3s;
 }
 
-.input-field:focus {
+.login-container .input-field:focus {
   outline: none;
   box-shadow: 0 0 0 2px #e74;
   background-color: #fff;
 }
 
-.input-field.password-error {
+.login-container .input-field.password-error {
   box-shadow: 0 0 0 2px #f44336;
 }
 
-.password-toggle {
+.login-container .password-toggle {
   position: absolute;
   right: 1rem;
   top: 50%;
@@ -327,60 +327,60 @@
   cursor: pointer;
 }
 
-.password-toggle:hover {
+.login-container .password-toggle:hover {
   color: #666;
 }
 
 /* Remove focus-indicator to match signup */
-.focus-indicator {
+.login-container .focus-indicator {
   display: none;
 }
 
 /* Form options */
-.form-options {
+.login-container .form-options {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.remember-me {
+.login-container .remember-me {
   display: flex;
   align-items: center;
 }
 
-.checkbox {
+.login-container .checkbox {
   width: 1rem;
   height: 1rem;
   accent-color: #e74c3c;
 }
 
-.checkbox-label {
+.login-container .checkbox-label {
   margin-left: 0.5rem;
   font-size: 0.875rem;
   color: #333;
 }
 
-.forgot-password {
+.login-container .forgot-password {
   font-size: 0.875rem;
 }
 
-.text-link {
+.login-container .text-link {
   color: #e74c3c;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;
 }
 
-.text-link:hover {
+.login-container .text-link:hover {
   color: #c0392b;
 }
 
 /* Submit button */
-.submit-container {
+.login-container .submit-container {
   margin-top: 0.5rem;
 }
 
-.submit-button {
+.login-container .submit-button {
   position: relative;
   width: 100%;
   display: flex;
@@ -397,21 +397,21 @@
   transition: background-color 0.3s;
 }
 
-.submit-button:hover {
+.login-container .submit-button:hover {
   background-color: #c0392b;
 }
 
-.submit-button:focus {
+.login-container .submit-button:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3);
 }
 
-.submit-button:disabled {
+.login-container .submit-button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }
 
-.button-ripple {
+.login-container .button-ripple {
   position: absolute;
   width: 0;
   height: 0;
@@ -421,22 +421,22 @@
   transition: all 0.5s ease-out;
 }
 
-.submit-button:hover .button-ripple {
+.login-container .submit-button:hover .button-ripple {
   width: 300px;
   height: 300px;
 }
 
-.loading-spinner {
+.login-container .loading-spinner {
   animation: spin 1s linear infinite;
   height: 1.25rem;
   width: 1.25rem;
 }
 
-.spinner-track {
+.login-container .spinner-track {
   opacity: 0.25;
 }
 
-.spinner-path {
+.login-container .spinner-path {
   opacity: 0.75;
 }
 
@@ -450,7 +450,7 @@
 }
 
 /* Register prompt */
-.register-prompt {
+.login-container .register-prompt {
   margin-top: 1.5rem;
   text-align: center;
   font-size: 0.875rem;
@@ -458,17 +458,17 @@
 }
 
 /* Social login */
-.social-login {
+.login-container .social-login {
   margin-top: 1.5rem;
 }
 
-.divider {
+.login-container .divider {
   position: relative;
   text-align: center;
   margin-bottom: 1.5rem;
 }
 
-.divider::before {
+.login-container .divider::before {
   content: "";
   position: absolute;
   top: 50%;
@@ -478,7 +478,7 @@
   background-color: #e0e0e0;
 }
 
-.divider-text {
+.login-container .divider-text {
   position: relative;
   display: inline-block;
   padding: 0 0.75rem;
@@ -487,13 +487,13 @@
   font-size: 0.875rem;
 }
 
-.social-buttons {
+.login-container .social-buttons {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
 }
 
-.social-button {
+.login-container .social-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -507,18 +507,18 @@
   cursor: pointer;
 }
 
-.social-button:hover {
+.login-container .social-button:hover {
   background-color: #f9f9f9;
   transform: scale(1.05);
 }
 
-.social-icon {
+.login-container .social-icon {
   margin-right: 0.5rem;
   border-radius: 50%;
 }
 
 /* Service stats */
-.service-stats {
+.login-container .service-stats {
   margin-top: 1.5rem;
   text-align: center;
   font-size: 0.75rem;
@@ -527,31 +527,31 @@
   border-top: 1px solid #f0f0f0;
 }
 
-.stats-container {
+.login-container .stats-container {
   display: flex;
   justify-content: center;
   gap: 1rem;
   margin-top: 0.5rem;
 }
 
-.stat-item {
+.login-container .stat-item {
   display: flex;
   align-items: center;
 }
 
-.stat-icon {
+.login-container .stat-icon {
   margin-right: 0.25rem;
   color: #e74c3c;
 }
 
 /* Responsive adjustments */
 @media (max-width: 640px) {
-  .login-card {
+  .login-container .login-card {
     padding: 1.5rem;
     margin: 6rem 1rem;
   }
   
-  .social-buttons {
+  .login-container .social-buttons {
     grid-template-columns: 1fr;
   }
 }

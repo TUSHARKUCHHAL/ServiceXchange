@@ -6,7 +6,7 @@
 }
 
 /* Main Dashboard */
-.dashboard-main {
+.dashboard-container .dashboard-main {
   flex: 1;
   padding: 32px;
   background-color: #FAFAFA;
@@ -18,7 +18,7 @@
 }
 
 /* Header Section */
-.dashboard-header {
+.dashboard-container .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -29,7 +29,7 @@
 }
 
 /* Dashboard Button */
-.dashboard-button {
+.dashboard-container .dashboard-button {
   padding: 14px 28px;
   background-color: #007bff;
   color: white;
@@ -41,20 +41,20 @@
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.dashboard-button:hover {
+.dashboard-container .dashboard-button:hover {
   background-color: #0056b3;
   transform: scale(1.05);
 }
 
 /* Dashboard Grid Layout */
-.dashboard-grid {
+.dashboard-container .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
 }
 
 /* Dashboard Cards */
-.dashboard-card {
+.dashboard-container .dashboard-card {
   padding: 24px;
   color: white;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -64,13 +64,13 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.dashboard-card:hover {
+.dashboard-container .dashboard-card:hover {
   transform: scale(1.08);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
 }
 
 /* Progress Bar */
-.dashboard-progress-bar {
+.dashboard-container .dashboard-progress-bar {
   width: 100%;
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 6px;
@@ -78,14 +78,14 @@
   margin-top: 10px;
 }
 
-.dashboard-progress {
+.dashboard-container .dashboard-progress {
   background-color: white;
   height: 100%;
   border-radius: 6px;
 }
 
 /* Student Certification Section */
-.student-certification-section {
+.dashboard-container .student-certification-section {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,11 +93,11 @@
   padding-bottom: 40px;
 }
 
-.certification-container {
+.dashboard-container .certification-container {
   text-align: center;
 }
 
-.certification-button {
+.dashboard-container .certification-button {
   padding: 18px 36px;
   background-color: #FF6F00;
   color: white;
@@ -110,7 +110,7 @@
   margin: 10px;
 }
 
-.certification-button:hover {
+.dashboard-container .certification-button:hover {
   background-color: #E65100;
   transform: scale(1.05);
 }
@@ -209,7 +209,7 @@ button {
 /* ------------------------- */
 
 /* Modal Overlay */
-.modal-overlay {
+.dashboard-container .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -224,7 +224,7 @@ button {
 }
 
 /* Modal Content */
-.modal-content {
+.dashboard-container .modal-content {
   background: white;
   padding: 30px;
   width: 450px;
@@ -237,7 +237,7 @@ button {
 }
 
 /* Close Button */
-.close-btn {
+.dashboard-container .close-btn {
   position: absolute;
   top: 12px;
   right: 18px;
@@ -247,13 +247,13 @@ button {
   transition: color 0.3s ease, transform 0.2s ease;
 }
 
-.close-btn:hover {
+.dashboard-container .close-btn:hover {
   color: #D32F2F;
   transform: scale(1.1);
 }
 
 /* Form Styling */
-.modal-content input {
+.dashboard-container .modal-content input {
   width: 100%;
   padding: 14px;
   margin: 12px 0;
@@ -263,14 +263,14 @@ button {
   transition: all 0.3s ease;
 }
 
-.modal-content input:focus {
+.dashboard-container .modal-content input:focus {
   border-color: #4A148C;
   box-shadow: 0 0 8px rgba(74, 20, 140, 0.3);
   outline: none;
 }
 
 /* Modal Buttons */
-.modal-buttons {
+.dashboard-container .modal-buttons {
   display: flex;
   justify-content: center;
   gap: 16px;
@@ -278,7 +278,7 @@ button {
 }
 
 /* Submit and Close Button Styling */
-.modal-buttons button {
+.dashboard-container .modal-buttons button {
   padding: 12px 24px;
   border: none;
   border-radius: 8px;
@@ -289,23 +289,23 @@ button {
 }
 
 /* Submit Button */
-.modal-buttons button[type="submit"] {
+.dashboard-container .modal-buttons button[type="submit"] {
   background-color: #4A148C;
   color: white;
 }
 
-.modal-buttons button[type="submit"]:hover {
+.dashboard-container .modal-buttons button[type="submit"]:hover {
   background-color: #6A1B9A;
   transform: scale(1.05);
 }
 
 /* Close Button */
-.modal-buttons button[type="button"] {
+.dashboard-container .modal-buttons button[type="button"] {
   background-color: #D32F2F;
   color: white;
 }
 
-.modal-buttons button[type="button"]:hover {
+.dashboard-container .modal-buttons button[type="button"]:hover {
   background-color: #B71C1C;
   transform: scale(1.05);
 }
@@ -331,7 +331,7 @@ button {
 
 /* Responsive Modal */
 @media screen and (max-width: 768px) {
-  .modal-content {
+  .dashboard-container .modal-content {
     width: 90%;
   }
 }
