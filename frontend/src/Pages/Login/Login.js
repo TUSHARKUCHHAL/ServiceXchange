@@ -14,8 +14,6 @@ const LoginPage = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
   const [enteredOtp, setEnteredOtp] = useState("");
-<<<<<<< HEAD
-=======
 
 // Add this method to handle cancelling OTP verification
   const handleCancelOtp = () => {
@@ -23,7 +21,6 @@ const LoginPage = () => {
    setEnteredOtp("");
    setOtp("");
   };
->>>>>>> 02f5360b9db75098be684d4363fbe930fb2a0385
 
   useEffect(() => {
     // Trigger animation on load
@@ -176,10 +173,6 @@ const LoginPage = () => {
                   onChange={(e) => setEnteredOtp(e.target.value)}
                   placeholder="Enter OTP"
                 />
-<<<<<<< HEAD
-                <button onClick={(e) => verifyOtp(e)}>Verify OTP</button>
-
-=======
                 <div className="otp-buttons">
                   <button 
                     className="verify-button" 
@@ -195,7 +188,6 @@ const LoginPage = () => {
                     Cancel
                   </button>
                 </div>
->>>>>>> 02f5360b9db75098be684d4363fbe930fb2a0385
               </div>
             </div>
           )}
