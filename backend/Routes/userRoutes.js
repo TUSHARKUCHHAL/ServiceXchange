@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const nodemailer = require("nodemailer");
 const router = express.Router();
-
+const sendOtpEmail = require("../models/sendOTP");
 
 // Register User
 router.post("/register", async (req, res) => {
@@ -52,6 +52,29 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Generate OTP function
+const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+
+// Route to send OTP
+router.post("/send-otp", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const otp = generateOTP();
+    user.otp = otp;
+    await user.save();
+
+    await sendOtpEmail(email, otp);
+
+    res.json({ message: "OTP sent successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error sending OTP" });
+  }
+});
+
 router.post("/send-otp", async (req, res) => {
   const { email } = req.body;
 
@@ -67,6 +90,24 @@ router.post("/send-otp", async (req, res) => {
     res.json({ otp });
   } catch (error) {
     res.status(500).json({ message: "Failed to send OTP" });
+  }
+});
+
+router.post("/verify-otp", async (req, res) => {
+  const { email, otp } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    if (user.otp !== otp) return res.status(400).json({ message: "Invalid OTP" });
+
+    user.otp = null; // Clear OTP after verification
+    await user.save();
+
+    res.json({ message: "OTP verified successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error verifying OTP" });
   }
 });
 

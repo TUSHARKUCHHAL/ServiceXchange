@@ -54,16 +54,30 @@ const LoginPage = () => {
     }
   };
 
-  const verifyOtp = async () => {
-    if (enteredOtp === otp) {
-      localStorage.setItem("token", "userToken");
+  const verifyOtp = async (e) => {
+    e.preventDefault(); // Prevent page reload
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/users/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, enteredOtp }), // Send email & OTP
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) throw new Error(data.message || "OTP verification failed");
+  
+      // ✅ If OTP is correct, redirect user to homepage
+      localStorage.setItem("token", "userToken"); // Store token (or get from backend)
       localStorage.setItem("userEmail", email);
       navigate("/");
       window.location.reload();
-    } else {
+    } catch (err) {
       setError("Invalid OTP. Please try again.");
     }
   };
+  
   
 
   return (
@@ -152,7 +166,8 @@ const LoginPage = () => {
                   onChange={(e) => setEnteredOtp(e.target.value)}
                   placeholder="Enter OTP"
                 />
-                <button onClick={verifyOtp}>Verify OTP</button>
+                <button onClick={(e) => verifyOtp(e)}>Verify OTP</button>
+
               </div>
             </div>
           )}
