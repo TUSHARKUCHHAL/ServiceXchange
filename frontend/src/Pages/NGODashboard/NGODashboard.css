@@ -303,7 +303,7 @@ body {
 }
 
 /* Student Certification Section */
-.student-certification-section {
+.dashboard-container .student-certification-section {
   display: flex;
   background-color: var(--light-red);
   border-radius: var(--border-radius);
@@ -478,17 +478,23 @@ body {
   animation: slideInRight 0.4s ease;
 }
 
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.dashboard-container .modal-buttons button[type="submit"]:hover {
+  background-color: #6A1B9A;
+  transform: scale(1.05);
 }
 
+/* Close Button */
+.dashboard-container .modal-buttons button[type="button"] {
+  background-color: #D32F2F;
+  color: white;
+}
+
+.dashboard-container .modal-buttons button[type="button"]:hover {
+  background-color: #B71C1C;
+  transform: scale(1.05);
+}
+
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
