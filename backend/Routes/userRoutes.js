@@ -2,8 +2,9 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-
+const nodemailer = require("nodemailer");
 const router = express.Router();
+
 
 // Register User
 router.post("/register", async (req, res) => {
@@ -48,6 +49,24 @@ router.post("/login", async (req, res) => {
     res.json({ token, userId: user._id });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+router.post("/send-otp", async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ message: "Email is required" });
+  }
+
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+  try {
+    // Implement your sendEmail function to send OTP via email
+    console.log(`OTP for ${email}: ${otp}`);
+    res.json({ otp });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to send OTP" });
   }
 });
 
