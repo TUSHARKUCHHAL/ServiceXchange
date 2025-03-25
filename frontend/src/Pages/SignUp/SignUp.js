@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Eye, EyeOff, User, Lock, Heart, Mail, Users, Phone, UserPlus } from 'lucide-react';
 import './SignUp.css';
 
@@ -15,6 +16,7 @@ const SignupPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [animateElements, setAnimateElements] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     // Trigger animation on load
@@ -36,23 +38,42 @@ const SignupPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     if (formData.password !== formData.confirmPassword) {
       setPasswordMatch(false);
       return;
     }
-    
+  
     setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+  
+    console.log("Sending Data:", formData); // Debugging: Check what is being sent
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      const data = await response.json();
+      console.log("Response:", data);
+  
+      if (!response.ok) {
+        throw new Error(data.message || "Signup failed");
+      }
+  
+      alert("Signup successful!");
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
       setIsLoading(false);
-      console.log('Signup submitted:', formData);
-      // Add your actual signup logic here
-    }, 1500);
+    }
   };
+    
 
   return (
     <div className="signup-container">
