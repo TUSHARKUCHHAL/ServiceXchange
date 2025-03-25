@@ -6,7 +6,7 @@
     "@clerk/clerk-react": "^5.22.10",
     "@clerk/nextjs": "^6.10.6",
     "@fortawesome/fontawesome-free": "^6.7.2",
-    "axios": "^1.7.9",
+    "axios": "^1.8.4",
     "body-parser": "^1.20.3",
     "chart.js": "^4.4.7",
     "cors": "^2.8.5",

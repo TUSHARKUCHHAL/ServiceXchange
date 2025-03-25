@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Eye, EyeOff, User, Lock, Heart, Users, Phone } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
 const LoginPage = () => {
@@ -8,22 +9,37 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [animateElements, setAnimateElements] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Trigger animation on load
     setTimeout(() => setAnimateElements(true), 500);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+    setError('');
+
+    try {
+      const response = await fetch("http://localhost:5000/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Login failed");
+
+      localStorage.setItem("token", data.token);
+      alert("Login successful!");
+      navigate("/"); // Redirect after login
+    } catch (err) {
+      setError(err.message);
+    } finally {
       setIsLoading(false);
-      console.log('Login submitted:', { email, password });
-      // Add your actual login logic here
-    }, 1500);
+    }
   };
 
   return (
