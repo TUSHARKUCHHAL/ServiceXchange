@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import axios from 'axios';
 import { Eye, EyeOff, User, Lock, Heart, Mail, Users, Phone, UserPlus } from 'lucide-react';
 import './SignUp.css';
 
 const SignupPage = () => {
+  const navigate = useNavigate(); // Initialize navigate
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -48,8 +50,6 @@ const SignupPage = () => {
   
     setIsLoading(true);
   
-    console.log("Sending Data:", formData); // Debugging: Check what is being sent
-  
     try {
       const response = await fetch("http://localhost:5000/api/users/register", {
         method: "POST",
@@ -60,19 +60,25 @@ const SignupPage = () => {
       });
   
       const data = await response.json();
-      console.log("Response:", data);
   
       if (!response.ok) {
         throw new Error(data.message || "Signup failed");
       }
   
-      alert("Signup successful!");
+      // Store token and log in user automatically
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userEmail", formData.email);
+  
+      // On successful signup, navigate to home page
+      navigate("/");
+      window.location.reload(); // Optional: Refresh to update navbar
     } catch (error) {
       console.error("Error:", error);
     } finally {
       setIsLoading(false);
     }
   };
+
     
 
   return (

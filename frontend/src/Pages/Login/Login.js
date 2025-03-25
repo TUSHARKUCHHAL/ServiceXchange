@@ -21,26 +21,28 @@ const LoginPage = () => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-
+  
     try {
       const response = await fetch("http://localhost:5000/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-
+  
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Login failed");
-
+  
       localStorage.setItem("token", data.token);
-      alert("Login successful!");
+      localStorage.setItem("userEmail", email); // Store user email
       navigate("/"); // Redirect after login
+      window.location.reload(); // Refresh to update navbar
     } catch (err) {
       setError(err.message);
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   return (
     <div className="login-container">
