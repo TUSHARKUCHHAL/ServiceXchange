@@ -94,11 +94,6 @@ const Hospital = () => {
           </div>
           <h1>LifeBlood Center</h1>
         </div>
-        <nav className="hospital-nav">
-          <button onClick={() => navigate("/")}>Home</button>
-          <button onClick={() => navigate("/about")}>About</button>
-          <button onClick={() => navigate("/contact")}>Contact</button>
-        </nav>
       </header>
 
       {/* Hero Banner with Liquid Effect */}
@@ -251,31 +246,6 @@ const Hospital = () => {
           </details>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="hospital-footer">
-        <div className="footer-content">
-          <div className="footer-logo">
-            <i className="fas fa-heartbeat"></i>
-            <span>LifeBlood Center</span>
-          </div>
-          
-          <div className="footer-contact">
-            <p><i className="fas fa-phone"></i> Emergency: (555) 123-4567</p>
-            <p><i className="fas fa-envelope"></i> contact@lifeblood.org</p>
-          </div>
-          
-          <div className="footer-social">
-            <i className="fab fa-facebook"></i>
-            <i className="fab fa-twitter"></i>
-            <i className="fab fa-instagram"></i>
-          </div>
-        </div>
-        
-        <div className="footer-bottom">
-          <p>&copy; 2025 LifeBlood Center. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   );
 };

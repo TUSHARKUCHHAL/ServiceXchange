@@ -1,42 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { User } from 'lucide-react';
 import './Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userEmail, setUserEmail] = useState(null);
   const location = useLocation();
-  
-  // Check if current path needs dark background
+
   const isDarkBg = location.pathname !== '/' && location.pathname !== '/home';
 
-  // Handle scroll event to change navbar appearance
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Toggle menu open/closed
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-    // Optional: prevent body scroll when menu is open
-    document.body.style.overflow = !isOpen ? 'hidden' : 'auto';
-  };
+  // Check authentication status on mount
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const email = localStorage.getItem('userEmail');
 
-  // Close menu when a link is clicked
-  const closeMenu = () => {
-    setIsOpen(false);
-    document.body.style.overflow = 'auto';
+    if (token && email) {
+      setIsAuthenticated(true);
+      setUserEmail(email);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userEmail');
+    setIsAuthenticated(false);
+    setUserEmail(null);
+    window.location.reload(); // Refresh page to update UI
   };
 
   return (
@@ -47,37 +48,32 @@ const Navbar = () => {
           <span className="logo-text">ServiceXchange</span>
         </Link>
 
-
-        
-        <div 
-          className={`hamburger ${isOpen ? 'active' : ''}`} 
-          onClick={toggleMenu}
-        >
+        <div className={`hamburger ${isOpen ? 'active' : ''}`} onClick={() => setIsOpen(!isOpen)}>
           <span className="hamburger-line"></span>
           <span className="hamburger-line"></span>
           <span className="hamburger-line"></span>
         </div>
-        
+
         <ul className={`nav-menu ${isOpen ? 'active' : ''}`}>
-          <li className="nav-item">
-            <Link to="/" className="nav-link" onClick={closeMenu}>Home</Link>
-          </li>
-          {/* <li className="nav-item">
-            <Link to="/NGOdashboard" className="nav-link" onClick={closeMenu}>NGODashboard</Link>
-          </li> */}
-          <li className="nav-item">
-            <Link to="/About" className="nav-link" onClick={closeMenu}>About Us</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/services" className="nav-link" onClick={closeMenu}>Services</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/contact" className="nav-link" onClick={closeMenu}>Contact Us</Link>
-          </li>
-          
+          <li className="nav-item"><Link to="/" className="nav-link" onClick={() => setIsOpen(false)}>Home</Link></li>
+          <li className="nav-item"><Link to="/about" className="nav-link" onClick={() => setIsOpen(false)}>About Us</Link></li>
+          <li className="nav-item"><Link to="/services" className="nav-link" onClick={() => setIsOpen(false)}>Services</Link></li>
+          <li className="nav-item"><Link to="/contact" className="nav-link" onClick={() => setIsOpen(false)}>Contact Us</Link></li>
+
           <div className="nav-buttons">
-            <Link to="/login" className="login-btn" onClick={closeMenu}>Login</Link>
-            <Link to="/signup" className="signup-btn" onClick={closeMenu}>Sign Up</Link>
+            {isAuthenticated ? (
+              <>
+                <button className="signup-btn" onClick={handleLogout}>Logout</button>
+                <span className="profile">
+                  <User size={20} /> {userEmail}
+                </span>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="login-btn" onClick={() => setIsOpen(false)}>Login</Link>
+                <Link to="/signup" className="signup-btn" onClick={() => setIsOpen(false)}>Sign Up</Link>
+              </>
+            )}
           </div>
         </ul>
       </div>

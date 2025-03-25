@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import axios from 'axios';
 import { Eye, EyeOff, User, Lock, Heart, Mail, Users, Phone, UserPlus } from 'lucide-react';
 import './SignUp.css';
 
 const SignupPage = () => {
+  const navigate = useNavigate(); // Initialize navigate
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -15,6 +18,7 @@ const SignupPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [animateElements, setAnimateElements] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     // Trigger animation on load
@@ -36,23 +40,46 @@ const SignupPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     if (formData.password !== formData.confirmPassword) {
       setPasswordMatch(false);
       return;
     }
-    
+  
     setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(data.message || "Signup failed");
+      }
+  
+      // Store token and log in user automatically
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userEmail", formData.email);
+  
+      // On successful signup, navigate to home page
+      navigate("/");
+      window.location.reload(); // Optional: Refresh to update navbar
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
       setIsLoading(false);
-      console.log('Signup submitted:', formData);
-      // Add your actual signup logic here
-    }, 1500);
+    }
   };
+
+    
 
   return (
     <div className="signup-container">
