@@ -11,6 +11,9 @@ const LoginPage = () => {
   const [animateElements, setAnimateElements] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [enteredOtp, setEnteredOtp] = useState("");
 
   useEffect(() => {
     // Trigger animation on load
@@ -20,26 +23,45 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
-  
+    setError("");
+
     try {
       const response = await fetch("http://localhost:5000/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-  
+
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Login failed");
-  
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("userEmail", email); // Store user email
-      navigate("/"); // Redirect after login
-      window.location.reload(); // Refresh to update navbar
+
+      // Send OTP email
+      const otpResponse = await fetch("http://localhost:5000/api/users/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const otpData = await otpResponse.json();
+      if (!otpResponse.ok) throw new Error(otpData.message || "OTP failed");
+
+      setOtp(otpData.otp); // Store OTP received from backend
+      setOtpSent(true); // Show OTP input modal
     } catch (err) {
       setError(err.message);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const verifyOtp = async () => {
+    if (enteredOtp === otp) {
+      localStorage.setItem("token", "userToken");
+      localStorage.setItem("userEmail", email);
+      navigate("/");
+      window.location.reload();
+    } else {
+      setError("Invalid OTP. Please try again.");
     }
   };
   
@@ -118,6 +140,22 @@ const LoginPage = () => {
             </button>
             <div className="focus-indicator"></div>
           </div>
+
+          {/* OTP Popup */}
+          {otpSent && (
+            <div className="otp-modal">
+              <div className="otp-box">
+                <h2>Enter OTP</h2>
+                <input
+                  type="text"
+                  value={enteredOtp}
+                  onChange={(e) => setEnteredOtp(e.target.value)}
+                  placeholder="Enter OTP"
+                />
+                <button onClick={verifyOtp}>Verify OTP</button>
+              </div>
+            </div>
+          )}
 
           <div className="form-options">
             <div className="remember-me">
