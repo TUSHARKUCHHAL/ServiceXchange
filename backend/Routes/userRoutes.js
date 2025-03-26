@@ -5,6 +5,9 @@ const User = require("../models/User");
 const nodemailer = require("nodemailer");
 const router = express.Router();
 const sendOtpEmail = require("../models/sendOTP");
+const { OAuth2Client } = require("google-auth-library")
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
+const client = new OAuth2Client(GOOGLE_CLIENT_ID)
 
 // Register User
 router.post("/register", async (req, res) => {
@@ -26,6 +29,37 @@ router.post("/register", async (req, res) => {
       res.status(500).json({ message: "Internal Server Error" });
     }
   });
+
+  // 📌 Google Auth Route
+router.post("/google", async (req, res) => {
+  try {
+    const { token } = req.body
+    const ticket = await client.verifyIdToken({ idToken: token, audience: GOOGLE_CLIENT_ID })
+    const { sub: googleId, name, email, picture } = ticket.getPayload()
+
+    let user = await User.findOne({ email })
+    if (!user) {
+      user = new User({
+        name,
+        email,
+        phone_number: "",
+        googleId,
+        password: "",
+        gender: "",
+        dob: "",
+        profile_picture_url: picture,
+        is_verified: true,
+      })
+      await user.save()
+    }
+
+    const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" })
+    res.json({ message: "Logged in successfully", token: jwtToken })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: "Google login failed" })
+  }
+})
 
 // Login User
 router.post("/login", async (req, res) => {
@@ -111,15 +145,18 @@ router.post("/verify-otp", async (req, res) => {
   }
 });
 
-// Protected Route Example
+// 📌 Profile Route
 router.get("/profile", verifyToken, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
-    res.json(user);
+    console.log("Decoded User in Profile Route:", req.user) 
+    const user = await User.findById(req.user.id).select("-password")
+    if (!user) return res.status(404).json({ error: "User not found" })
+    res.json({ user: user })
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error(error)
+    res.status(500).json({ error: "Server error" })
   }
-});
+})
 
 // Middleware to verify JWT token
 function verifyToken(req, res, next) {
@@ -134,5 +171,10 @@ function verifyToken(req, res, next) {
     res.status(400).json({ message: "Invalid Token" });
   }
 }
+
+// 📌 Logout Route
+router.post("/logout", (req, res) => {
+  res.json({ message: "Logged out successfully" }) 
+})
 
 module.exports = router;

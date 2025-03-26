@@ -3,7 +3,6 @@ import Home from './Pages/Home/Home';
 import NGODashboard from './Pages/NGODashboard/NGODashboard';
 import Footer from "./Components/Footer";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { ClerkProvider } from '@clerk/clerk-react';
 import Navbar from './Components/Navbar'; 
 import Login from './Pages/Login/Login';
 import Signup from './Pages/SignUp/SignUp';
@@ -20,12 +19,13 @@ import NeedBlood from './Pages/Hospital/NeedBlood';
 import DonateBlood from './Pages/Hospital/DonateBlood';
 import TermsOfService from './Utils/TermsOfService/TermsOfService';
 import PrivacyPolicy from './Utils/PrivacyPolicy/PrivacyPolicy';
+import ForgotPassword from './Pages/Login/ForgotPassword';
+import ResetPassword from './Pages/Login/ResetPassword';
 
 const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY; 
 
 const App = () => {
   return (
-    <ClerkProvider publishableKey={clerkPubKey}>
       <Router>
         <Navbar />
         <Routes>
@@ -37,6 +37,8 @@ const App = () => {
           <Route path="/About" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/hospital" element={<Hospital />} />
           <Route path="/hospital/need-blood" element={<NeedBlood />} />
           <Route path="/hospital/donate-blood" element={<DonateBlood />} />
@@ -49,7 +51,6 @@ const App = () => {
         </Routes>
         <Footer />
       </Router>
-    </ClerkProvider>
   );
 };
 

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate, useLocation } from 'react-router-dom'; // Import useNavigate
 import axios from 'axios';
 import { Eye, EyeOff, User, Lock, Heart, Mail, Users, Phone, UserPlus } from 'lucide-react';
 import './SignUp.css';
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 const SignupPage = () => {
   const navigate = useNavigate(); // Initialize navigate
@@ -18,6 +19,7 @@ const SignupPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [animateElements, setAnimateElements] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(true);
+  const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -40,6 +42,20 @@ const SignupPage = () => {
     }));
   };
 
+
+  const handleGoogleLogin = async (response) => {
+    const token = response.credential;  // Make sure this is correct!
+    
+    const res = await fetch("http://localhost:5000/api/users/google", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    });
+  
+    const data = await res.json();
+    console.log(data);
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -266,18 +282,23 @@ const SignupPage = () => {
           </div>
 
           <div className="social-buttons">
-            <button className="social-button">
-              <img src="/api/placeholder/20/20" alt="Google" className="social-icon" />
-              Google
-            </button>
-            <button className="social-button">
+          <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+                <GoogleLogin 
+                  onSuccess={handleGoogleLogin} 
+                  onError={() => setError("Google Login Failed")}
+                  theme="outline"
+                  size="large"
+                  shape="pill"
+                />
+              </GoogleOAuthProvider>
+            {/* <button className="social-button">
               <img src="/api/placeholder/20/20" alt="Facebook" className="social-icon" />
               Facebook
             </button>
             <button className="social-button">
               <img src="/api/placeholder/20/20" alt="Apple" className="social-icon" />
               Apple
-            </button>
+            </button> */}
           </div>
         </div>
 

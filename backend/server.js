@@ -1,11 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+
+
 require("dotenv").config();
 
 const app = express();
 app.use(express.json()); // Make sure to parse JSON requests
-app.use(cors());
+app.use(cors({ origin: "http://localhost:3000" }));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
@@ -17,6 +19,9 @@ mongoose.connect(process.env.MONGO_URI, {
 // Routes
 const userRoutes = require("./Routes/userRoutes");
 app.use("/api/users", userRoutes);
+
+const auth = require("./Routes/auth");
+app.use("/api/users", auth);
 
 // Server Listening
 const PORT = process.env.PORT || 5000;

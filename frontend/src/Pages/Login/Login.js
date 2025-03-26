@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Eye, EyeOff, User, Lock, Heart, Users, Phone } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Login.css';
+import axios from 'axios';
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -10,10 +12,13 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [animateElements, setAnimateElements] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState("")
+  const location = useLocation()
   const navigate = useNavigate();
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
   const [enteredOtp, setEnteredOtp] = useState("");
+  const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 // Add this method to handle cancelling OTP verification
   const handleCancelOtp = () => {
@@ -21,6 +26,10 @@ const LoginPage = () => {
    setEnteredOtp("");
    setOtp("");
   };
+
+  useEffect(() => {
+    if (!GOOGLE_CLIENT_ID) console.error("GOOGLE_CLIENT_ID is missing in .env file")
+  }, [])
 
   useEffect(() => {
     // Trigger animation on load
@@ -83,6 +92,19 @@ const LoginPage = () => {
     } catch (err) {
       setError("Invalid OTP. Please try again.");
     }
+  };
+
+  const handleGoogleLogin = async (response) => {
+    const token = response.credential;  // Make sure this is correct!
+    
+    const res = await fetch("http://localhost:5000/api/users/google", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    });
+  
+    const data = await res.json();
+    console.log(data);
   };
   
   
@@ -206,7 +228,7 @@ const LoginPage = () => {
             </div>
 
             <div className="forgot-password">
-              <a href="#" className="text-link">
+              <a href="/forgot-password" className="text-link">
                 Forgot your password?
               </a>
             </div>
@@ -246,18 +268,23 @@ const LoginPage = () => {
           </div>
 
           <div className="social-buttons">
-            <button className="social-button">
-              <img src="/api/placeholder/20/20" alt="Google" className="social-icon" />
-              Google
-            </button>
-            <button className="social-button">
+              <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+                <GoogleLogin 
+                  onSuccess={handleGoogleLogin} 
+                  onError={() => setError("Google Login Failed")}
+                  theme="outline"
+                  size="large"
+                  shape="pill"
+                />
+              </GoogleOAuthProvider>
+            {/* <button className="social-button">
               <img src="/api/placeholder/20/20" alt="Facebook" className="social-icon" />
               Facebook
             </button>
             <button className="social-button">
               <img src="/api/placeholder/20/20" alt="Apple" className="social-icon" />
               Apple
-            </button>
+            </button> */}
           </div>
         </div>
 
