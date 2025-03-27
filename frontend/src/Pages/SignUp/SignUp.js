@@ -19,6 +19,9 @@ const SignupPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [animateElements, setAnimateElements] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(true);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [enteredOtp, setEnteredOtp] = useState("");
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
   const [error, setError] = useState(null);
 
@@ -58,43 +61,71 @@ const SignupPage = () => {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    if (formData.password !== formData.confirmPassword) {
-      setPasswordMatch(false);
-      return;
-    }
-  
     setIsLoading(true);
-  
+    setError("");
+
     try {
+      // Step 1: Register User
       const response = await fetch("http://localhost:5000/api/users/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-  
+
       const data = await response.json();
-  
-      if (!response.ok) {
-        throw new Error(data.message || "Signup failed");
-      }
-  
-      // Store token and log in user automatically
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("userEmail", formData.email);
-  
-      // On successful signup, navigate to home page
-      navigate("/");
-      window.location.reload(); // Optional: Refresh to update navbar
-    } catch (error) {
-      console.error("Error:", error);
+      if (!response.ok) throw new Error(data.message || "Signup failed");
+
+      // Step 2: Send OTP
+      const otpResponse = await fetch("http://localhost:5000/api/users/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email }),
+      });
+
+      const otpData = await otpResponse.json();
+      if (!otpResponse.ok) throw new Error(otpData.message || "OTP sending failed");
+
+      setOtp(otpData.otp); // Store OTP
+      setOtpSent(true); // Show OTP input field
+    } catch (err) {
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const verifyOtp = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("http://localhost:5000/api/users/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email, otp: enteredOtp }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "OTP verification failed");
+
+      // If OTP is correct, store token and complete signup
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userEmail", formData.email);
+      navigate("/");
+      window.location.reload();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCancelOtp = () => {
+    setOtpSent(false);
+    setEnteredOtp("");
+    setOtp("");
+   };
     
 
   return (
@@ -247,6 +278,36 @@ const SignupPage = () => {
               I agree to the <a href="/terms-of-service" className="text-link">Terms of Service</a> and <a href="/privacy-policy" className="text-link">Privacy Policy</a>
             </label>
           </div>
+
+          {/* OTP Popup */}
+          {otpSent && (
+            <div className="otp-modal">
+              <div className="otp-box">
+                <h2>Enter OTP</h2>
+                <input
+                  type="text"
+                  value={enteredOtp}
+                  onChange={(e) => setEnteredOtp(e.target.value)}
+                  placeholder="Enter OTP"
+                />
+                <div className="otp-buttons">
+                  <button 
+                    className="verify-button" 
+                    onClick={(e) => verifyOtp(e)}
+                  >
+                    <span className="button-ripple"></span>
+                    Verify OTP
+                  </button>
+                  <button 
+                    className="cancel-button" 
+                    onClick={handleCancelOtp}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="submit-container">
             <button
