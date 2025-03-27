@@ -15,7 +15,9 @@ const UserSchema = new mongoose.Schema({
       latitude: { type: Number },
       longitude: { type: Number },
     },
-    password: { type: String, required: false }
+    password: { type: String, required: false },
+    otp: { type: String, required: false },
+    otpExpires: { type: Date },
 
   }, 
   { timestamps: true }

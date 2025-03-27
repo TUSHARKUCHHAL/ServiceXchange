@@ -109,7 +109,10 @@ router.post("/send-otp", async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const otp = generateOTP();
-    user.otp = otp;
+    const salt = await bcrypt.genSalt(10);
+    const hashedotp = await bcrypt.hash(otp, salt);
+    user.otpExpires = Date.now() + 5 * 60 * 1000; // OTP expires in 5 minutes
+    user.otp = hashedotp;
     await user.save();
 
     await sendOtpEmail(email, otp);
@@ -120,38 +123,53 @@ router.post("/send-otp", async (req, res) => {
   }
 });
 
-router.post("/send-otp", async (req, res) => {
-  const { email } = req.body;
+// router.post("/send-otp", async (req, res) => {
+//   const { email } = req.body;
 
-  if (!email) {
-    return res.status(400).json({ message: "Email is required" });
-  }
+//   if (!email) {
+//     return res.status(400).json({ message: "Email is required" });
+//   }
 
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+//   const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-  try {
-    // Implement your sendEmail function to send OTP via email
-    console.log(`OTP for ${email}: ${otp}`);
-    res.json({ otp });
-  } catch (error) {
-    res.status(500).json({ message: "Failed to send OTP" });
-  }
-});
+//   try {
+//     // Implement your sendEmail function to send OTP via email
+//     console.log(`OTP for ${email}: ${otp}`);
+//     res.json({ otp });
+//   } catch (error) {
+//     res.status(500).json({ message: "Failed to send OTP" });
+//   }
+// });
 
 router.post("/verify-otp", async (req, res) => {
-  const { email, otp } = req.body;
+  const { email, otp } = req.body; // Extract email & OTP
 
   try {
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    if (user.otp !== otp) return res.status(400).json({ message: "Invalid OTP" });
+    // Check if OTP has expired
+    if (!user.otpExpires || user.otpExpires < Date.now()) {
+      return res.status(400).json({ message: "OTP has expired. Request a new one." });
+    }
 
-    user.otp = null; // Clear OTP after verification
+    // Verify OTP using bcrypt (OTP is stored hashed)
+    const isMatch = await bcrypt.compare(otp, user.otp);
+    if (!isMatch) return res.status(400).json({ message: "Invalid OTP" });
+
+    // Clear OTP after verification
+    user.otp = undefined;
+    user.otpExpires = undefined;
     await user.save();
 
-    res.json({ message: "OTP verified successfully" });
+    // Generate JWT token after successful OTP verification
+    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, {
+      expiresIn: "1h", // Token expires in 1 hour
+    });
+
+    res.json({ message: "OTP verified successfully", token });
   } catch (error) {
+    console.error("Error verifying OTP:", error);
     res.status(500).json({ message: "Error verifying OTP" });
   }
 });

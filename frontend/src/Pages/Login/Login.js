@@ -77,22 +77,24 @@ const LoginPage = () => {
       const response = await fetch("http://localhost:5000/api/users/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, enteredOtp }), // Send email & OTP
+        body: JSON.stringify({ email, otp: enteredOtp }), // Fixed mismatch (enteredOtp → otp)
       });
   
       const data = await response.json();
   
       if (!response.ok) throw new Error(data.message || "OTP verification failed");
   
-      // ✅ If OTP is correct, redirect user to homepage
-      localStorage.setItem("token", "userToken"); // Store token (or get from backend)
+      // ✅ If OTP is correct, store the real token
+      localStorage.setItem("token", data.token); // Store JWT token from backend
       localStorage.setItem("userEmail", email);
-      navigate("/");
-      window.location.reload();
+  
+      navigate("/"); // Redirect to homepage
+      window.location.reload(); // Refresh session
     } catch (err) {
-      setError("Invalid OTP. Please try again.");
+      setError(err.message); // Show actual error message
     }
   };
+  
 
   const handleGoogleLogin = async (response) => {
     const token = response.credential;  // Make sure this is correct!
