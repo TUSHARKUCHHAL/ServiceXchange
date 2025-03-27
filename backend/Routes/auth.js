@@ -59,23 +59,30 @@ router.post("/forgot-password", async (req, res) => {
 // Step 2: Reset Password
 router.post("/reset-password/:token", async (req, res) => {
   try {
-    const { token } = req.params
-    const { newPassword } = req.body
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    const { token } = req.params;
+    const { newPassword } = req.body;
 
-    const user = await User.findById(decoded.id)
-    if (!user) return res.status(404).json({ message: "Invalid or expired token" })
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Hash new password
-    user.password = await (newPassword)
-    user.resetPasswordToken = undefined
-    user.resetPasswordExpires = undefined
-    await user.save()
+    const user = await User.findById(decoded.id);
+    if (!user) return res.status(404).json({ message: "Invalid or expired token" });
 
-    res.json({ message: "Password reset successful" })
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+
+    // Remove reset token fields
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    await user.save();
+
+    res.json({ message: "Password reset successful" });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error })
+    console.error("Password Reset Error:", error);
+    res.status(500).json({ message: "Server error", error });
   }
-})
+});
 
 module.exports = router

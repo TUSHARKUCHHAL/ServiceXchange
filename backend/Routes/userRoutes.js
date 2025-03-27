@@ -12,23 +12,34 @@ const client = new OAuth2Client(GOOGLE_CLIENT_ID)
 // Register User
 router.post("/register", async (req, res) => {
     try {
-      console.log("Received Data:", req.body); // Debugging: See what data is received
-  
-      const { firstName, lastName, email, password } = req.body;
-  
-      if (!firstName || !lastName || !email || !password) {
-        return res.status(400).json({ message: "All fields are required" });
-      }
-  
-      const newUser = new User({ firstName, lastName, email, password });
-      await newUser.save();
-  
-      res.status(201).json({ message: "User registered successfully" });
+        console.log("Received Data:", req.body); // Debugging: See what data is received
+
+        const { firstName, lastName, email, password } = req.body;
+
+        if (!firstName || !lastName || !email || !password) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
+        // Hash the password before saving it
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const newUser = new User({ 
+            firstName, 
+            lastName, 
+            email, 
+            password: hashedPassword // Save the hashed password
+        });
+
+        await newUser.save();
+
+        res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
-      console.error("Signup Error:", error);
-      res.status(500).json({ message: "Internal Server Error" });
+        console.error("Signup Error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
-  });
+});
+
 
   // 📌 Google Auth Route
 router.post("/google", async (req, res) => {
