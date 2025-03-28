@@ -7,6 +7,79 @@ const { generateOTP, sendOTPEmail } = require('../utils/otpGenerator');
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    // If password is set (local authentication), compare passwords
+    if (user.password) {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(401).json({ message: 'Invalid email or password' });
+      }
+    } else {
+      // If no password is set, it might mean the user registered via Google
+      return res.status(401).json({ message: 'Please login with Google' });
+    }
+
+    // Generate JWT token
+    const token = generateToken(user);
+
+    res.status(200).json({ 
+      message: 'Login successful', 
+      token,
+      user: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email
+      }
+    });
+  } catch (error) {
+    console.error('Login Error:', error);
+    res.status(500).json({ 
+      message: 'Server error during login',
+      error: error.message 
+    });
+  }
+};
+
+const googleLogin = async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    // Verify Google ID token
+    const ticket = await googleClient.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID
+    });
+    
+    const payload = ticket.getPayload();
+    const { email, given_name, family_name } = payload;
+
+    // Check if user exists in database
+    let user = await User.findOne({ email });
+
+    // If user doesn't exist, create a new user
+    if (!user) {
+      return res.status(404).json({ message: 'No account found for this Google email. Please sign up first.' });;
+    }
+
+  } catch (error) {
+    console.error('Google Login Error:', error);
+    res.status(500).json({ 
+      message: 'Google login failed',
+      error: error.message 
+    });
+  }
+};
+
 // Existing send OTP function remains the same
 const sendOTP = async (req, res) => {
   try {
@@ -215,5 +288,7 @@ const googleSignup = async (req, res) => {
     sendOTP,
     verifyOTP,
     googleSignup,
-    verifyGoogleOTP
+    verifyGoogleOTP,
+    login,
+    googleLogin
   };

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Eye, EyeOff, User, Lock, Heart, Users, Phone } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+
+import axios from 'axios';
+import { GoogleLogin } from '@react-oauth/google';
 import './Login.css';
 
 const LoginPage = () => {
@@ -15,13 +18,6 @@ const LoginPage = () => {
   const [otp, setOtp] = useState("");
   const [enteredOtp, setEnteredOtp] = useState("");
 
-// Add this method to handle cancelling OTP verification
-  const handleCancelOtp = () => {
-   setOtpSent(false);
-   setEnteredOtp("");
-   setOtp("");
-  };
-
   useEffect(() => {
     // Trigger animation on load
     setTimeout(() => setAnimateElements(true), 500);
@@ -30,60 +26,129 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
-
+    setError(null);
+  
+    // Basic email validation
+    if (!email || !email.includes('@')) {
+      setError('Please enter a valid email address');
+      setIsLoading(false);
+      return;
+    }
+  
+    // Basic password validation
+    // if (!password || password.length < 6) {
+    //   setError('Password must be at least 6 characters long');
+    //   setIsLoading(false);
+    //   return;
+    // }
+  
     try {
-      const response = await fetch("http://localhost:5000/api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const response = await fetch('http://localhost:5000/api/auth/login', {  // Ensure correct backend port
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password })
       });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Login failed");
-
-      // Send OTP email
-      const otpResponse = await fetch("http://localhost:5000/api/users/send-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-
-      const otpData = await otpResponse.json();
-      if (!otpResponse.ok) throw new Error(otpData.message || "OTP failed");
-
-      setOtp(otpData.otp); // Store OTP received from backend
-      setOtpSent(true); // Show OTP input modal
+  
+      // Log response details for debugging
+      console.log(`Status: ${response.status}, Headers:`, response.headers);
+  
+      // Read response text
+      const text = await response.text();
+      console.log('Raw Response:', text);
+  
+      let data;
+      try {
+        data = JSON.parse(text); // Attempt to parse JSON
+      } catch (jsonError) {
+        throw new Error('Server returned invalid JSON. Response might be an error page.');
+      }
+  
+      // Handle response errors
+      if (!response.ok) {
+        throw new Error(data.message || `Error: ${response.status} - ${response.statusText}`);
+      }
+  
+      // Validate expected data fields
+      if (!data.token || !data.user) {
+        throw new Error('Invalid server response: Missing token or user data.');
+      }
+  
+      // Store token and user info
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+  
+      // Redirect to home
+      navigate('/');
     } catch (err) {
-      setError(err.message);
+      console.error('Login Error:', err);
+      setError(err.message || 'An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
-
-  const verifyOtp = async (e) => {
-    e.preventDefault(); // Prevent page reload
+  
+  
+  const handleGoogleLogin = async (credentialResponse) => {
+    // Validate credential response
+    if (!credentialResponse || !credentialResponse.credential) {
+      setError('Google authentication failed. Please try again.');
+      return;
+    }
+  
+    setIsLoading(true);
+    setError(null);
   
     try {
-      const response = await fetch("http://localhost:5000/api/users/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, enteredOtp }), // Send email & OTP
+      const response = await fetch('http://localhost:5000/api/auth/google-login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token: credentialResponse.credential }),
       });
   
-      const data = await response.json();
+      // Log raw response for debugging
+      const text = await response.text();
+      console.log('Raw Response:', text);
   
-      if (!response.ok) throw new Error(data.message || "OTP verification failed");
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (jsonError) {
+        throw new Error('Invalid JSON response from server');
+      }
   
-      // ✅ If OTP is correct, redirect user to homepage
-      localStorage.setItem("token", "userToken"); // Store token (or get from backend)
-      localStorage.setItem("userEmail", email);
-      navigate("/");
-      window.location.reload();
+      // If the user is not found in the database
+      if (response.status === 404) {
+        throw new Error('No account found for this Google email. Please sign up first.');
+      }
+  
+      // Handle other response errors
+      if (!response.ok) {
+        throw new Error(data.message || 'Google login failed');
+      }
+  
+      // Ensure valid token and user data
+      if (!data.token || !data.user) {
+        throw new Error('Invalid server response');
+      }
+  
+      // Store token and user info in localStorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+  
+      // Redirect to dashboard or home page
+      navigate('/');
     } catch (err) {
-      setError("Invalid OTP. Please try again.");
+      console.error('Google Login Error:', err);
+      setError(err.message || 'Google login failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
+  
   
   
 
@@ -162,35 +227,7 @@ const LoginPage = () => {
             <div className="focus-indicator"></div>
           </div>
 
-          {/* OTP Popup */}
-          {otpSent && (
-            <div className="otp-modal">
-              <div className="otp-box">
-                <h2>Enter OTP</h2>
-                <input
-                  type="text"
-                  value={enteredOtp}
-                  onChange={(e) => setEnteredOtp(e.target.value)}
-                  placeholder="Enter OTP"
-                />
-                <div className="otp-buttons">
-                  <button 
-                    className="verify-button" 
-                    onClick={(e) => verifyOtp(e)}
-                  >
-                    <span className="button-ripple"></span>
-                    Verify OTP
-                  </button>
-                  <button 
-                    className="cancel-button" 
-                    onClick={handleCancelOtp}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+          
 
           <div className="form-options">
             <div className="remember-me">
@@ -246,18 +283,15 @@ const LoginPage = () => {
           </div>
 
           <div className="social-buttons">
-            <button className="social-button">
-              <img src="/api/placeholder/20/20" alt="Google" className="social-icon" />
-              Google
-            </button>
-            <button className="social-button">
-              <img src="/api/placeholder/20/20" alt="Facebook" className="social-icon" />
-              Facebook
-            </button>
-            <button className="social-button">
-              <img src="/api/placeholder/20/20" alt="Apple" className="social-icon" />
-              Apple
-            </button>
+            <GoogleLogin
+              onSuccess={handleGoogleLogin}
+              onError={() => {
+                setError('Google login failed');
+              }}
+              text="signin_with"
+              shape="rectangular"
+              theme="outline"
+            />
           </div>
         </div>
 

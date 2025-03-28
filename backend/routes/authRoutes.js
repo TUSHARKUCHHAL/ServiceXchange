@@ -2,18 +2,25 @@
 const express = require('express');
 const authController = require('../controllers/authController');
 const router = express.Router();
-const { 
-  sendOTP, 
-  verifyOTP 
+const {
+    sendOTP,
+    verifyOTP,
+    googleSignup,
+    verifyGoogleOTP,
+    login,
+    googleLogin
 } = require('../controllers/authController');
 
 // OTP Routes
 router.post('/send-otp', sendOTP);
 router.post('/verify-otp', verifyOTP);
-// New Google routes
-router.post('/google-signup', authController.googleSignup);
-router.post('/verify-google-otp', authController.verifyGoogleOTP);
 
+// Google Routes
+router.post('/google-signup', googleSignup);
+router.post('/verify-google-otp', verifyGoogleOTP);
 
+// Login Routes
+router.post('/login', login);
+router.post('/google-login', googleLogin);
 
 module.exports = router;
