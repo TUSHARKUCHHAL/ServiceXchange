@@ -4,8 +4,8 @@ const User = require('../models/User');
 const TempUser = require('../models/TempUser');
 const generateToken = require('../utils/generateToken');
 const { generateOTP, sendOTPEmail } = require('../utils/otpGenerator');
-
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 
 // Existing send OTP function remains the same
 const sendOTP = async (req, res) => {
@@ -100,140 +100,120 @@ const verifyOTP = async (req, res) => {
   }
 };
 
-// New Google Sign-up Controller
 const googleSignup = async (req, res) => {
-  try {
-    const { token } = req.body;
-
-    // Verify Google token
-    const ticket = await googleClient.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID
-    });
-    
-    const payload = ticket.getPayload();
-    const { email, given_name, family_name, picture } = payload;
-
-    // Check if user already exists
-    let user = await User.findOne({ email });
-
-    if (user) {
-      // User exists, generate OTP for verification
+    try {
+      const { token } = req.body;
+  
+      const ticket = await googleClient.verifyIdToken({
+        idToken: token,
+        audience: process.env.GOOGLE_CLIENT_ID
+      });
+      
+      const payload = ticket.getPayload();
+      const { email, given_name, family_name } = payload;
+  
+      // Delete existing temp user if any
+      await TempUser.deleteOne({ email });
+  
+      // Generate new OTP
       const otp = generateOTP();
-      const otpExpiration = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-
-      // Create or update temp user for existing user
-      await TempUser.findOneAndDelete({ email });
+      const otpExpiration = new Date(Date.now() + 10 * 60 * 1000);
+  
+      // Create new temp user
       const tempUser = new TempUser({
-        firstName: given_name,
-        lastName: family_name,
+        firstName: given_name || 'User',
+        lastName: family_name || '',
         email,
-        password: null, // No password for Google users
+        authMethod: 'google',
         otp: {
           code: otp,
           expiresAt: otpExpiration
         }
       });
+  
       await tempUser.save();
-
-      // Send OTP via email
       await sendOTPEmail(email, otp);
-
-      return res.status(200).json({ 
-        message: 'OTP sent for verification', 
+  
+      res.status(200).json({ 
         email,
-        isNewUser: false 
+        firstName: given_name || 'User',
+        lastName: family_name || ''
+      });
+  
+    } catch (error) {
+      console.error('Google Auth Error:', error);
+      
+      if (error.code === 11000) {
+        return res.status(400).json({
+          message: 'OTP already sent. Please check your email or wait before requesting another.'
+        });
+      }
+      
+      res.status(500).json({ 
+        message: 'Google authentication failed',
+        error: error.message 
       });
     }
-
-    // Create new user
-    const otp = generateOTP();
-    const otpExpiration = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-
-    // Create temp user for new user
-    const tempUser = new TempUser({
-      firstName: given_name,
-      lastName: family_name,
-      email,
-      password: null, // No password for Google users
-      otp: {
-        code: otp,
-        expiresAt: otpExpiration
+  };
+  
+  const verifyGoogleOTP = async (req, res) => {
+    try {
+      const { email, otp } = req.body;
+  
+      // Find temp user
+      const tempUser = await TempUser.findOne({ 
+        email,
+        'otp.code': otp,
+        'otp.expiresAt': { $gt: new Date() }
+      });
+  
+      if (!tempUser) {
+        return res.status(400).json({ message: 'Invalid or expired OTP' });
       }
-    });
-    await tempUser.save();
-
-    // Send OTP via email
-    await sendOTPEmail(email, otp);
-
-    res.status(200).json({ 
-      message: 'OTP sent for verification', 
-      email,
-      isNewUser: true 
-    });
-
-  } catch (error) {
-    console.error('Google Sign-up Error:', error);
-    res.status(500).json({ message: 'Google sign-up failed' });
-  }
-};
-
-// New Google OTP Verification
-const verifyGoogleOTP = async (req, res) => {
-  try {
-    const { email, otp } = req.body;
-
-    // Find temp user
-    const tempUser = await TempUser.findOne({ 
-      email,
-      'otp.code': otp,
-      'otp.expiresAt': { $gt: new Date() }
-    });
-
-    if (!tempUser) {
-      return res.status(400).json({ message: 'Invalid or expired OTP' });
-    }
-
-    // Check if user already exists (for existing users)
-    let user = await User.findOne({ email });
-
-    if (!user) {
-      // Create new user for Google signup
-      user = new User({
+  
+      // Create/update user without password
+      const userData = {
         firstName: tempUser.firstName,
-        lastName: tempUser.lastName,
+        lastName: tempUser.lastName || '', // Handle missing last name
         email: tempUser.email,
         authMethod: 'google',
         isVerified: true
+      };
+  
+      const user = await User.findOneAndUpdate(
+        { email },
+        userData,
+        { upsert: true, new: true, setDefaultsOnInsert: true }
+      );
+  
+      // Delete temp user
+      await TempUser.deleteOne({ email });
+  
+      // Generate JWT token
+      const token = generateToken(user);
+  
+      res.status(200).json({ 
+        message: 'Google verification successful', 
+        token,
+        user: {
+          id: user._id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email
+        }
       });
-      await user.save();
+    } catch (error) {
+      console.error('Google OTP Verification Error:', error);
+      res.status(500).json({ 
+        message: 'Google OTP verification failed',
+        error: error.message 
+      });
     }
-
-    // Delete temp user
-    await TempUser.deleteOne({ email });
-
-    // Generate JWT token
-    const token = generateToken(user);
-
-    res.status(200).json({ 
-      message: 'Verification successful', 
-      token,
-      user: {
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email
-      }
-    });
-  } catch (error) {
-    console.error('Google OTP Verification Error:', error);
-    res.status(500).json({ message: 'OTP verification failed' });
-  }
-};
-
-module.exports = {
-  sendOTP,
-  verifyOTP,
-  googleSignup,
-  verifyGoogleOTP
-};
+  };
+  
+  module.exports = {
+    sendOTP,
+    verifyOTP,
+    googleSignup,
+    verifyGoogleOTP
+  };

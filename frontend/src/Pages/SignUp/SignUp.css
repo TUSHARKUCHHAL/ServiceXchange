@@ -632,6 +632,17 @@
   }
 }
 
+.google-signup {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* Adjust social buttons section if needed */
+.social-signup {
+  margin-top: 10px;
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 640px) {

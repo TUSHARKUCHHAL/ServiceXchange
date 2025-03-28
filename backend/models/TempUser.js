@@ -8,8 +8,8 @@ const tempUserSchema = new mongoose.Schema({
   },
   lastName: { 
     type: String, 
-    required: true,
-    trim: true
+    trim: true,
+    default: ''
   },
   email: { 
     type: String, 
@@ -19,8 +19,7 @@ const tempUserSchema = new mongoose.Schema({
     trim: true
   },
   password: { 
-    type: String, 
-    required: true 
+    type: String
   },
   otp: {
     code: { 

@@ -7,9 +7,9 @@ const userSchema = new mongoose.Schema({
     trim: true
   },
   lastName: { 
-    type: String, 
-    required: true,
-    trim: true
+    type: String,
+    trim: true,
+    default: ''
   },
   email: { 
     type: String, 
@@ -19,8 +19,7 @@ const userSchema = new mongoose.Schema({
     trim: true
   },
   password: { 
-    type: String, 
-    required: true 
+    type: String
   },
   createdAt: { 
     type: Date, 

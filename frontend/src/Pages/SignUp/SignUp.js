@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, User, Lock, Heart, Mail, Users, Phone, UserPlus, X } from 'lucide-react';
+import { GoogleLogin } from '@react-oauth/google';
+import { useAuth } from '../../context/AuthContext';
 import './SignUp.css';
 
 const SignupPage = () => {
@@ -22,6 +24,7 @@ const SignupPage = () => {
   const [isOtpPopupOpen, setIsOtpPopupOpen] = useState(false);
   const [otpTimer, setOtpTimer] = useState(600); // 10 minutes
   const [step, setStep] = useState('signup'); // Track signup steps
+  const { login } = useAuth();
 
   useEffect(() => {
     setTimeout(() => setAnimateElements(true), 500);
@@ -94,35 +97,45 @@ const SignupPage = () => {
 
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
-
     setIsLoading(true);
     setError(null);
-
+  
     try {
-      const response = await fetch("http://localhost:5000/api/auth/verify-otp", {
+      const endpoint = formData.isGoogleAuth 
+        ? "/api/auth/verify-google-otp" 
+        : "/api/auth/verify-otp";
+  
+      const response = await fetch(`http://localhost:5000${endpoint}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: formData.email,
-          otp: formData.otp
+          otp: formData.otp,
+          ...(formData.isGoogleAuth ? {} : {
+            firstName: formData.firstName,
+            lastName: formData.lastName
+          })
         }),
       });
-
+  
       const data = await response.json();
-
+  
       if (!response.ok) {
         throw new Error(data.message || "OTP verification failed");
       }
-
-      // Store token and user info
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("userEmail", formData.email);
-
+  
+      // Call the login function from AuthContext
+      login({
+        email: data.user.email,
+        firstName: data.user.firstName,
+        lastName: data.user.lastName,
+        token: data.token
+      });
+  
       // Navigate to home
       navigate("/");
-      window.location.reload();
     } catch (error) {
       setError(error.message);
       console.error("Error:", error);
@@ -135,6 +148,60 @@ const SignupPage = () => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setIsLoading(true);
+    setError(null);
+  
+    try {
+      console.log('Google credential received:', credentialResponse); // Debug log
+      
+      if (!credentialResponse.credential) {
+        throw new Error('No credential received from Google');
+      }
+  
+      const response = await fetch("http://localhost:5000/api/auth/google-signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: credentialResponse.credential
+        }),
+      });
+  
+      const data = await response.json();
+
+      console.log('Server response:', data); // Debug log
+  
+      if (!response.ok) {
+        throw new Error(data.message || "Google authentication failed");
+      }
+
+
+  
+      setFormData(prev => ({
+        ...prev,
+        email: data.email,
+        firstName: data.firstName || 'User',
+        lastName: data.lastName || '',
+        isGoogleAuth: true
+      }));
+  
+      setIsOtpPopupOpen(true);
+      setOtpTimer(600);
+      setStep('otp');
+    } catch (error) {
+      console.error('Full Google auth error:', error);
+      setError(error.message || 'Google authentication failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const handleGoogleError = () => {
+    setError('Google sign in failed');
   };
 
   const renderSignupForm = () => (
@@ -387,6 +454,16 @@ const SignupPage = () => {
         <div className="social-signup">
           <div className="divider">
             <span className="divider-text">Or sign up with</span>
+          </div>
+
+          <div className="google-signup">
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleError}
+              useOneTap
+              text="signup_with"
+              size="large"
+            />
           </div>
 
           <div className="social-buttons">
