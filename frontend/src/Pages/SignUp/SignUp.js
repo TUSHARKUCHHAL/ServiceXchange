@@ -1,41 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'; // Import useNavigate
-import axios from 'axios';
-import { Eye, EyeOff, User, Lock, Heart, Mail, Users, Phone, UserPlus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Eye, EyeOff, User, Lock, Heart, Mail, Users, Phone, UserPlus, X } from 'lucide-react';
 import './SignUp.css';
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 const SignupPage = () => {
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    otp: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [animateElements, setAnimateElements] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(true);
-  const [otpSent, setOtpSent] = useState(false);
-  const [otp, setOtp] = useState("");
-  const [enteredOtp, setEnteredOtp] = useState("");
-  const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
   const [error, setError] = useState(null);
+  const [isOtpPopupOpen, setIsOtpPopupOpen] = useState(false);
+  const [otpTimer, setOtpTimer] = useState(600); // 10 minutes
+  const [step, setStep] = useState('signup'); // Track signup steps
 
   useEffect(() => {
-    // Trigger animation on load
     setTimeout(() => setAnimateElements(true), 500);
   }, []);
 
   useEffect(() => {
-    // Check if passwords match
+    // Password match check
     if (formData.confirmPassword) {
       setPasswordMatch(formData.password === formData.confirmPassword);
     }
   }, [formData.password, formData.confirmPassword]);
+
+  // OTP Timer
+  useEffect(() => {
+    let interval;
+    if (isOtpPopupOpen && otpTimer > 0) {
+      interval = setInterval(() => {
+        setOtpTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isOtpPopupOpen, otpTimer]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,106 +53,315 @@ const SignupPage = () => {
     }));
   };
 
-
-  const handleGoogleLogin = async (response) => {
-    const token = response.credential;  // Make sure this is correct!
-    
-    const res = await fetch("http://localhost:5000/api/users/google", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token }),
-    });
-  
-    const data = await res.json();
-    console.log(data);
-  };
-  
-  const handleSubmit = async (e) => {
+  const handleSendOTP = async (e) => {
     e.preventDefault();
+
+    // Validate form
+    if (formData.password !== formData.confirmPassword) {
+      setPasswordMatch(false);
+      return;
+    }
+
     setIsLoading(true);
-    setError("");
+    setError(null);
 
     try {
-      // Step 1: Register User
-      const response = await fetch("http://localhost:5000/api/users/register", {
+      const response = await fetch("http://localhost:5000/api/auth/send-otp", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(formData),
       });
 
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Signup failed");
 
-      // Step 2: Send OTP
-      const otpResponse = await fetch("http://localhost:5000/api/users/send-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email }),
-      });
+      if (!response.ok) {
+        throw new Error(data.message || "OTP sending failed");
+      }
 
-      const otpData = await otpResponse.json();
-      if (!otpResponse.ok) throw new Error(otpData.message || "OTP sending failed");
-
-      setOtp(otpData.otp); // Store OTP
-      setOtpSent(true); // Show OTP input field
-    } catch (err) {
-      setError(err.message);
+      // Open OTP popup
+      setIsOtpPopupOpen(true);
+      setOtpTimer(600); // Reset timer
+      setStep('otp');
+    } catch (error) {
+      setError(error.message);
+      console.error("Error:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const verifyOtp = async (e) => {
+  const handleVerifyOTP = async (e) => {
     e.preventDefault();
+
     setIsLoading(true);
-    setError("");
+    setError(null);
 
     try {
-      const response = await fetch("http://localhost:5000/api/users/verify-otp", {
+      const response = await fetch("http://localhost:5000/api/auth/verify-otp", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email, otp: enteredOtp }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          otp: formData.otp
+        }),
       });
 
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "OTP verification failed");
 
-      // If OTP is correct, store token and complete signup
+      if (!response.ok) {
+        throw new Error(data.message || "OTP verification failed");
+      }
+
+      // Store token and user info
       localStorage.setItem("token", data.token);
       localStorage.setItem("userEmail", formData.email);
+
+      // Navigate to home
       navigate("/");
       window.location.reload();
-    } catch (err) {
-      setError(err.message);
+    } catch (error) {
+      setError(error.message);
+      console.error("Error:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleCancelOtp = () => {
-    setOtpSent(false);
-    setEnteredOtp("");
-    setOtp("");
-   };
-    
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  };
+
+  const renderSignupForm = () => (
+    <form className="signup-form" onSubmit={handleSendOTP}>
+      {/* Existing signup form fields */}
+      <div className="name-fields">
+        <div className="input-group">
+          <div className="input-icon">
+            <User size={20} />
+          </div>
+          <input
+            type="text"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+            required
+            className="input-field"
+            placeholder="First Name"
+          />
+        </div>
+
+        <div className="input-group">
+          <div className="input-icon">
+            <User size={20} />
+          </div>
+          <input
+            type="text"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange}
+            required
+            className="input-field"
+            placeholder="Last Name"
+          />
+        </div>
+      </div>
+
+      {/* Email input */}
+      <div className="input-group">
+        <div className="input-icon">
+          <Mail size={20} />
+        </div>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          className="input-field"
+          placeholder="Email address"
+        />
+      </div>
+
+      {/* Password inputs */}
+      <div className="input-group">
+        <div className="input-icon">
+          <Lock size={20} />
+        </div>
+        <input
+          type={showPassword ? "text" : "password"}
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+          className="input-field"
+          placeholder="Password"
+        />
+        <button
+          type="button"
+          className="password-toggle"
+          onClick={() => setShowPassword(!showPassword)}
+        >
+          {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+        </button>
+      </div>
+
+      <div className="input-group">
+        <div className="input-icon">
+          <Lock size={20} />
+        </div>
+        <input
+          type={showConfirmPassword ? "text" : "password"}
+          name="confirmPassword"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          required
+          className={`input-field ${!passwordMatch && formData.confirmPassword ? 'password-error' : ''}`}
+          placeholder="Confirm Password"
+        />
+        <button
+          type="button"
+          className="password-toggle"
+          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+        >
+          {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+        </button>
+      </div>
+      
+      {!passwordMatch && formData.confirmPassword && (
+        <div className="error-message">Passwords do not match</div>
+      )}
+
+      {/* Terms and submit */}
+      <div className="terms-check">
+        <input
+          id="terms-agreement"
+          name="terms"
+          type="checkbox"
+          required
+          className="checkbox"
+        />
+        <label htmlFor="terms-agreement" className="checkbox-label">
+          I agree to the <a href="/terms-of-service" className="text-link">Terms of Service</a> and <a href="/privacy-policy" className="text-link">Privacy Policy</a>
+        </label>
+      </div>
+
+      <div className="submit-container">
+        <button
+          type="submit"
+          disabled={isLoading || (formData.confirmPassword && !passwordMatch)}
+          className="submit-button"
+        >
+          {isLoading ? (
+            <svg className="loading-spinner">
+              <circle className="spinner-track" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="spinner-path" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          ) : (
+            "Sign Up"
+          )}
+        </button>
+      </div>
+    </form>
+  );
+
+  const renderOTPForm = () => (
+    isOtpPopupOpen && (
+      <div className="otp-popup-overlay">
+        <div className="otp-popup">
+          <button 
+            className="close-popup" 
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsOtpPopupOpen(false);
+              setStep('signup');
+            }}
+          >
+            <X size={24} />
+          </button>
+      
+          <h2>Verify OTP</h2>
+          <p>Enter the 6-digit code sent to {formData.email}</p>
+          
+          <form onSubmit={handleVerifyOTP}>
+            <div className="input-group">
+              <div className="input-icon">
+                <Mail size={20} />
+              </div>
+              <input
+                type="text"
+                name="otp"
+                value={formData.otp}
+                onChange={handleChange}
+                required
+                maxLength="6"
+                className="input-field"
+                placeholder="Enter 6-digit OTP"
+              />
+            </div>
+
+            <div className="otp-timer">
+              Time Remaining: {formatTime(otpTimer)}
+            </div>
+
+            {error && <div className="error-message">{error}</div>}
+
+            <div className="submit-container">
+              <button
+                type="submit"
+                disabled={isLoading || formData.otp.length !== 6}
+                className="submit-button"
+              >
+                {isLoading ? (
+                  <svg className="loading-spinner">
+                    <circle className="spinner-track" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="spinner-path" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                ) : (
+                  "Verify OTP"
+                )}
+              </button>
+            </div>
+          </form>
+
+          <div className="resend-otp">
+            <button 
+              type="button" 
+              onClick={handleSendOTP}
+              disabled={otpTimer > 0}
+            >
+              Resend OTP {otpTimer > 0 ? `(${formatTime(otpTimer)})` : ''}
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  );
 
   return (
     <div className="signup-container">
       {/* Background animation elements */}
-      <div class="bg-animation">
-      <div class="bg-element element-1"></div>
-      <div class="bg-element element-2"></div>
-      <div class="bg-element element-3"></div>
-      <div class="bg-element element-4"></div>
-      
-      <div class="decor-element decor-1"></div>
-      <div class="decor-element decor-2"></div>
-      <div class="decor-element decor-3"></div>
-      <div class="decor-element decor-4"></div>
-      <div class="decor-element decor-5"></div>
-  
-      <div class="bg-gradient"></div>
-</div>
+      <div className="bg-animation">
+        <div className="bg-element element-1"></div>
+        <div className="bg-element element-2"></div>
+        <div className="bg-element element-3"></div>
+        <div className="bg-element element-4"></div>
+        
+        <div className="decor-element decor-1"></div>
+        <div className="decor-element decor-2"></div>
+        <div className="decor-element decor-3"></div>
+        <div className="decor-element decor-4"></div>
+        <div className="decor-element decor-5"></div>
+    
+        <div className="bg-gradient"></div>
+      </div>
 
       <div className={`signup-card ${animateElements ? 'animate-in' : ''}`}>
         {/* Logo and Title */}
@@ -153,180 +370,10 @@ const SignupPage = () => {
             <UserPlus size={36} className="logo-icon" />
           </div>
           <h1 className="title">ServiceXchange</h1>
-          <p className="subtitle">Create your account and start connecting</p>
         </div>
 
-        {/* Floating icons */}
-        <div className="floating-icons">
-          <Users size={20} className={`float-icon icon-1 ${animateElements ? 'animate' : ''}`} />
-          <Heart size={18} className={`float-icon icon-2 ${animateElements ? 'animate' : ''}`} />
-          <Phone size={20} className={`float-icon icon-3 ${animateElements ? 'animate' : ''}`} />
-          <Heart size={16} className={`float-icon icon-4 ${animateElements ? 'animate' : ''}`} />
-          <Users size={18} className={`float-icon icon-5 ${animateElements ? 'animate' : ''}`} />
-        </div>
-
-        <form className="signup-form" onSubmit={handleSubmit}>
-          <div className="name-fields">
-            <div className="input-group">
-              <div className="input-icon">
-                <User size={20} />
-              </div>
-              <input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                required
-                className="input-field"
-                placeholder="First Name"
-              />
-              <div className="focus-indicator"></div>
-            </div>
-
-            <div className="input-group">
-              <div className="input-icon">
-                <User size={20} />
-              </div>
-              <input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                required
-                className="input-field"
-                placeholder="Last Name"
-              />
-              <div className="focus-indicator"></div>
-            </div>
-          </div>
-
-          <div className="input-group">
-            <div className="input-icon">
-              <Mail size={20} />
-            </div>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="input-field"
-              placeholder="Email address"
-            />
-            <div className="focus-indicator"></div>
-          </div>
-
-          <div className="input-group">
-            <div className="input-icon">
-              <Lock size={20} />
-            </div>
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              className="input-field"
-              placeholder="Password"
-            />
-            <button
-              type="button"
-              className="password-toggle"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-            <div className="focus-indicator"></div>
-          </div>
-
-          <div className="input-group">
-            <div className="input-icon">
-              <Lock size={20} />
-            </div>
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-              className={`input-field ${!passwordMatch && formData.confirmPassword ? 'password-error' : ''}`}
-              placeholder="Confirm Password"
-            />
-            <button
-              type="button"
-              className="password-toggle"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
-              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-            <div className="focus-indicator"></div>
-          </div>
-          
-          {!passwordMatch && formData.confirmPassword && (
-            <div className="error-message">Passwords do not match</div>
-          )}
-
-          <div className="terms-check">
-            <input
-              id="terms-agreement"
-              name="terms"
-              type="checkbox"
-              required
-              className="checkbox"
-            />
-            <label htmlFor="terms-agreement" className="checkbox-label">
-              I agree to the <a href="/terms-of-service" className="text-link">Terms of Service</a> and <a href="/privacy-policy" className="text-link">Privacy Policy</a>
-            </label>
-          </div>
-
-          {/* OTP Popup */}
-          {otpSent && (
-            <div className="otp-modal">
-              <div className="otp-box">
-                <h2>Enter OTP</h2>
-                <input
-                  type="text"
-                  value={enteredOtp}
-                  onChange={(e) => setEnteredOtp(e.target.value)}
-                  placeholder="Enter OTP"
-                />
-                <div className="otp-buttons">
-                  <button 
-                    className="verify-button" 
-                    onClick={(e) => verifyOtp(e)}
-                  >
-                    <span className="button-ripple"></span>
-                    Verify OTP
-                  </button>
-                  <button 
-                    className="cancel-button" 
-                    onClick={handleCancelOtp}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div className="submit-container">
-            <button
-              type="submit"
-              disabled={isLoading || (formData.confirmPassword && !passwordMatch)}
-              className="submit-button"
-            >
-              <span className="button-ripple"></span>
-              {isLoading ? (
-                <svg className="loading-spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="spinner-track" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="spinner-path" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-              ) : (
-                "Sign Up"
-              )}
-            </button>
-          </div>
-        </form>
+        {/* Conditional rendering of signup or OTP form */}
+        {step === 'signup' ? renderSignupForm() : renderOTPForm()}
 
         <div className="login-prompt">
           <p>
@@ -343,23 +390,18 @@ const SignupPage = () => {
           </div>
 
           <div className="social-buttons">
-          <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-                <GoogleLogin 
-                  onSuccess={handleGoogleLogin} 
-                  onError={() => setError("Google Login Failed")}
-                  theme="outline"
-                  size="large"
-                  shape="pill"
-                />
-              </GoogleOAuthProvider>
-            {/* <button className="social-button">
+            <button className="social-button">
+              <img src="/api/placeholder/20/20" alt="Google" className="social-icon" />
+              Google
+            </button>
+            <button className="social-button">
               <img src="/api/placeholder/20/20" alt="Facebook" className="social-icon" />
               Facebook
             </button>
             <button className="social-button">
               <img src="/api/placeholder/20/20" alt="Apple" className="social-icon" />
               Apple
-            </button> */}
+            </button>
           </div>
         </div>
 

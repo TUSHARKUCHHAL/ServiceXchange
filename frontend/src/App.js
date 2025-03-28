@@ -22,6 +22,7 @@ import PrivacyPolicy from './Utils/PrivacyPolicy/PrivacyPolicy';
 import ForgotPassword from './Pages/Login/ForgotPassword';
 import ResetPassword from './Pages/Login/ResetPassword';
 import Sign_Up from './Pages/Restaurant/SignUp';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY; 
 

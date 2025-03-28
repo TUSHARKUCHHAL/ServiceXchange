@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const tempUserSchema = new mongoose.Schema({
   firstName: { 
     type: String, 
     required: true,
@@ -22,12 +22,21 @@ const userSchema = new mongoose.Schema({
     type: String, 
     required: true 
   },
+  otp: {
+    code: { 
+      type: String, 
+      required: true 
+    },
+    expiresAt: { 
+      type: Date, 
+      required: true 
+    }
+  },
   createdAt: { 
     type: Date, 
-    default: Date.now 
+    default: Date.now,
+    expires: '15m' // Automatically delete after 15 minutes
   }
-}, {
-  timestamps: true
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('TempUser', tempUserSchema);
