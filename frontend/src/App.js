@@ -19,10 +19,7 @@ import NeedBlood from './Pages/Hospital/NeedBlood';
 import DonateBlood from './Pages/Hospital/DonateBlood';
 import TermsOfService from './Utils/TermsOfService/TermsOfService';
 import PrivacyPolicy from './Utils/PrivacyPolicy/PrivacyPolicy';
-import ForgotPassword from './Pages/Login/ForgotPassword';
-import ResetPassword from './Pages/Login/ResetPassword';
 import Sign_Up from './Pages/Restaurant/SignUp';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY; 
 
@@ -39,8 +36,6 @@ const App = () => {
           <Route path="/About" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/hospital" element={<Hospital />} />
           <Route path="/hospital/need-blood" element={<NeedBlood />} />
           <Route path="/hospital/donate-blood" element={<DonateBlood />} />
