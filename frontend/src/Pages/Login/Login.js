@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Eye, EyeOff, User, Lock, Heart, Users, Phone } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
-import axios from 'axios';
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 const LoginPage = () => {
@@ -12,20 +11,8 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [animateElements, setAnimateElements] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState("")
-  const location = useLocation()
   const navigate = useNavigate();
-  const [otpSent, setOtpSent] = useState(false);
-  const [otp, setOtp] = useState("");
-  const [enteredOtp, setEnteredOtp] = useState("");
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-
-// Add this method to handle cancelling OTP verification
-  const handleCancelOtp = () => {
-   setOtpSent(false);
-   setEnteredOtp("");
-   setOtp("");
-  };
 
   useEffect(() => {
     if (!GOOGLE_CLIENT_ID) console.error("GOOGLE_CLIENT_ID is missing in .env file")
@@ -51,18 +38,12 @@ const LoginPage = () => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Login failed");
 
-      // Send OTP email
-      const otpResponse = await fetch("http://localhost:5000/api/users/send-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+      // Store token and user email
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userEmail", email);
 
-      const otpData = await otpResponse.json();
-      if (!otpResponse.ok) throw new Error(otpData.message || "OTP failed");
-
-      setOtp(otpData.otp); // Store OTP received from backend
-      setOtpSent(true); // Show OTP input modal
+      navigate("/"); // Redirect to homepage
+      window.location.reload(); // Refresh session
     } catch (err) {
       setError(err.message);
     } finally {
@@ -70,63 +51,45 @@ const LoginPage = () => {
     }
   };
 
-  const verifyOtp = async (e) => {
-    e.preventDefault(); // Prevent page reload
-  
+  const handleGoogleLogin = async (response) => {
+    const token = response.credential;
+    
     try {
-      const response = await fetch("http://localhost:5000/api/users/verify-otp", {
+      const res = await fetch("http://localhost:5000/api/users/google", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp: enteredOtp }), // Fixed mismatch (enteredOtp → otp)
+        body: JSON.stringify({ token }),
       });
-  
-      const data = await response.json();
-  
-      if (!response.ok) throw new Error(data.message || "OTP verification failed");
-  
-      // ✅ If OTP is correct, store the real token
-      localStorage.setItem("token", data.token); // Store JWT token from backend
-      localStorage.setItem("userEmail", email);
-  
+    
+      const data = await res.json();
+      
+      // Store token and user email
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userEmail", data.email);
+
       navigate("/"); // Redirect to homepage
       window.location.reload(); // Refresh session
     } catch (err) {
-      setError(err.message); // Show actual error message
+      setError("Google Login Failed");
     }
   };
-  
-
-  const handleGoogleLogin = async (response) => {
-    const token = response.credential;  // Make sure this is correct!
-    
-    const res = await fetch("http://localhost:5000/api/users/google", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token }),
-    });
-  
-    const data = await res.json();
-    console.log(data);
-  };
-  
-  
 
   return (
     <div className="login-container">
       {/* Background animation elements */}
-      <div class="bg-animation">
-      <div class="bg-element element-1"></div>
-      <div class="bg-element element-2"></div>
-      <div class="bg-element element-3"></div>
-      <div class="bg-element element-4"></div>
-      
-      <div class="decor-element decor-1"></div>
-      <div class="decor-element decor-2"></div>
-      <div class="decor-element decor-3"></div>
-      <div class="decor-element decor-4"></div>
-      <div class="decor-element decor-5"></div>
-  
-  <div class="bg-gradient"></div>
+      <div className="bg-animation">
+        <div className="bg-element element-1"></div>
+        <div className="bg-element element-2"></div>
+        <div className="bg-element element-3"></div>
+        <div className="bg-element element-4"></div>
+        
+        <div className="decor-element decor-1"></div>
+        <div className="decor-element decor-2"></div>
+        <div className="decor-element decor-3"></div>
+        <div className="decor-element decor-4"></div>
+        <div className="decor-element decor-5"></div>
+    
+        <div className="bg-gradient"></div>
       </div>
 
       <div className={`login-card ${animateElements ? 'animate-in' : ''}`}>
@@ -147,6 +110,13 @@ const LoginPage = () => {
           <Heart size={16} className={`float-icon icon-4 ${animateElements ? 'animate' : ''}`} />
           <Users size={18} className={`float-icon icon-5 ${animateElements ? 'animate' : ''}`} />
         </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="error-message">
+            {error}
+          </div>
+        )}
 
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="input-group">
@@ -185,36 +155,6 @@ const LoginPage = () => {
             </button>
             <div className="focus-indicator"></div>
           </div>
-
-          {/* OTP Popup */}
-          {otpSent && (
-            <div className="otp-modal">
-              <div className="otp-box">
-                <h2>Enter OTP</h2>
-                <input
-                  type="text"
-                  value={enteredOtp}
-                  onChange={(e) => setEnteredOtp(e.target.value)}
-                  placeholder="Enter OTP"
-                />
-                <div className="otp-buttons">
-                  <button 
-                    className="verify-button" 
-                    onClick={(e) => verifyOtp(e)}
-                  >
-                    <span className="button-ripple"></span>
-                    Verify OTP
-                  </button>
-                  <button 
-                    className="cancel-button" 
-                    onClick={handleCancelOtp}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
 
           <div className="form-options">
             <div className="remember-me">
@@ -270,23 +210,15 @@ const LoginPage = () => {
           </div>
 
           <div className="social-buttons">
-              <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-                <GoogleLogin 
-                  onSuccess={handleGoogleLogin} 
-                  onError={() => setError("Google Login Failed")}
-                  theme="outline"
-                  size="large"
-                  shape="pill"
-                />
-              </GoogleOAuthProvider>
-            {/* <button className="social-button">
-              <img src="/api/placeholder/20/20" alt="Facebook" className="social-icon" />
-              Facebook
-            </button>
-            <button className="social-button">
-              <img src="/api/placeholder/20/20" alt="Apple" className="social-icon" />
-              Apple
-            </button> */}
+            <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+              <GoogleLogin 
+                onSuccess={handleGoogleLogin} 
+                onError={() => setError("Google Login Failed")}
+                theme="outline"
+                size="large"
+                shape="pill"
+              />
+            </GoogleOAuthProvider>
           </div>
         </div>
 
