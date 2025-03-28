@@ -5,6 +5,7 @@ const TempUser = require('../models/TempUser');
 const generateToken = require('../utils/generateToken');
 const { generateOTP, sendOTPEmail } = require('../utils/otpGenerator');
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const jwt = require('jsonwebtoken');
 
 
 const login = async (req, res) => {
@@ -66,10 +67,29 @@ const googleLogin = async (req, res) => {
     // Check if user exists in database
     let user = await User.findOne({ email });
 
-    // If user doesn't exist, create a new user
+    // If user doesn't exist, return error - no auto-registration
     if (!user) {
-      return res.status(404).json({ message: 'No account found for this Google email. Please sign up first.' });;
+      return res.status(404).json({ message: 'No account found for this Google email. Please sign up first.' });
     }
+
+    // User exists, generate JWT token
+    const jwtToken = jwt.sign(
+      { userId: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    // Return successful response with token and user data
+    res.status(200).json({
+      message: 'Login successful',
+      token: jwtToken,
+      user: {
+        email: user.email,
+        firstName: user.firstName || given_name,
+        lastName: user.lastName || family_name,
+        // Include any other user fields you need
+      }
+    });
 
   } catch (error) {
     console.error('Google Login Error:', error);

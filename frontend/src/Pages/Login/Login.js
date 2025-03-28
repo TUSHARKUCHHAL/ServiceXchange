@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Eye, EyeOff, User, Lock, Heart, Users, Phone } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
 import { GoogleLogin } from '@react-oauth/google';
 import './Login.css';
@@ -14,9 +14,8 @@ const LoginPage = () => {
   const [animateElements, setAnimateElements] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const [otpSent, setOtpSent] = useState(false);
-  const [otp, setOtp] = useState("");
-  const [enteredOtp, setEnteredOtp] = useState("");
+  const { login } = useAuth();
+  
 
   useEffect(() => {
     // Trigger animation on load
@@ -78,6 +77,13 @@ const LoginPage = () => {
       // Store token and user info
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
+
+      login({
+        email: data.user.email,
+        firstName: data.user.firstName,
+        lastName: data.user.lastName,
+        token: data.token
+      });
   
       // Redirect to home
       navigate('/');
@@ -91,11 +97,12 @@ const LoginPage = () => {
   
   
   const handleGoogleLogin = async (credentialResponse) => {
-    // Validate credential response
     if (!credentialResponse || !credentialResponse.credential) {
       setError('Google authentication failed. Please try again.');
       return;
     }
+  
+    console.log("Google login initiated...");
   
     setIsLoading(true);
     setError(null);
@@ -109,29 +116,23 @@ const LoginPage = () => {
         body: JSON.stringify({ token: credentialResponse.credential }),
       });
   
-      // Log raw response for debugging
-      const text = await response.text();
-      console.log('Raw Response:', text);
+      console.log("Response received:", response);
   
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch (jsonError) {
-        throw new Error('Invalid JSON response from server');
-      }
-  
-      // If the user is not found in the database
+      // Check for errors before parsing JSON
       if (response.status === 404) {
         throw new Error('No account found for this Google email. Please sign up first.');
       }
   
-      // Handle other response errors
       if (!response.ok) {
-        throw new Error(data.message || 'Google login failed');
+        const errorText = await response.text();
+        throw new Error(errorText || 'Google login failed');
       }
   
+      const data = await response.json();
+      console.log("Parsed response:", data);
+  
       // Ensure valid token and user data
-      if (!data.token || !data.user) {
+      if (!data?.token || !data?.user) {
         throw new Error('Invalid server response');
       }
   
@@ -139,15 +140,29 @@ const LoginPage = () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
   
+      console.log("User logged in:", data.user);
+  
+      // Call login function to update navbar state
+      login({
+        email: data.user.email,
+        firstName: data.user.firstName,
+        lastName: data.user.lastName,
+        token: data.token
+      });
+  
+      console.log("Login state updated, redirecting...");
+  
       // Redirect to dashboard or home page
       navigate('/');
     } catch (err) {
       console.error('Google Login Error:', err);
       setError(err.message || 'Google login failed. Please try again.');
     } finally {
+      console.log("Stopping loading...");
       setIsLoading(false);
     }
   };
+  
   
   
   
