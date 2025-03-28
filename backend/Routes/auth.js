@@ -43,8 +43,17 @@ router.post("/forgot-password", async (req, res) => {
         from: process.env.EMAIL_USER,
         to: user.email,
         subject: "Password Reset Request",
-        text: `Click the link to reset your password: ${resetUrl}`,
-      }
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2>Password Reset</h2>
+            <p>Click the link below to reset your password:</p>
+            <a href="${resetUrl}" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none;">
+              Reset Password
+            </a>
+            <p>This link will expire in 1 hour.</p>
+          </div>
+          `
+        }
   
       const info = await transporter.sendMail(mailOptions)
       console.log("✅ Email sent:", info.response) // Debugging
@@ -59,30 +68,54 @@ router.post("/forgot-password", async (req, res) => {
 // Step 2: Reset Password
 router.post("/reset-password/:token", async (req, res) => {
   try {
-    const { token } = req.params;
-    const { newPassword } = req.body;
+    const { token } = req.params
+    const { newPassword } = req.body
 
-    // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // Validate password strength
+    if (newPassword.length < 8) {
+      return res.status(400).json({ 
+        message: "Password must be at least 8 characters long" 
+      })
+    }
 
-    const user = await User.findById(decoded.id);
-    if (!user) return res.status(404).json({ message: "Invalid or expired token" });
+    // Verify token with error handling
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET)
+    } catch (tokenError) {
+      return res.status(400).json({ message: "Invalid or expired token" })
+    }
 
-    // Hash the new password
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(newPassword, salt);
+    // Find driver with proper query
+    const driver = await Driver.findById(decoded.id).exec()
+    if (!driver) {
+      return res.status(404).json({ message: "Driver not found" })
+    }
 
-    // Remove reset token fields
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpires = undefined;
+    // Verify token matches saved token and not expired
+    if (driver.resetPasswordToken !== token || driver.resetPasswordExpires < Date.now()) {
+      return res.status(400).json({ message: "Invalid or expired reset token" })
+    }
 
-    await user.save();
+    // Hash new password
+    const salt = await bcrypt.genSalt(12)  // Increased salt rounds for better security
+    const hashedPassword = await bcrypt.hash(newPassword, salt)
 
-    res.json({ message: "Password reset successful" });
+    // Update driver password
+    driver.password = hashedPassword
+    driver.resetPasswordToken = undefined
+    driver.resetPasswordExpires = undefined
+
+    // Save with error handling
+    try {
+      await driver.save()
+      res.json({ message: "Password reset successful" })
+    } catch (saveError) {
+      return handleError(res, saveError, "Failed to update password")
+    }
   } catch (error) {
-    console.error("Password Reset Error:", error);
-    res.status(500).json({ message: "Server error", error });
+    handleError(res, error)
   }
-});
+})
 
 module.exports = router
