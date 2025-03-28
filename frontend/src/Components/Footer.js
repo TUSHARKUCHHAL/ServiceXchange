@@ -57,7 +57,7 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} ConnectNGO. All Rights Reserved.</p>
+        <p>&copy; {new Date().getFullYear()} ServiceXchange. All Rights Reserved.</p>
         <div className="footer-bottom-links">
           <Link to="/privacy-policy">Privacy Policy</Link>
           <Link to="/terms-of-service">Terms of Service</Link>
