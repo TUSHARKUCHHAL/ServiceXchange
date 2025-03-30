@@ -6,7 +6,140 @@ const generateToken = require('../utils/generateToken');
 const { generateOTP, sendOTPEmail } = require('../utils/otpGenerator');
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const nodemailer = require("nodemailer");
+require("dotenv").config();
 
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Please provide a valid email address" 
+      });
+    }
+
+    // Find user
+    const user = await User.findOne({ email }).exec();
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Generate reset token
+    const resetToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { 
+      expiresIn: "1h" 
+    });
+
+    // Store token in DB
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = Date.now() + 3600000;
+
+    try {
+      await user.save();
+    } catch (saveError) {
+      console.error("Failed to save reset token:", saveError);
+      return res.status(500).json({ 
+        success: false, 
+        message: "Failed to save reset token"
+      });
+    }
+
+    // Setup email transporter
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS, // Ensure this is set
+      },
+    });
+
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: user.email,
+      subject: "Password Reset Request",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2>Password Reset</h2>
+          <p>Click the link below to reset your password:</p>
+          <a href="${resetUrl}" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none;">
+            Reset Password
+          </a>
+          <p>This link will expire in 1 hour.</p>
+        </div>
+      `,
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+      return res.status(200).json({ 
+        success: true, 
+        message: "Password reset email sent successfully" 
+      });
+    } catch (emailError) {
+      console.error("Email Sending Error:", emailError);
+      return res.status(500).json({ 
+        success: false, 
+        message: "Failed to send reset email" 
+      });
+    }
+  } catch (error) {
+    console.error("Forgot Password Error:", error);
+    return res.status(500).json({ 
+      success: false, 
+      message: "An error occurred during password reset request" 
+    });
+  }
+};
+4
+
+
+
+const resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params; // Extract token from URL
+    const { newPassword } = req.body; // Get new password from request body
+
+    if (!newPassword || newPassword.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters long" });
+    }
+
+    // Verify JWT token
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    // Find user by ID
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+    
+    // Clear reset token fields
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    
+    // Save updated user
+    await user.save();
+
+    return res.status(200).json({ message: "Password reset successful. You can now log in." });
+
+  } catch (error) {
+    console.error("Reset Password Error:", error);
+    return res.status(500).json({ message: "Server error during password reset" });
+  }
+};
 
 const login = async (req, res) => {
   try {
@@ -310,5 +443,7 @@ const googleSignup = async (req, res) => {
     googleSignup,
     verifyGoogleOTP,
     login,
-    googleLogin
+    googleLogin,
+    forgotPassword,
+    resetPassword
   };

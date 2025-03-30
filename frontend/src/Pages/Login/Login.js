@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, EyeOff, User, Lock, Heart, Users, Phone } from 'lucide-react';
+import { Eye, EyeOff, User, Lock, Heart, Users, Phone, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
@@ -204,6 +204,14 @@ const LoginPage = () => {
           <Users size={18} className={`float-icon icon-5 ${animateElements ? 'animate' : ''}`} />
         </div>
 
+        {/* Error Message Display */}
+        {error && (
+          <div className="error-container">
+            <AlertCircle size={18} className="error-icon" />
+            <p className="error-message">{error}</p>
+          </div>
+        )}
+
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="input-group">
             <div className="input-icon">
@@ -258,7 +266,7 @@ const LoginPage = () => {
             </div>
 
             <div className="forgot-password">
-              <a href="#" className="text-link">
+              <a href="/forgot-password" className="text-link">
                 Forgot your password?
               </a>
             </div>

@@ -493,11 +493,11 @@
   font-size: 0.875rem;
 }
 
-.signup-container .social-buttons {
-  /* display: grid;
+/* .signup-container .social-buttons {
+  display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;*/
-}
+  gap: 0.75rem;
+} */
 
 .signup-container .social-button {
   display: inline-flex;
@@ -550,7 +550,7 @@
   color: #e74c3c;
 }
 
-.otp-popup-overlay {
+.signup-container .otp-popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -564,7 +564,7 @@
   animation: fadeIn 0.3s ease-out;
 }
 
-.otp-popup {
+.signup-container .otp-popup {
   background: white;
   border-radius: 12px;
   padding: 30px;
@@ -575,7 +575,7 @@
   animation: slideUp 0.4s ease-out;
 }
 
-.close-popup {
+.signup-container .close-popup {
   position: absolute;
   top: 15px;
   right: 15px;
@@ -586,23 +586,23 @@
   transition: color 0.2s;
 }
 
-.close-popup:hover {
+.signup-container .close-popup:hover {
   color: #333;
 }
 
-.otp-timer {
+.signup-container .otp-timer {
   text-align: center;
   color: #666;
   margin: 15px 0;
   font-weight: bold;
 }
 
-.resend-otp {
+.signup-container .resend-otp {
   text-align: center;
   margin-top: 15px;
 }
 
-.resend-otp button {
+.signup-container .resend-otp button {
   background: none;
   border: none;
   color: #3498db;
@@ -610,10 +610,15 @@
   text-decoration: underline;
 }
 
-.resend-otp button:disabled {
+.signup-container .resend-otp button:disabled {
   color: #888;
   text-decoration: none;
   cursor: not-allowed;
+}
+
+.signup-container .input-field.has-error {
+  border-color: #e53e3e;
+  box-shadow: 0 0 0 1px #e53e3e;
 }
 
 @keyframes fadeIn {
@@ -632,15 +637,33 @@
   }
 }
 
-.google-signup {
+.signup-container .google-signup {
   margin: 20px 0;
   display: flex;
   justify-content: center;
 }
 
 /* Adjust social buttons section if needed */
-.social-signup {
+.signup-container .social-signup {
   margin-top: 10px;
+}
+
+.signup-container .error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e53e3e;
+  background-color: rgba(229, 62, 62, 0.1);
+  padding: 10px;
+  border-radius: 6px;
+  margin-top:3px;
+  margin-bottom: 16px;
+  border-left: 4px solid #ef4444;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.error-message svg {
+  flex-shrink: 0;
 }
 
 

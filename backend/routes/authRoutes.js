@@ -8,7 +8,9 @@ const {
     googleSignup,
     verifyGoogleOTP,
     login,
-    googleLogin
+    googleLogin,
+    forgotPassword,
+    resetPassword
 } = require('../controllers/authController');
 
 // OTP Routes
@@ -22,5 +24,8 @@ router.post('/verify-google-otp', verifyGoogleOTP);
 // Login Routes
 router.post('/login', login);
 router.post('/google-login', googleLogin);
+
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password/:token', resetPassword);
 
 module.exports = router;

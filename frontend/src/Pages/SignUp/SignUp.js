@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, User, Lock, Heart, Mail, Users, Phone, UserPlus, X } from 'lucide-react';
+import { Eye, EyeOff, User, Lock, Heart, Mail, Users, Phone, UserPlus, X, AlertCircle } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../../context/AuthContext';
 import './SignUp.css';
@@ -54,19 +54,71 @@ const SignupPage = () => {
       ...prev,
       [name]: value
     }));
+
+    // Clear errors when user starts typing
+    if (error) setError(null);
+  };
+
+  const validateForm = () => {
+    if (!formData.firstName.trim()) {
+      setError("First name is required");
+      return false;
+    }
+    
+    if (!formData.lastName.trim()) {
+      setError("Last name is required");
+      return false;
+    }
+    
+    if (!formData.email.trim()) {
+      setError("Email address is required");
+      return false;
+    }
+    
+    // Basic email validation
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      setError("Please enter a valid email address");
+      return false;
+    }
+    
+    if (formData.password.length < 8) {
+      setError("Password must be at least 8 characters long");
+      return false;
+  }
+  
+  // Regex for a strong password
+  const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  
+  if (!strongPasswordRegex.test(formData.password)) {
+      setError("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+      return false;
+  }
+    
+    if (formData.password !== formData.confirmPassword) {
+      setPasswordMatch(false);
+      setError("Passwords do not match");
+      return false;
+    }
+    
+    return true;
   };
 
   const handleSendOTP = async (e) => {
     e.preventDefault();
 
     // Validate form
-    if (formData.password !== formData.confirmPassword) {
-      setPasswordMatch(false);
-      return;
-    }
+      if (!validateForm()) {
+        return;
+      }
 
     setIsLoading(true);
     setError(null);
+
+    // // Validate form
+    // if (formData.password !== formData.confirmPassword) {
+    //   setPasswordMatch(false);
+    //   return;
+    // }
 
     try {
       const response = await fetch("http://localhost:5000/api/auth/send-otp", {
@@ -76,8 +128,19 @@ const SignupPage = () => {
         },
         body: JSON.stringify(formData),
       });
-
+    
+      // Parse the response
       const data = await response.json();
+    
+      // Handle different error types
+      if (response.status === 409) {
+        throw new Error("Email already exists. Please use a different email or login.");
+      } else if (response.status === 400) {
+        throw new Error(data.message || "Please check your information and try again.");
+      } else if (!response.ok) {
+        throw new Error(data.message || "Something went wrong. Please try again later.");
+      }
+
 
       if (!response.ok) {
         throw new Error(data.message || "OTP sending failed");
@@ -120,11 +183,22 @@ const SignupPage = () => {
         }),
       });
   
-      const data = await response.json();
+      
   
       if (!response.ok) {
-        throw new Error(data.message || "OTP verification failed");
+        const data = await response.json();
+      
+      // Handle different error types
+      if (response.status === 400) {
+        throw new Error(data.message || "Invalid or expired OTP. Please try again.");
+      } else if (response.status === 404) {
+        throw new Error("Email not found. Please start the signup process again.");
+      } else {
+        throw new Error(data.message || "Verification failed. Please try again later.");
       }
+      }
+
+      const data = await response.json();
   
       // Call the login function from AuthContext
       login({
@@ -171,13 +245,21 @@ const SignupPage = () => {
         }),
       });
   
+      // Enhanced error handling here
+    if (!response.ok) {
       const data = await response.json();
-
-      console.log('Server response:', data); // Debug log
-  
-      if (!response.ok) {
-        throw new Error(data.message || "Google authentication failed");
+      
+      // Handle different error types
+      if (response.status === 409) {
+        throw new Error("This Google account is already registered. Please login instead.");
+      } else if (response.status === 400) {
+        throw new Error(data.message || "Google authentication failed. Please provide valid credentials.");
+      } else {
+        throw new Error(data.message || "Google authentication failed. Please try again later.");
       }
+    }
+
+    const data = await response.json();
 
 
   
@@ -200,6 +282,7 @@ const SignupPage = () => {
     }
   };
   
+  
   const handleGoogleError = () => {
     setError('Google sign in failed');
   };
@@ -217,7 +300,6 @@ const SignupPage = () => {
             name="firstName"
             value={formData.firstName}
             onChange={handleChange}
-            required
             className="input-field"
             placeholder="First Name"
           />
@@ -232,7 +314,6 @@ const SignupPage = () => {
             name="lastName"
             value={formData.lastName}
             onChange={handleChange}
-            required
             className="input-field"
             placeholder="Last Name"
           />
@@ -249,7 +330,6 @@ const SignupPage = () => {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          required
           className="input-field"
           placeholder="Email address"
         />
@@ -265,7 +345,6 @@ const SignupPage = () => {
           name="password"
           value={formData.password}
           onChange={handleChange}
-          required
           className="input-field"
           placeholder="Password"
         />
@@ -287,7 +366,6 @@ const SignupPage = () => {
           name="confirmPassword"
           value={formData.confirmPassword}
           onChange={handleChange}
-          required
           className={`input-field ${!passwordMatch && formData.confirmPassword ? 'password-error' : ''}`}
           placeholder="Confirm Password"
         />
@@ -302,6 +380,13 @@ const SignupPage = () => {
       
       {!passwordMatch && formData.confirmPassword && (
         <div className="error-message">Passwords do not match</div>
+      )}
+
+      {error && (
+        <div className="error-message">
+          <AlertCircle size={16} />
+          <span>{error}</span>
+        </div>
       )}
 
       {/* Terms and submit */}
@@ -456,29 +541,15 @@ const SignupPage = () => {
             <span className="divider-text">Or sign up with</span>
           </div>
 
-          <div className="google-signup">
+          <div className="social-buttons">
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
               onError={handleGoogleError}
               useOneTap
               text="signup_with"
-              size="large"
+              shape='rectangular'
+              theme='outline'
             />
-          </div>
-
-          <div className="social-buttons">
-            <button className="social-button">
-              <img src="/api/placeholder/20/20" alt="Google" className="social-icon" />
-              Google
-            </button>
-            <button className="social-button">
-              <img src="/api/placeholder/20/20" alt="Facebook" className="social-icon" />
-              Facebook
-            </button>
-            <button className="social-button">
-              <img src="/api/placeholder/20/20" alt="Apple" className="social-icon" />
-              Apple
-            </button>
           </div>
         </div>
 

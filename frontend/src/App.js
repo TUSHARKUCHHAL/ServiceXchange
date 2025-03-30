@@ -22,6 +22,8 @@ import PrivacyPolicy from './Utils/PrivacyPolicy/PrivacyPolicy';
 import Sign_Up from './Pages/Restaurant/SignUp';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthProvider } from './context/AuthContext';
+import ForgotPassword from './Pages/Login/ForgotPassword';
+import ResetPassword from './Pages/Login/ResetPassword';
 
 const App = () => {
   return (
@@ -38,6 +40,8 @@ const App = () => {
             <Route path="/About" element={<About />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/hospital" element={<Hospital />} />
             <Route path="/hospital/need-blood" element={<NeedBlood />} />
             <Route path="/hospital/donate-blood" element={<DonateBlood />} />
