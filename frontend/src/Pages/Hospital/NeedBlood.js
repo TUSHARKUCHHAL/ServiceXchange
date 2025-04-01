@@ -3,12 +3,19 @@ import "./NeedBlood.css";
 
 const NeedBlood = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    patientName: "",
+    patientAge: "",
     bloodGroup: "",
+    hospitalName: "", // Changed from hospitalLocation to match schema
+    unitsRequired: "",
+    requestorName: "",
+    requestorEmail: "",
+    requestorPhone: "",
+    relationToPatient: "",
     location: "",
-    contact: "",
     reason: "",
     urgency: "normal",
+    status: "pending"
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,29 +44,51 @@ const NeedBlood = () => {
     setFieldFocus(null);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      console.log("Blood Request Submitted:", formData);
-      setIsSubmitting(false);
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/blood/request", { 
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Error ${response.status}: ${errorText}`);
+      }
+  
+      const data = await response.json();
+      console.log("Success:", data);
       setSubmitted(true);
-      
-      // Reset after showing success message
+  
+      // Reset form after 5 seconds
       setTimeout(() => {
         setSubmitted(false);
         setFormData({
-          name: "",
+          patientName: "",
+          patientAge: "",
           bloodGroup: "",
+          hospitalName: "", // Changed from hospitalLocation to match schema
+          unitsRequired: "",
+          requestorName: "",
+          requestorEmail: "",
+          requestorPhone: "",
+          relationToPatient: "",
           location: "",
-          contact: "",
           reason: "",
           urgency: "normal",
+          status: "pending"
         });
       }, 5000);
-    }, 1500);
+    } catch (error) {
+      console.error("Error submitting blood request:", error);
+      alert("Failed to submit request. Check console for details.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Get dynamic class for form fields based on focus state
@@ -87,23 +116,42 @@ const NeedBlood = () => {
         </div>
       ) : (
         <form className="need-blood-form" onSubmit={handleSubmit}>
-          <div className={getFieldClass("name")}>
-            <label htmlFor="name">Full Name</label>
+          <h3>Patient Information</h3>
+          <div className={getFieldClass("patientName")}>
+            <label htmlFor="patientName">Patient Name</label>
             <input 
               type="text" 
-              id="name"
-              name="name" 
-              value={formData.name}
-              placeholder="Enter patient or requestor name" 
+              id="patientName"
+              name="patientName" 
+              value={formData.patientName}
+              placeholder="Enter patient name" 
               required 
               onChange={handleChange}
-              onFocus={() => handleFocus("name")}
+              onFocus={() => handleFocus("patientName")}
               onBlur={handleBlur}
               className={animationComplete ? "animated" : ""}
             />
           </div>
           
           <div className="form-row">
+            <div className={getFieldClass("patientAge")}>
+              <label htmlFor="patientAge">Patient Age</label>
+              <input 
+                type="number" 
+                id="patientAge"
+                name="patientAge" 
+                value={formData.patientAge}
+                placeholder="Age" 
+                required 
+                min="0"
+                max="120"
+                onChange={handleChange}
+                onFocus={() => handleFocus("patientAge")}
+                onBlur={handleBlur}
+                className={animationComplete ? "animated" : ""}
+              />
+            </div>
+            
             <div className={getFieldClass("bloodGroup")}>
               <label htmlFor="bloodGroup">Blood Group</label>
               <select 
@@ -127,6 +175,115 @@ const NeedBlood = () => {
                 <option value="AB-">AB-</option>
               </select>
             </div>
+          </div>
+          
+          <div className="form-row">
+            <div className={getFieldClass("hospitalName")}>
+              <label htmlFor="hospitalName">Hospital Name</label> {/* Changed label */}
+              <input 
+                type="text" 
+                id="hospitalName" // Changed ID
+                name="hospitalName" // Changed name to match schema
+                value={formData.hospitalName} // Changed to match new state property
+                placeholder="Enter hospital name" // Changed placeholder
+                required 
+                onChange={handleChange}
+                onFocus={() => handleFocus("hospitalName")} // Changed focus field name
+                onBlur={handleBlur}
+                className={animationComplete ? "animated" : ""}
+              />
+            </div>
+            
+            <div className={getFieldClass("unitsRequired")}>
+              <label htmlFor="unitsRequired">Units Required</label>
+              <input 
+                type="number" 
+                id="unitsRequired"
+                name="unitsRequired" 
+                value={formData.unitsRequired}
+                placeholder="Number of units" 
+                required 
+                min="1"
+                onChange={handleChange}
+                onFocus={() => handleFocus("unitsRequired")}
+                onBlur={handleBlur}
+                className={animationComplete ? "animated" : ""}
+              />
+            </div>
+          </div>
+
+          <h3>Requestor Information</h3>
+          <div className={getFieldClass("requestorName")}>
+            <label htmlFor="requestorName">Your Name</label>
+            <input 
+              type="text" 
+              id="requestorName"
+              name="requestorName" 
+              value={formData.requestorName}
+              placeholder="Enter your full name" 
+              required 
+              onChange={handleChange}
+              onFocus={() => handleFocus("requestorName")}
+              onBlur={handleBlur}
+              className={animationComplete ? "animated" : ""}
+            />
+          </div>
+          
+          <div className="form-row">
+            <div className={getFieldClass("requestorEmail")}>
+              <label htmlFor="requestorEmail">Email Address</label>
+              <input 
+                type="email" 
+                id="requestorEmail"
+                name="requestorEmail" 
+                value={formData.requestorEmail}
+                placeholder="Your email address" 
+                required 
+                onChange={handleChange}
+                onFocus={() => handleFocus("requestorEmail")}
+                onBlur={handleBlur}
+                className={animationComplete ? "animated" : ""}
+              />
+            </div>
+            
+            <div className={getFieldClass("requestorPhone")}>
+              <label htmlFor="requestorPhone">Contact Number</label>
+              <input 
+                type="tel" 
+                id="requestorPhone"
+                name="requestorPhone" 
+                value={formData.requestorPhone}
+                placeholder="Your phone number" 
+                required 
+                onChange={handleChange}
+                onFocus={() => handleFocus("requestorPhone")}
+                onBlur={handleBlur}
+                className={animationComplete ? "animated" : ""}
+              />
+            </div>
+          </div>
+          
+          <div className="form-row">
+            <div className={getFieldClass("relationToPatient")}>
+              <label htmlFor="relationToPatient">Relation to Patient</label>
+              <select 
+                id="relationToPatient"
+                name="relationToPatient" 
+                value={formData.relationToPatient}
+                required 
+                onChange={handleChange}
+                onFocus={() => handleFocus("relationToPatient")}
+                onBlur={handleBlur}
+                className={animationComplete ? "animated" : ""}
+              >
+                <option value="">Select Relation</option>
+                <option value="self">Self</option>
+                <option value="family">Family Member</option>
+                <option value="friend">Friend</option>
+                <option value="medical-staff">Medical Staff</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
             
             <div className={getFieldClass("urgency")}>
               <label htmlFor="urgency">Urgency Level</label>
@@ -148,32 +305,16 @@ const NeedBlood = () => {
           </div>
           
           <div className={getFieldClass("location")}>
-            <label htmlFor="location">Location</label>
+            <label htmlFor="location">General Location</label>
             <input 
               type="text" 
               id="location"
               name="location" 
               value={formData.location}
-              placeholder="Hospital or area name" 
+              placeholder="City/Area" 
               required 
               onChange={handleChange}
               onFocus={() => handleFocus("location")} 
-              onBlur={handleBlur}
-              className={animationComplete ? "animated" : ""}
-            />
-          </div>
-          
-          <div className={getFieldClass("contact")}>
-            <label htmlFor="contact">Contact Number</label>
-            <input 
-              type="tel" 
-              id="contact"
-              name="contact" 
-              value={formData.contact}
-              placeholder="Phone number for donors to contact" 
-              required 
-              onChange={handleChange}
-              onFocus={() => handleFocus("contact")}
               onBlur={handleBlur}
               className={animationComplete ? "animated" : ""}
             />

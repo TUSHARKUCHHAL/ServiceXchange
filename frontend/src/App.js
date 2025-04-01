@@ -16,7 +16,6 @@ import Volunteer from "./Pages/Volunteer/Volunteer";
 import VolunteerRes from "./Pages/Restaurant/VolunteerRes";
 import Hospital from './Pages/Hospital/Hospital';
 import NeedBlood from './Pages/Hospital/NeedBlood';
-import DonateBlood from './Pages/Hospital/DonateBlood';
 import TermsOfService from './Utils/TermsOfService/TermsOfService';
 import PrivacyPolicy from './Utils/PrivacyPolicy/PrivacyPolicy';
 import Sign_Up from './Pages/Restaurant/SignUp';
@@ -24,6 +23,8 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthProvider } from './context/AuthContext';
 import ForgotPassword from './Pages/Login/ForgotPassword';
 import ResetPassword from './Pages/Login/ResetPassword';
+import BloodDonation from "./Pages/Hospital/DonorPage";
+import ManageRequests from './Pages/Hospital/ManageRequests';
 
 const App = () => {
   return (
@@ -44,7 +45,8 @@ const App = () => {
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/hospital" element={<Hospital />} />
             <Route path="/hospital/need-blood" element={<NeedBlood />} />
-            <Route path="/hospital/donate-blood" element={<DonateBlood />} />
+            <Route path="/hospital/donate-blood" element={<BloodDonation />} />
+            <Route path="/hospital/manage-requests" element={<ManageRequests />} />
             <Route path="/restaurant" element={<Restaurant />} />
             <Route path="/restaurant/signup" element={<Sign_Up />} />
             <Route path="/restaurant/excess-food" element={<ExcessFoodRequest />} />

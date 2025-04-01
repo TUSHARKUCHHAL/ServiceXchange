@@ -3,6 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv').config();
 const connectDB = require('./config/db');
+const bloodRequestRoutes = require("./routes/bloodRequestRoutes");
+const donorRoutes = require("./routes/donorRoutes");
+const verificationRoutes = require('./routes/verificationRoutes');
 
 // Connect to database
 connectDB();
@@ -16,6 +19,10 @@ app.use(express.urlencoded({ extended: false }));
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
+app.use("/api/blood", bloodRequestRoutes);
+app.use("/api/donors", donorRoutes);
+app.use('/api/verification', verificationRoutes);
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

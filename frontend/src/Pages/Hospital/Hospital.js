@@ -162,13 +162,13 @@ const Hospital = () => {
             <button className="card-btn donate-blood-btn">Donate Now</button>
           </div>
           
-          <div className="service-card" onClick={() => navigate("/hospital/learn-more")}>
+          <div className="service-card" onClick={() => navigate("/hospital/manage-requests")}>
             <div className="card-icon learn-icon">
               <i className="fas fa-book-medical"></i>
             </div>
-            <h4>Learn More</h4>
+            <h4>Manage Requests</h4>
             <p>Educate yourself about blood donation process, benefits, and eligibility.</p>
-            <button className="card-btn learn-more-btn">Get Educated</button>
+            <button className="card-btn learn-more-btn">Confirm Donors</button>
           </div>
         </div>
       </div>

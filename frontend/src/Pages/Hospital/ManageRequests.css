@@ -1,0 +1,433 @@
+/* ManageRequests.css */
+
+.manage-requests-container {
+    display: flex;
+    height: calc(100vh - 80px);
+    padding: 20px;
+    gap: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Requests Panel - Left Side */
+  .requests-panel {
+    flex: 1;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+  }
+  
+  .requests-list {
+    height: 100%;
+    overflow-y: auto;
+    padding: 0 10px;
+  }
+  
+  .requests-list h2 {
+    padding: 15px;
+    margin: 0;
+    background-color: #e0e0e0;
+    border-bottom: 1px solid #ccc;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  
+  .request-item {
+    padding: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    background-color: white;
+    margin: 10px 0;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+  
+  .request-item:hover {
+    background-color: #f0f7ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .request-item.selected {
+    background-color: #e3efff;
+    border-left: 4px solid #0066cc;
+  }
+  
+  .request-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .blood-group {
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: white;
+    background-color: #e53935;
+  }
+  
+  .blood-group.Apos, .blood-group.A\+ { background-color: #d32f2f; }
+  .blood-group.Aneg, .blood-group.A- { background-color: #c62828; }
+  .blood-group.Bpos, .blood-group.B\+ { background-color: #1976d2; }
+  .blood-group.Bneg, .blood-group.B- { background-color: #1565c0; }
+  .blood-group.ABpos, .blood-group.AB\+ { background-color: #7b1fa2; }
+  .blood-group.ABneg, .blood-group.AB- { background-color: #6a1b9a; }
+  .blood-group.Opos, .blood-group.O\+ { background-color: #388e3c; }
+  .blood-group.Oneg, .blood-group.O- { background-color: #2e7d32; }
+  
+  .urgency-badge {
+    font-size: 0.8rem;
+    padding: 3px 8px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  
+  .urgency-normal {
+    background-color: #e0f2f1;
+    color: #00796b;
+  }
+  
+  .urgency-urgent {
+    background-color: #fff3e0;
+    color: #e65100;
+  }
+  
+  .urgency-critical {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+  
+  .request-details h3 {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+  }
+  
+  .request-details p {
+    margin: 3px 0;
+    font-size: 0.9rem;
+    color: #616161;
+  }
+  
+  .request-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+  }
+  
+  .status-badge {
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  
+  .status-pending {
+    background-color: #e3f2fd;
+    color: #1565c0;
+  }
+  
+  .status-fulfilled {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
+  
+  .status-rejected {
+    background-color: #f5f5f5;
+    color: #616161;
+  }
+  
+  .time-remaining {
+    font-size: 0.8rem;
+    color: #616161;
+  }
+  
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #757575;
+  }
+  
+  .no-requests {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #757575;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* Detail Panel - Right Side */
+  .detail-panel {
+    flex: 2;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    position: relative;
+  }
+  
+  .request-detail {
+    padding: 20px;
+  }
+  
+  .request-detail h2 {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+    margin-top: 0;
+  }
+  
+  .request-detail-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .detail-row {
+    padding: 8px 0;
+  }
+  
+  .detail-row strong {
+    margin-right: 8px;
+    color: #555;
+  }
+  
+  .donors-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 6px;
+    margin-top: 20px;
+  }
+  
+  .donors-section h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+  }
+  
+  .donors-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+  }
+  
+  .donor-item {
+    background-color: white;
+    padding: 15px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  
+  .donor-item.confirmed {
+    border-left: 4px solid #388e3c;
+  }
+  
+  .donor-item.rejected {
+    border-left: 4px solid #d32f2f;
+    opacity: 0.7;
+  }
+  
+  .donor-info h4 {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+  }
+  
+  .donor-info p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #616161;
+  }
+  
+  .donor-status {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  
+  .donor-status.pending {
+    color: #1565c0;
+  }
+  
+  .donor-status.confirmed {
+    color: #388e3c;
+  }
+  
+  .donor-status.rejected {
+    color: #d32f2f;
+  }
+  
+  .no-donors {
+    text-align: center;
+    color: #757575;
+    padding: 20px;
+  }
+  
+  .no-selection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    padding: 20px;
+    color: #757575;
+  }
+  
+  .instructions {
+    max-width: 600px;
+    text-align: left;
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+  
+  .instructions ul {
+    padding-left: 20px;
+  }
+  
+  .instructions li {
+    margin-bottom: 8px;
+  }
+  
+  .verification-section {
+    background-color: #e8f5e9;
+    padding: 15px;
+    border-radius: 6px;
+    margin: 15px 0;
+    text-align: center;
+  }
+  
+  .otp-section {
+    background-color: #e3f2fd;
+    padding: 15px;
+    border-radius: 6px;
+    margin: 15px 0;
+    text-align: center;
+  }
+  
+  .otp-button {
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+  }
+  
+  .otp-button:hover {
+    background-color: #1976d2;
+  }
+  
+  .otp-input {
+    padding: 8px 12px;
+    font-size: 1rem;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    letter-spacing: 4px;
+    margin-top: 10px;
+  }
+  
+  .confirm-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 15px;
+    transition: background-color 0.2s;
+    align-self: flex-end;
+  }
+  
+  .confirm-button:hover {
+    background-color: #388e3c;
+  }
+  
+  .confirm-button:disabled {
+    background-color: #e0e0e0;
+    color: #9e9e9e;
+    cursor: not-allowed;
+  }
+  
+  .confirmed-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #4caf50;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+  }
+  
+  .error-message {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+    text-align: center;
+  }
+  
+  .success-message {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+    text-align: center;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 992px) {
+    .manage-requests-container {
+      flex-direction: column;
+      height: auto;
+    }
+    
+    .requests-panel {
+      max-width: none;
+      height: 400px;
+    }
+    
+    .detail-panel {
+      height: 600px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .request-detail-content {
+      grid-template-columns: 1fr;
+    }
+    
+    .donors-list {
+      grid-template-columns: 1fr;
+    }
+  }
