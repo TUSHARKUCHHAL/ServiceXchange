@@ -1,181 +1,223 @@
-import "./ResetPassword.css";
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Lock, Eye, EyeOff, AlertCircle, Heart, Users, Phone } from 'lucide-react';
+import { useNavigate, useParams } from 'react-router-dom';
+import './Login.css'; // Reusing the same styling
 
 const ResetPassword = () => {
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+  const [animateElements, setAnimateElements] = useState(false);
   const { token } = useParams();
   const navigate = useNavigate();
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    if (success) {
-      const timer = setTimeout(() => navigate("/login"), 3000);
-      return () => clearTimeout(timer);
+    // Trigger animation on load
+    setTimeout(() => setAnimateElements(true), 500);
+    
+    // Validate token exists
+    if (!token) {
+      setError('Invalid reset link. Please request a new password reset.');
     }
-  }, [success, navigate]);
-
-  const validatePassword = (password) => {
-    const minLength = 8;
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumbers = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-
-    if (password.length < minLength) return "Password must be at least 8 characters long";
-    if (!hasUpperCase) return "Password must contain at least one uppercase letter";
-    if (!hasLowerCase) return "Password must contain at least one lowercase letter";
-    if (!hasNumbers) return "Password must contain at least one number";
-    if (!hasSpecialChar) return "Password must contain at least one special character";
-    return "";
-  };
+  }, [token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     setError("");
-    setSuccess("");
 
-    const validationError = validatePassword(newPassword);
-    if (validationError) {
-      setError(validationError);
+    // Validate password
+    if (newPassword.length < 8) {
+      setError("Password must be at least 8 characters long");
+      setIsLoading(false);
       return;
     }
 
     if (newPassword !== confirmPassword) {
       setError("Passwords do not match");
+      setIsLoading(false);
       return;
     }
 
-    setIsLoading(true);
-
     try {
-      const response = await fetch(`http://localhost:5000/api/users/reset-password/${token}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ newPassword }),
-      });
-
-      const data = await response.json();
+      const response = await fetch(
+        `http://localhost:5000/api/auth/reset-password/${token}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ newPassword }),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to reset password");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to reset password");
       }
 
-      setSuccess("Password reset successful! Redirecting to login...");
-    } catch (error) {
-      setError(error.message || "An error occurred while resetting password");
+      setSuccess(true);
+
+      // Auto-redirect after 3 seconds
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    } catch (err) {
+      console.error("Reset Password Error:", err);
+      setError(err.message || "An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="reset-password-container">
-      <div className="reset-password-card">
-        <div className="card-header">
-          <h2>Reset Password</h2>
-          <p>Please enter your new password below</p>
+    <div className="login-container">
+      {/* Background animation elements */}
+      <div className="bg-animation">
+        <div className="bg-element element-1"></div>
+        <div className="bg-element element-2"></div>
+        <div className="bg-element element-3"></div>
+        <div className="bg-element element-4"></div>
+        
+        <div className="decor-element decor-1"></div>
+        <div className="decor-element decor-2"></div>
+        <div className="decor-element decor-3"></div>
+        <div className="decor-element decor-4"></div>
+        <div className="decor-element decor-5"></div>
+        
+        <div className="bg-gradient"></div>
+      </div>
+
+      <div className={`login-card ${animateElements ? 'animate-in' : ''}`}>
+        {/* Logo and Title */}
+        <div className="logo-container">
+          <div className="logo-wrapper">
+            <Heart size={36} className="logo-icon" />
+          </div>
+          <h1 className="title">ServiceXchange</h1>
+          <p className="subtitle">Create a new password</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="reset-password-form">
-          <div className="form-group">
-            <label htmlFor="newPassword">New Password</label>
-            <div className="input-wrapper">
-              <input
-                id="newPassword"
-                type={showPassword ? "text" : "password"}
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                disabled={isLoading}
-                required
-                aria-describedby="password-requirements"
-              />
-              <button
-                type="button"
-                className="toggle-password"
-                onClick={() => setShowPassword(!showPassword)}
-                aria-label={showPassword ? "Hide password" : "Show password"}
+        {/* Floating icons */}
+        <div className="floating-icons">
+          <Users size={20} className={`float-icon icon-1 ${animateElements ? 'animate' : ''}`} />
+          <Heart size={18} className={`float-icon icon-2 ${animateElements ? 'animate' : ''}`} />
+          <Phone size={20} className={`float-icon icon-3 ${animateElements ? 'animate' : ''}`} />
+          <Heart size={16} className={`float-icon icon-4 ${animateElements ? 'animate' : ''}`} />
+          <Users size={18} className={`float-icon icon-5 ${animateElements ? 'animate' : ''}`} />
+        </div>
+
+        {/* Error Message Display */}
+        {error && (
+          <div className="error-container">
+            <AlertCircle size={18} className="error-icon" />
+            <p className="error-message">{error}</p>
+          </div>
+        )}
+
+        {/* Success Message */}
+        {success ? (
+          <div className="success-container">
+            <div className="success-message">
+              <h3>Password Reset Successful!</h3>
+              <p>Your password has been changed. You will be redirected to the login page in a moment.</p>
+              <button 
+                className="submit-button" 
+                onClick={() => navigate('/login')}
+                style={{ marginTop: '20px' }}
               >
-                {showPassword ? "Hide" : "Show"}
+                Go to Login
               </button>
             </div>
           </div>
-
-          <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <div className="input-wrapper">
+        ) : (
+          <form className="login-form" onSubmit={handleSubmit}>
+            <div className="input-group">
+              <div className="input-icon">
+                <Lock size={20} />
+              </div>
               <input
-                id="confirmPassword"
                 type={showPassword ? "text" : "password"}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+                className="input-field"
+                placeholder="New password"
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+              <div className="focus-indicator"></div>
+            </div>
+
+            <div className="input-group">
+              <div className="input-icon">
+                <Lock size={20} />
+              </div>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                disabled={isLoading}
                 required
+                className="input-field"
+                placeholder="Confirm new password"
               />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+              <div className="focus-indicator"></div>
             </div>
+
+            <div className="password-requirements">
+              <p>Password must be at least 8 characters long</p>
+            </div>
+
+            <div className="submit-container">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="submit-button"
+              >
+                <span className="button-ripple"></span>
+                {isLoading ? (
+                  <svg className="loading-spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="spinner-track" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="spinner-path" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                ) : (
+                  "Reset Password"
+                )}
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* Stats */}
+        <div className="service-stats">
+          <p>Connecting services since 2023</p>
+          <div className="stats-container">
+            <span className="stat-item">
+              <Users size={12} className="stat-icon" /> 
+              5,000+ Users
+            </span>
+            <span className="stat-item">
+              <Heart size={12} className="stat-icon" /> 
+              15,000+ Services
+            </span>
           </div>
-
-          <div id="password-requirements" className="password-requirements">
-            Password must contain:
-            <ul>
-              <li className={newPassword.length >= 8 ? "met" : ""}>
-                At least 8 characters
-              </li>
-              <li className={/[A-Z]/.test(newPassword) ? "met" : ""}>
-                One uppercase letter
-              </li>
-              <li className={/[a-z]/.test(newPassword) ? "met" : ""}>
-                One lowercase letter
-              </li>
-              <li className={/\d/.test(newPassword) ? "met" : ""}>
-                One number
-              </li>
-              <li className={/[!@#$%^&*(),.?":{}|<>]/.test(newPassword) ? "met" : ""}>
-                One special character
-              </li>
-            </ul>
-          </div>
-
-          {error && (
-            <div className="alert error" role="alert">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="12" />
-                <line x1="12" y1="16" x2="12" y2="16" />
-              </svg>
-              {error}
-            </div>
-          )}
-
-          {success && (
-            <div className="alert success" role="alert">
-              {success}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={isLoading || !newPassword || !confirmPassword}
-            className="submit-button"
-          >
-            {isLoading ? (
-              <>
-                <svg className="spinner" viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="4" />
-                </svg>
-                Resetting...
-              </>
-            ) : (
-              "Reset Password"
-            )}
-          </button>
-        </form>
+        </div>
       </div>
     </div>
   );

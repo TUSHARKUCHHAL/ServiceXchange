@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, EyeOff, User, Lock, Heart, Users, Phone } from 'lucide-react';
+import { Eye, EyeOff, User, Lock, Heart, Users, Phone, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import axios from 'axios';
+import { GoogleLogin } from '@react-oauth/google';
 import './Login.css';
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -12,11 +14,8 @@ const LoginPage = () => {
   const [animateElements, setAnimateElements] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-
-  useEffect(() => {
-    if (!GOOGLE_CLIENT_ID) console.error("GOOGLE_CLIENT_ID is missing in .env file")
-  }, [])
+  const { login } = useAuth();
+  
 
   useEffect(() => {
     // Trigger animation on load
@@ -26,70 +25,164 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
-
+    setError(null);
+  
+    // Basic email validation
+    if (!email || !email.includes('@')) {
+      setError('Please enter a valid email address');
+      setIsLoading(false);
+      return;
+    }
+  
+    // Basic password validation
+    // if (!password || password.length < 6) {
+    //   setError('Password must be at least 6 characters long');
+    //   setIsLoading(false);
+    //   return;
+    // }
+  
     try {
-      const response = await fetch("http://localhost:5000/api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const response = await fetch('http://localhost:5000/api/auth/login', {  // Ensure correct backend port
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password })
       });
+  
+      // Log response details for debugging
+      console.log(`Status: ${response.status}, Headers:`, response.headers);
+  
+      // Read response text
+      const text = await response.text();
+      console.log('Raw Response:', text);
+  
+      let data;
+      try {
+        data = JSON.parse(text); // Attempt to parse JSON
+      } catch (jsonError) {
+        throw new Error('Server returned invalid JSON. Response might be an error page.');
+      }
+  
+      // Handle response errors
+      if (!response.ok) {
+        throw new Error(data.message || `Error: ${response.status} - ${response.statusText}`);
+      }
+  
+      // Validate expected data fields
+      if (!data.token || !data.user) {
+        throw new Error('Invalid server response: Missing token or user data.');
+      }
+  
+      // Store token and user info
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
 
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Login failed");
-
-      // Store token and user email
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("userEmail", email);
-
-      navigate("/"); // Redirect to homepage
-      window.location.reload(); // Refresh session
+      login({
+        email: data.user.email,
+        firstName: data.user.firstName,
+        lastName: data.user.lastName,
+        token: data.token
+      });
+  
+      // Redirect to home
+      navigate('/');
     } catch (err) {
-      setError(err.message);
+      console.error('Login Error:', err);
+      setError(err.message || 'An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
-
-  const handleGoogleLogin = async (response) => {
-    const token = response.credential;
-    
+  
+  
+  const handleGoogleLogin = async (credentialResponse) => {
+    if (!credentialResponse || !credentialResponse.credential) {
+      setError('Google authentication failed. Please try again.');
+      return;
+    }
+  
+    console.log("Google login initiated...");
+  
+    setIsLoading(true);
+    setError(null);
+  
     try {
-      const res = await fetch("http://localhost:5000/api/users/google", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
+      const response = await fetch('http://localhost:5000/api/auth/google-login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token: credentialResponse.credential }),
       });
-    
-      const data = await res.json();
-      
-      // Store token and user email
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("userEmail", data.email);
-
-      navigate("/"); // Redirect to homepage
-      window.location.reload(); // Refresh session
+  
+      console.log("Response received:", response);
+  
+      // Check for errors before parsing JSON
+      if (response.status === 404) {
+        throw new Error('No account found for this Google email. Please sign up first.');
+      }
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || 'Google login failed');
+      }
+  
+      const data = await response.json();
+      console.log("Parsed response:", data);
+  
+      // Ensure valid token and user data
+      if (!data?.token || !data?.user) {
+        throw new Error('Invalid server response');
+      }
+  
+      // Store token and user info in localStorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+  
+      console.log("User logged in:", data.user);
+  
+      // Call login function to update navbar state
+      login({
+        email: data.user.email,
+        firstName: data.user.firstName,
+        lastName: data.user.lastName,
+        token: data.token
+      });
+  
+      console.log("Login state updated, redirecting...");
+  
+      // Redirect to dashboard or home page
+      navigate('/');
     } catch (err) {
-      setError("Google Login Failed");
+      console.error('Google Login Error:', err);
+      setError(err.message || 'Google login failed. Please try again.');
+    } finally {
+      console.log("Stopping loading...");
+      setIsLoading(false);
     }
   };
+  
+  
+  
+  
 
   return (
     <div className="login-container">
       {/* Background animation elements */}
-      <div className="bg-animation">
-        <div className="bg-element element-1"></div>
-        <div className="bg-element element-2"></div>
-        <div className="bg-element element-3"></div>
-        <div className="bg-element element-4"></div>
-        
-        <div className="decor-element decor-1"></div>
-        <div className="decor-element decor-2"></div>
-        <div className="decor-element decor-3"></div>
-        <div className="decor-element decor-4"></div>
-        <div className="decor-element decor-5"></div>
-    
-        <div className="bg-gradient"></div>
+      <div class="bg-animation">
+      <div class="bg-element element-1"></div>
+      <div class="bg-element element-2"></div>
+      <div class="bg-element element-3"></div>
+      <div class="bg-element element-4"></div>
+      
+      <div class="decor-element decor-1"></div>
+      <div class="decor-element decor-2"></div>
+      <div class="decor-element decor-3"></div>
+      <div class="decor-element decor-4"></div>
+      <div class="decor-element decor-5"></div>
+  
+  <div class="bg-gradient"></div>
       </div>
 
       <div className={`login-card ${animateElements ? 'animate-in' : ''}`}>
@@ -111,10 +204,11 @@ const LoginPage = () => {
           <Users size={18} className={`float-icon icon-5 ${animateElements ? 'animate' : ''}`} />
         </div>
 
-        {/* Error Message */}
+        {/* Error Message Display */}
         {error && (
-          <div className="error-message">
-            {error}
+          <div className="error-container">
+            <AlertCircle size={18} className="error-icon" />
+            <p className="error-message">{error}</p>
           </div>
         )}
 
@@ -155,6 +249,8 @@ const LoginPage = () => {
             </button>
             <div className="focus-indicator"></div>
           </div>
+
+          
 
           <div className="form-options">
             <div className="remember-me">
@@ -210,15 +306,15 @@ const LoginPage = () => {
           </div>
 
           <div className="social-buttons">
-            <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-              <GoogleLogin 
-                onSuccess={handleGoogleLogin} 
-                onError={() => setError("Google Login Failed")}
-                theme="outline"
-                size="large"
-                shape="pill"
-              />
-            </GoogleOAuthProvider>
+            <GoogleLogin
+              onSuccess={handleGoogleLogin}
+              onError={() => {
+                setError('Google login failed');
+              }}
+              text="signin_with"
+              shape="rectangular"
+              theme="outline"
+            />
           </div>
         </div>
 

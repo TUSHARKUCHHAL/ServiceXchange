@@ -1,122 +1,176 @@
-import { useState } from "react";
-import "./ForgotPassword.css";
+import React, { useState, useEffect } from 'react';
+import { Mail, ArrowLeft, AlertCircle, Heart, Users, Phone } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
+import './Login.css'; // Reusing the same styling
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+  const [animateElements, setAnimateElements] = useState(false);
+  const navigate = useNavigate();
 
-  const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
+  useEffect(() => {
+    // Trigger animation on load
+    setTimeout(() => setAnimateElements(true), 500);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
-
-    if (!validateEmail(email)) {
-      setError("Please enter a valid email address");
+    setIsLoading(true);
+    setError('');
+  
+    if (!email || !email.includes('@')) {
+      setError('Please enter a valid email address');
+      setIsLoading(false);
       return;
     }
-
-    setIsLoading(true);
-
+  
     try {
-      const response = await fetch("http://localhost:5000/api/users/forgot-password", {
-        method: "POST",
+      const response = await fetch('http://localhost:5000/api/auth/forgot-password', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email }),
       });
-
+  
       const data = await response.json();
-
+      console.log("Backend Response:", data); // 🔍 Debugging Line
+  
       if (!response.ok) {
-        throw new Error(data.message || "Failed to send reset email");
+        throw new Error(data.message || 'Failed to send reset email');
       }
-
-      setSuccess("Password reset link has been sent to your email");
-      setEmail("");
-    } catch (error) {
-      setError(error.message || "An error occurred while sending the reset link");
+  
+      setSuccess(true);
+    } catch (err) {
+      console.error('Forgot Password Error:', err);
+      setError(err.message || 'An error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   return (
-    <div className="forgot-password-container">
-      <div className="forgot-password-card">
-        <div className="card-header">
-          <h2>Forgot Password</h2>
-          <p>Enter your email address and we'll send you a link to reset your password.</p>
+    <div className="login-container">
+      {/* Background animation elements */}
+      <div className="bg-animation">
+        <div className="bg-element element-1"></div>
+        <div className="bg-element element-2"></div>
+        <div className="bg-element element-3"></div>
+        <div className="bg-element element-4"></div>
+
+        <div className="decor-element decor-1"></div>
+        <div className="decor-element decor-2"></div>
+        <div className="decor-element decor-3"></div>
+        <div className="decor-element decor-4"></div>
+        <div className="decor-element decor-5"></div>
+
+        <div className="bg-gradient"></div>
+      </div>
+
+      <div className={`login-card ${animateElements ? 'animate-in' : ''}`}>
+        {/* Logo and Title */}
+        <div className="logo-container">
+          <div className="logo-wrapper">
+            <Heart size={36} className="logo-icon" />
+          </div>
+          <h1 className="title">ServiceXchange</h1>
+          <p className="subtitle">Reset your password</p>
         </div>
-        
-        <form onSubmit={handleSubmit} className="forgot-password-form">
-          <div className="form-group">
-            <label htmlFor="email">Email address</label>
-            <div className="input-wrapper">
+
+        {/* Floating icons */}
+        <div className="floating-icons">
+          <Users size={20} className={`float-icon icon-1 ${animateElements ? 'animate' : ''}`} />
+          <Heart size={18} className={`float-icon icon-2 ${animateElements ? 'animate' : ''}`} />
+          <Phone size={20} className={`float-icon icon-3 ${animateElements ? 'animate' : ''}`} />
+          <Heart size={16} className={`float-icon icon-4 ${animateElements ? 'animate' : ''}`} />
+          <Users size={18} className={`float-icon icon-5 ${animateElements ? 'animate' : ''}`} />
+        </div>
+
+        {/* Error Message Display */}
+        {error && (
+          <div className="error-container">
+            <AlertCircle size={18} className="error-icon" />
+            <p className="error-message">{error}</p>
+          </div>
+        )}
+
+        {/* Success Message */}
+        {success ? (
+          <div className="success-container">
+            <div className="success-message">
+              <h3>Check your email</h3>
+              <p>We've sent a password reset link to your email address. Please check your inbox and follow the instructions.</p>
+              <button
+                className="submit-button"
+                onClick={() => navigate('/login')}
+                style={{ marginTop: '20px' }}
+              >
+                Return to Login
+              </button>
+            </div>
+          </div>
+        ) : (
+          <form className="login-form" onSubmit={handleSubmit}>
+            <div className="input-group">
+              <div className="input-icon">
+                <Mail size={20} />
+              </div>
               <input
-                id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@example.com"
-                disabled={isLoading}
                 required
-                aria-describedby={error ? "error-message" : undefined}
+                className="input-field"
+                placeholder="Enter your email address"
               />
-              <svg 
-                className="email-icon" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2"
+              <div className="focus-indicator"></div>
+            </div>
+
+            <div className="submit-container">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="submit-button"
               >
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                <path d="M22 6l-10 7L2 6" />
-              </svg>
+                <span className="button-ripple"></span>
+                {isLoading ? (
+                  <svg className="loading-spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="spinner-track" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="spinner-path" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                ) : (
+                  "Send Reset Link"
+                )}
+              </button>
             </div>
+          </form>
+        )}
+
+        <div className="register-prompt">
+          <Link to="/login" className="back-to-login">
+            <ArrowLeft size={16} style={{ marginRight: '5px' }} />
+            Back to Login
+          </Link>
+        </div>
+
+        {/* Stats */}
+        <div className="service-stats">
+          <p>Connecting services since 2023</p>
+          <div className="stats-container">
+            <span className="stat-item">
+              <Users size={12} className="stat-icon" />
+              5,000+ Users
+            </span>
+            <span className="stat-item">
+              <Heart size={12} className="stat-icon" />
+              15,000+ Services
+            </span>
           </div>
-
-          {error && (
-            <div className="alert error" role="alert" id="error-message">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="12" />
-                <line x1="12" y1="16" x2="12" y2="16" />
-              </svg>
-              {error}
-            </div>
-          )}
-
-          {success && (
-            <div className="alert success" role="alert">
-              {success}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={isLoading || !email}
-            className="submit-button"
-          >
-            {isLoading ? (
-              <>
-                <svg className="spinner" viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="4" />
-                </svg>
-                Sending...
-              </>
-            ) : (
-              "Send Reset Link"
-            )}
-          </button>
-        </form>
+        </div>
       </div>
     </div>
   );

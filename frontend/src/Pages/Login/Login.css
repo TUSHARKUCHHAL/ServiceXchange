@@ -556,153 +556,89 @@
   }
 }
 
-/* OTP Modal Styles */
-.login-container .otp-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+/* Error message styling */
+.login-container .error-container {
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 100;
-  backdrop-filter: blur(5px);
-  animation: fadeIn 0.3s ease-out;
+  background-color: rgba(254, 226, 226, 0.8);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border-left: 4px solid #ef4444;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-.login-container .otp-box {
-  background-color: white;
-  width: 90%;
-  max-width: 400px;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transform: scale(0.9);
-  opacity: 0;
-  animation: popIn 0.4s ease-out forwards;
+.login-container .error-icon {
+  color: #ef4444;
+  margin-right: 10px;
+  flex-shrink: 0;
 }
 
-.login-container .otp-box h2 {
-  color: #333;
-  margin-bottom: 1.5rem;
-  font-size: 1.25rem;
-  font-weight: 700;
+.login-container .error-message {
+  color: #b91c1c;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.4;
 }
 
-.login-container .otp-box input {
-  width: 100%;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  background-color: #f9f9f9;
-  border: none;
-  border-radius: 0.75rem;
-  font-size: 1rem;
-  text-align: center;
-  letter-spacing: 0.1em;
-  transition: all 0.3s;
+.login-container .input-error {
+  border-color: #ef4444 !important;
 }
 
-.login-container .otp-box input:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #e74c3c;
-  background-color: #fff;
+.login-container .input-error:focus {
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important;
 }
 
-.login-container .otp-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-}
-
-.login-container .otp-box .verify-button {
-  margin-top: auto;
-  position: relative;
-  width: 100%;
-  height: 78%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-  border: none;
-  border-radius: 0.75rem;
-  background-color: #e74c3c;
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  overflow: hidden;
-  transition: background-color 0.3s;
-}
-
-.login-container .otp-box .verify-button:hover {
-  background-color: #c0392b;
-}
-
-.login-container .otp-box .verify-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3);
-}
-
-.login-container .otp-box .button-ripple {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%);
-  transition: all 0.5s ease-out;
-}
-
-.login-container .otp-box .verify-button:hover .button-ripple {
-  width: 300px;
-  height: 300px;
-}
-
-.login-container .otp-box .cancel-button {
-  width: 100%;
-  padding: 1rem;
-  border: 2px solid #e74c3c;
-  border-radius: 0.75rem;
-  background-color: white;
-  color: #e74c3c;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.login-container .otp-box .cancel-button:hover {
-  background-color: #f8f8f8;
-}
-
-/* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes popIn {
-  0% {
-    transform: scale(0.9);
+  from {
     opacity: 0;
+    transform: translateY(-10px);
   }
-  70% {
-    transform: scale(1.02);
-    opacity: 0.7;
-  }
-  100% {
-    transform: scale(1);
+  to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* Responsive adjustments */
-@media (max-width: 640px) {
-  .login-container .otp-box {
-    width: 95%;
-    padding: 1.5rem;
-  }
+.login-container .success-container {
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: rgba(0, 200, 83, 0.1);
+  border: 1px solid rgba(0, 200, 83, 0.3);
+  text-align: center;
+}
+
+.login-container .success-message h3 {
+  color: #00c853;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.login-container .success-message p {
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.login-container .back-to-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6366f1;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.login-container .back-to-login:hover {
+  color: #4f46e5;
+  text-decoration: underline;
+}
+
+.login-container .password-requirements {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: -10px;
+  margin-bottom: 15px;
+  padding-left: 5px;
 }

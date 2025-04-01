@@ -493,11 +493,11 @@
   font-size: 0.875rem;
 }
 
-.signup-container .social-buttons {
-  /* display: grid;
+/* .signup-container .social-buttons {
+  display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;*/
-}
+  gap: 0.75rem;
+} */
 
 .signup-container .social-button {
   display: inline-flex;
@@ -550,126 +550,120 @@
   color: #e74c3c;
 }
 
-/* OTP Modal Styles */
-.signup-container .otp-modal {
+.signup-container .otp-popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
-  backdrop-filter: blur(5px);
+  z-index: 1000;
   animation: fadeIn 0.3s ease-out;
 }
 
-.signup-container .otp-box {
-  background-color: white;
-  width: 90%;
+.signup-container .otp-popup {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  width: 100%;
   max-width: 400px;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transform: scale(0.9);
-  opacity: 0;
-  animation: popIn 0.4s ease-out forwards;
-}
-
-.signup-container .otp-box h2 {
-  color: #333;
-  margin-bottom: 1.5rem;
-  font-size: 1.25rem;
-  font-weight: 700;
-}
-
-.signup-container .otp-box input {
-  width: 100%;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  background-color: #f9f9f9;
-  border: none;
-  border-radius: 0.75rem;
-  font-size: 1rem;
-  text-align: center;
-  letter-spacing: 0.1em;
-  transition: all 0.3s;
-}
-
-.signup-container .otp-box input:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #e74c3c;
-  background-color: #fff;
-}
-
-.signup-container .otp-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-}
-
-.signup-container .otp-box .verify-button {
-  margin-top: auto;
   position: relative;
-  width: 100%;
-  height: 78%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  animation: slideUp 0.4s ease-out;
+}
+
+.signup-container .close-popup {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s;
+}
+
+.signup-container .close-popup:hover {
+  color: #333;
+}
+
+.signup-container .otp-timer {
+  text-align: center;
+  color: #666;
+  margin: 15px 0;
+  font-weight: bold;
+}
+
+.signup-container .resend-otp {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.signup-container .resend-otp button {
+  background: none;
+  border: none;
+  color: #3498db;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.signup-container .resend-otp button:disabled {
+  color: #888;
+  text-decoration: none;
+  cursor: not-allowed;
+}
+
+.signup-container .input-field.has-error {
+  border-color: #e53e3e;
+  box-shadow: 0 0 0 1px #e53e3e;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0); 
+  }
+}
+
+.signup-container .google-signup {
+  margin: 20px 0;
   display: flex;
   justify-content: center;
+}
+
+/* Adjust social buttons section if needed */
+.signup-container .social-signup {
+  margin-top: 10px;
+}
+
+.signup-container .error-message {
+  display: flex;
   align-items: center;
-  padding: 1rem;
-  border: none;
-  border-radius: 0.75rem;
-  background-color: #e74c3c;
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  overflow: hidden;
-  transition: background-color 0.3s;
+  gap: 8px;
+  color: #e53e3e;
+  background-color: rgba(229, 62, 62, 0.1);
+  padding: 10px;
+  border-radius: 6px;
+  margin-top:3px;
+  margin-bottom: 16px;
+  border-left: 4px solid #ef4444;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-.signup-container .otp-box .verify-button:hover {
-  background-color: #c0392b;
-}
-
-.signup-container .otp-box .verify-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3);
-}
-
-.signup-container .otp-box .button-ripple {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%);
-  transition: all 0.5s ease-out;
-}
-
-.signup-container .otp-box .verify-button:hover .button-ripple {
-  width: 300px;
-  height: 300px;
-}
-
-.signup-container .otp-box .cancel-button {
-  width: 100%;
-  padding: 1rem;
-  border: 2px solid #e74c3c;
-  border-radius: 0.75rem;
-  background-color: white;
-  color: #e74c3c;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.signup-container .otp-box .cancel-button:hover {
-  background-color: #f8f8f8;
+.error-message svg {
+  flex-shrink: 0;
 }
 
 
@@ -686,10 +680,5 @@
   
   .signup-container .social-buttons {
     grid-template-columns: 1fr;
-  }
-
-  .login-container .otp-box {
-    width: 95%;
-    padding: 1.5rem;
   }
 }
