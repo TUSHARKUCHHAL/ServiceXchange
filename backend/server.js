@@ -6,6 +6,8 @@ const connectDB = require('./config/db');
 const bloodRequestRoutes = require("./routes/bloodRequestRoutes");
 const donorRoutes = require("./routes/donorRoutes");
 const verificationRoutes = require('./routes/verificationRoutes');
+const restaurantRoutes = require('./routes/restaurantRoutes');
+
 
 // Connect to database
 connectDB();
@@ -22,6 +24,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use("/api/blood", bloodRequestRoutes);
 app.use("/api/donors", donorRoutes);
 app.use('/api/verification', verificationRoutes);
+app.use('/api/restaurants', restaurantRoutes);
 
 
 // Error handling middleware
