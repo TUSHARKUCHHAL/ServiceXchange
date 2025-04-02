@@ -10,6 +10,7 @@ const ManageRequests = () => {
   const [verificationError, setVerificationError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(true);
+  const [sendingOtp, setSendingOtp] = useState(false);
 
   // API base URL
   const API_BASE_URL = process.env.REACT_APP_API_URL;
@@ -35,13 +36,7 @@ const ManageRequests = () => {
           if (req.status === 'pending') return true;
           
           // Include confirmed requests
-          if (req.status === 'confirmed') {
-            // Check if it's been less than 24 hours since confirmation
-            const confirmDate = new Date(req.confirmationDate || req.updatedAt);
-            const now = new Date();
-            const hoursDifference = (now - confirmDate) / (1000 * 60 * 60);
-            return true; // Always show confirmed requests (visibility handled in UI)
-          }
+          if (req.status === 'confirmed') return true;
           
           // Include fulfilled requests that are less than 24 hours old
           if (req.status === 'fulfilled') {
@@ -68,7 +63,7 @@ const ManageRequests = () => {
     return () => clearInterval(interval);
   }, [API_BASE_URL]);
 
-  // Add this function to check if more donors can be confirmed
+  // Check if more donors can be confirmed
   const canConfirmMoreDonors = (request, donors) => {
     if (!request || request.status === 'fulfilled') return false;
     
@@ -108,6 +103,8 @@ const ManageRequests = () => {
     if (!selectedRequest) return;
     
     try {
+      setSendingOtp(true); // Show the loader when starting to send OTP
+      
       const response = await fetch(`${API_BASE_URL}/api/verification/send-otp`, {
         method: 'POST',
         headers: {
@@ -132,9 +129,11 @@ const ManageRequests = () => {
       console.error('Error sending OTP:', error);
       setVerificationError('Failed to send OTP. Please try again.');
       setTimeout(() => setVerificationError(''), 5000);
+    } finally {
+      setSendingOtp(false); // Hide the loader when done, regardless of success or failure
     }
   };
-
+  
   // Verify OTP and confirm donor
   const handleConfirmDonor = async (donorId) => {
     if (!selectedRequest || !otp) {
@@ -186,9 +185,6 @@ const ManageRequests = () => {
         console.error('Response not OK:', confirmResponse.status, errorText);
         throw new Error(`Failed to confirm donor: ${confirmResponse.status}`);
       }
-      
-      // The backend now handles status changes automatically
-      // No need to update the request status manually
       
       // Update UI status if this is the first confirmed donor
       if (selectedRequest.status === 'pending') {
@@ -271,262 +267,344 @@ const ManageRequests = () => {
     return false;
   };
 
-  // Urgency class for styling
-  const getUrgencyClass = (urgency) => {
-    switch(urgency) {
-      case 'critical': return 'urgency-critical';
-      case 'urgent': return 'urgency-urgent';
-      default: return 'urgency-normal';
-    }
-  };
-
-  // Status class for styling
-  const getStatusClass = (status) => {
-    switch(status) {
-      case 'confirmed': return 'status-confirmed';
-      case 'fulfilled': return 'status-fulfilled';
-      case 'rejected': return 'status-rejected';
-      case 'archived': return 'status-archived';
-      default: return 'status-pending';
-    }
+  // Return donor progress percentage
+  const getDonorProgressPercentage = (request, donors) => {
+    if (!request || !donors.length) return 0;
+    const confirmedDonors = donors.filter(d => d.status === 'confirmed').length;
+    return Math.min(100, Math.round((confirmedDonors / request.unitsRequired) * 100));
   };
 
   return (
     <div className="manage-requests-container">
-      <h1>Manage Blood Requests</h1>
+      <div className="dashboard-header">
+        <h1>Blood Request Management</h1>
+      </div>
       
-      <div className="requests-panel">
-        {loading ? (
-          <div className="loading-spinner">Loading requests...</div>
-        ) : requests.length === 0 ? (
-          <div className="no-requests">No active blood requests found</div>
-        ) : (
-          <div className="requests-list">
+      <div className="dashboard-content">
+        <div className="requests-panel">
+          <div className="panel-header">
             <h2>Active Requests</h2>
-            <ul>
+          </div>
+          
+          {loading ? (
+            <div className="loading-container">
+              <div className="spinner"></div>
+              <p>Loading requests...</p>
+            </div>
+          ) : requests.length === 0 ? (
+            <div className="empty-state">
+              <div className="empty-icon"><i className="fas fa-clipboard-list"></i></div>
+              <h3>No Active Requests</h3>
+              <p>There are no blood requests available at the moment.</p>
+            </div>
+          ) : (
+            <div className="requests-list">
               {requests.map(request => (
-                <li 
+                <div 
                   key={request._id}
-                  className={`request-item ${selectedRequest && selectedRequest._id === request._id ? 'selected' : ''}`}
+                  className={`request-card ${selectedRequest && selectedRequest._id === request._id ? 'selected' : ''}`}
                   onClick={() => handleRequestClick(request)}
                 >
                   <div className="request-header">
-                    <span className={`blood-group ${request.bloodGroup.replace('+', 'pos').replace('-', 'neg')}`}>
+                    <span className={`blood-type ${request.bloodGroup.replace('+', 'pos').replace('-', 'neg')}`}>
                       {request.bloodGroup}
                     </span>
-                    <span className={`urgency-badge ${getUrgencyClass(request.urgency)}`}>
+                    <span className={`urgency-label ${request.urgency}`}>
                       {request.urgency}
                     </span>
                   </div>
                   
-                  <div className="request-details">
-                    <h3>{request.patientName}</h3>
-                    <p>{request.hospitalName}</p>
-                    <p>Units: {request.unitsRequired}</p>
-                    <div className="request-meta">
-                      <span className={`status-badge ${getStatusClass(request.status)}`}>
-                        {request.status}
+                  <h3 className="patient-name">{request.patientName}</h3>
+                  <p className="hospital-name">{request.hospitalName}</p>
+                  <p className="units-required">Units needed: {request.unitsRequired}</p>
+                  
+                  <div className="request-footer">
+                    <span className={`status-label ${request.status}`}>
+                      {request.status}
+                    </span>
+                    {(request.status === 'confirmed' || request.status === 'fulfilled') && (
+                      <span className="time-indicator">
+                        {getTimeRemaining(request)}
                       </span>
-                      {(request.status === 'confirmed' || request.status === 'fulfilled') && (
-                        <span className="time-remaining">
-                          {getTimeRemaining(request)}
-                        </span>
-                      )}
-                    </div>
+                    )}
                   </div>
-                </li>
+                </div>
               ))}
-            </ul>
-          </div>
-        )}
-      </div>
-      
-      <div className="detail-panel">
-        {selectedRequest ? (
-          <div className="request-detail">
-            <h2>Request Details</h2>
-            <div className="request-detail-content">
-              <div className="detail-row">
-                <strong>Patient:</strong> {selectedRequest.patientName}, {selectedRequest.patientAge} years
-              </div>
-              <div className="detail-row">
-                <strong>Blood Group:</strong> {selectedRequest.bloodGroup}
-              </div>
-              <div className="detail-row">
-                <strong>Hospital:</strong> {selectedRequest.hospitalName}
-              </div>
-              <div className="detail-row">
-                <strong>Location:</strong> {selectedRequest.location}
-              </div>
-              <div className="detail-row">
-                <strong>Units Required:</strong> {selectedRequest.unitsRequired}
-              </div>
-              <div className="detail-row">
-                <strong>Urgency:</strong> 
-                <span className={`urgency-badge ${getUrgencyClass(selectedRequest.urgency)}`}>
-                  {selectedRequest.urgency}
-                </span>
-              </div>
-              <div className="detail-row">
-                <strong>Status:</strong> 
-                <span className={`status-badge ${getStatusClass(selectedRequest.status)}`}>
+            </div>
+          )}
+        </div>
+        
+        <div className="detail-panel">
+          {selectedRequest ? (
+            <div className="request-details">
+              <div className="detail-header">
+                <h2>Request Details</h2>
+                <span className={`status-badge large ${selectedRequest.status}`}>
                   {selectedRequest.status}
                 </span>
-                {(selectedRequest.status === 'confirmed' || selectedRequest.status === 'fulfilled') && (
-                  <span className="time-info"> ({getTimeRemaining(selectedRequest)})</span>
-                )}
-              </div>
-              <div className="detail-row">
-                <strong>Posted:</strong> {formatDate(selectedRequest.createdAt)}
-              </div>
-              {selectedRequest.confirmationDate && (
-                <div className="detail-row">
-                  <strong>First Confirmed:</strong> {formatDate(selectedRequest.confirmationDate)}
-                </div>
-              )}
-              {selectedRequest.fulfilledDate && (
-                <div className="detail-row">
-                  <strong>Fulfilled:</strong> {formatDate(selectedRequest.fulfilledDate)}
-                </div>
-              )}
-              <div className="detail-row">
-                <strong>Reason:</strong> {selectedRequest.reason}
-              </div>
-              <div className="detail-row">
-                <strong>Requestor:</strong> {selectedRequest.requestorName} ({selectedRequest.relationToPatient})
-              </div>
-              <div className="detail-row">
-                <strong>Contact:</strong> {selectedRequest.requestorPhone}, {selectedRequest.requestorEmail}
-              </div>
-            </div>
-            
-            <div className="donors-section">
-              <h3>
-                Available Donors
-                {!canRegisterNewDonors(selectedRequest) && (
-                  <span className="registration-closed">
-                    (New registrations closed)
-                  </span>
-                )}
-              </h3>
-              
-              {/* Add this progress indicator */}
-              <div className="donor-progress">
-                <strong>Units Confirmed:</strong> {donors.filter(d => d.status === 'confirmed').length} of {selectedRequest.unitsRequired} required
               </div>
               
-              {donors.length === 0 ? (
-                <p className="no-donors">No donors available for this request yet</p>
-              ) : (
-                <>
-                  {/* Conditional rendering based on confirmation limits */}
-                  {!otpSent && 
-                   (selectedRequest.status === 'pending' || selectedRequest.status === 'confirmed') && 
-                   canRegisterNewDonors(selectedRequest) && 
-                   canConfirmMoreDonors(selectedRequest, donors) ? (
-                    <div className="verification-section">
-                      <p>To confirm a donor, you need to verify your identity as the requestor.</p>
-                      <button onClick={handleSendOTP} className="otp-button">
-                        Send OTP to Email
-                      </button>
+              <div className="detail-content">
+                <div className="detail-section patient-info">
+                  <h3>Patient Information</h3>
+                  <div className="detail-grid">
+                    <div className="detail-item">
+                      <span className="label">Name</span>
+                      <span className="value">{selectedRequest.patientName}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="label">Age</span>
+                      <span className="value">{selectedRequest.patientAge} years</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="label">Blood Group</span>
+                      <span className={`value blood-type ${selectedRequest.bloodGroup.replace('+', 'pos').replace('-', 'neg')}`}>
+                        {selectedRequest.bloodGroup}
+                      </span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="label">Hospital</span>
+                      <span className="value">{selectedRequest.hospitalName}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="label">Location</span>
+                      <span className="value">{selectedRequest.location}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="label">Units Required</span>
+                      <span className="value">{selectedRequest.unitsRequired}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="label">Urgency</span>
+                      <span className={`value urgency-label ${selectedRequest.urgency}`}>
+                        {selectedRequest.urgency}
+                      </span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="label">Reason</span>
+                      <span className="value reason-text">{selectedRequest.reason}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="detail-section requestor-info">
+                  <h3>Requestor Information</h3>
+                  <div className="detail-grid">
+                    <div className="detail-item">
+                      <span className="label">Name</span>
+                      <span className="value">{selectedRequest.requestorName}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="label">Relation</span>
+                      <span className="value">{selectedRequest.relationToPatient}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="label">Phone</span>
+                      <span className="value">{selectedRequest.requestorPhone}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="label">Email</span>
+                      <span className="value">{selectedRequest.requestorEmail}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="detail-section timeline-info">
+                  <h3>Timeline</h3>
+                  <div className="detail-grid">
+                    <div className="detail-item">
+                      <span className="label">Created</span>
+                      <span className="value">{formatDate(selectedRequest.createdAt)}</span>
+                    </div>
+                    {selectedRequest.confirmationDate && (
+                      <div className="detail-item">
+                        <span className="label">First Confirmation</span>
+                        <span className="value">{formatDate(selectedRequest.confirmationDate)}</span>
+                      </div>
+                    )}
+                    {selectedRequest.fulfilledDate && (
+                      <div className="detail-item">
+                        <span className="label">Fulfilled</span>
+                        <span className="value">{formatDate(selectedRequest.fulfilledDate)}</span>
+                      </div>
+                    )}
+                    {(selectedRequest.status === 'confirmed' || selectedRequest.status === 'fulfilled') && (
+                      <div className="detail-item">
+                        <span className="label">Time Remaining</span>
+                        <span className="value time-indicator">{getTimeRemaining(selectedRequest)}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                <div className="detail-section donors-section">
+                  <div className="donors-header">
+                    <h3>Donors</h3>
+                    {!canRegisterNewDonors(selectedRequest) && (
+                      <span className="registration-closed-badge">
+                        New registrations closed
+                      </span>
+                    )}
+                  </div>
+                  
+                  <div className="donor-progress-container">
+                    <div className="progress-text">
+                      <span>{donors.filter(d => d.status === 'confirmed').length} of {selectedRequest.unitsRequired} units confirmed</span>
+                      <span>{getDonorProgressPercentage(selectedRequest, donors)}%</span>
+                    </div>
+                    <div className="progress-bar">
+                      <div 
+                        className="progress-fill" 
+                        style={{width: `${getDonorProgressPercentage(selectedRequest, donors)}%`}}
+                      ></div>
+                    </div>
+                  </div>
+                  
+                  {donors.length === 0 ? (
+                    <div className="empty-state small">
+                      <div className="empty-icon"><i className="fas fa-user"></i></div>
+                      <h4>No Donors Available</h4>
+                      <p>No donors have registered for this request yet.</p>
                     </div>
                   ) : (
-                    !otpSent && 
-                    (selectedRequest.status === 'pending' || selectedRequest.status === 'confirmed') && 
-                    canRegisterNewDonors(selectedRequest) && 
-                    !canConfirmMoreDonors(selectedRequest, donors) && (
-                      <div className="limit-reached-section">
-                        <p className="limit-message">All {selectedRequest.unitsRequired} required units have been confirmed.</p>
-                        <p className="limit-info">No more donors can be confirmed for this request.</p>
-                      </div>
-                    )
-                  )}
-                  
-                  {otpSent && 
-                   (selectedRequest.status === 'pending' || selectedRequest.status === 'confirmed') && 
-                   canRegisterNewDonors(selectedRequest) && (
-                    <div className="otp-section">
-                      <p>Please enter the OTP sent to {selectedRequest.requestorEmail}</p>
-                      <input
-                        type="text"
-                        placeholder="Enter OTP"
-                        value={otp}
-                        onChange={(e) => setOtp(e.target.value)}
-                        className="otp-input"
-                      />
-                    </div>
-                  )}
-                  
-                  {verificationError && (
-                    <div className="error-message">{verificationError}</div>
-                  )}
-                  
-                  {successMessage && (
-                    <div className="success-message">{successMessage}</div>
-                  )}
-                  
-                  <ul className="donors-list">
-                    {donors.map(donor => (
-                      <li key={donor._id} className={`donor-item ${donor.status}`}>
-                        <div className="donor-info">
-                          <h4>{donor.donorName}, {donor.donorAge}</h4>
-                          <p>Blood Group: {donor.bloodGroup}</p>
-                          <p>Phone: {donor.donorPhone}</p>
-                          <p>Previous Donations: {donor.hasDonatedBefore}</p>
-                          {donor.hasDonatedBefore === 'yes' && donor.lastDonationDate && (
-                            <p>Last Donation: {new Date(donor.lastDonationDate).toLocaleDateString()}</p>
-                          )}
-                          <p>Status: <span className={`donor-status ${donor.status}`}>{donor.status}</span></p>
-                        </div>
-                        
-                        {otpSent && 
-                         (selectedRequest.status === 'pending' || selectedRequest.status === 'confirmed') && 
-                         donor.status === 'pending' &&
-                         canRegisterNewDonors(selectedRequest) && (
-                          <button 
-                            onClick={() => handleConfirmDonor(donor._id)} 
-                            className="confirm-button"
-                            disabled={!otp}
-                          >
-                            Confirm This Donor
+                    <>
+                      {!otpSent && 
+                       (selectedRequest.status === 'pending' || selectedRequest.status === 'confirmed') && 
+                       canRegisterNewDonors(selectedRequest) && 
+                       canConfirmMoreDonors(selectedRequest, donors) ? (
+                        <div className="verification-section">
+                          <p>To confirm a donor, please verify your identity as the requestor</p>
+                          <button onClick={handleSendOTP} className="otp-button">
+                            Send OTP to Email
                           </button>
-                        )}
-                        
-                        {donor.status === 'confirmed' && (
-                          <div className="confirmed-badge">
-                            ✓ Confirmed
+                        </div>
+                      ) : (
+                        !otpSent && 
+                        (selectedRequest.status === 'pending' || selectedRequest.status === 'confirmed') && 
+                        canRegisterNewDonors(selectedRequest) && 
+                        !canConfirmMoreDonors(selectedRequest, donors) && (
+                          <div className="limit-reached-section">
+                            <div className="success-icon"><i className="fas fa-check"></i></div>
+                            <p>All {selectedRequest.unitsRequired} required units have been confirmed.</p>
                           </div>
-                        )}
-                      </li>
-                    ))}
+                        )
+                      )}
+                      
+                      {otpSent && 
+                       (selectedRequest.status === 'pending' || selectedRequest.status === 'confirmed') && 
+                       canRegisterNewDonors(selectedRequest) && (
+                        <div className="otp-section">
+                          <p>Enter the verification code sent to {selectedRequest.requestorEmail}</p>
+                          <input
+                            type="text"
+                            placeholder="Enter OTP"
+                            value={otp}
+                            onChange={(e) => setOtp(e.target.value)}
+                            className="otp-input"
+                            maxLength="6"
+                          />
+                        </div>
+                      )}
+                      
+                      {verificationError && (
+                        <div className="message error">{verificationError}</div>
+                      )}
+                      
+                      {successMessage && (
+                        <div className="message success">{successMessage}</div>
+                      )}
+                      
+                      <div className="donors-grid">
+                        {donors.map(donor => (
+                          <div key={donor._id} className={`donor-card ${donor.status}`}>
+                            <div className="donor-info">
+                              <h4>{donor.donorName}</h4>
+                              <div className="donor-meta">
+                                <span className="donor-age">{donor.donorAge} years</span>
+                                <span className={`donor-blood ${donor.bloodGroup.replace('+', 'pos').replace('-', 'neg')}`}>
+                                  {donor.bloodGroup}
+                                </span>
+                              </div>
+                              
+                              <div className="donor-details">
+                                <div className="donor-detail">
+                                  <span className="detail-icon"><i className="fas fa-mobile-alt"></i></span>
+                                  <span>{donor.donorPhone}</span>
+                                </div>
+                                <div className="donor-detail">
+                                  <span className="detail-icon"><i className="fas fa-syringe"></i></span>
+                                  <span>Previous donations: {donor.hasDonatedBefore}</span>
+                                </div>
+                                {donor.hasDonatedBefore === 'yes' && donor.lastDonationDate && (
+                                  <div className="donor-detail">
+                                    <span className="detail-icon"><i className="fas fa-calendar-alt"></i></span>
+                                    <span>Last donation: {new Date(donor.lastDonationDate).toLocaleDateString()}</span>
+                                  </div>
+                                )}
+                              </div>
+                              
+                              <div className="donor-status-bar">
+                                <span className={`donor-status-indicator ${donor.status}`}>
+                                  {donor.status}
+                                </span>
+                              </div>
+                            </div>
+                            
+                            {otpSent && 
+                             (selectedRequest.status === 'pending' || selectedRequest.status === 'confirmed') && 
+                             donor.status === 'pending' &&
+                             canRegisterNewDonors(selectedRequest) && (
+                              <button 
+                                onClick={() => handleConfirmDonor(donor._id)} 
+                                className="confirm-button"
+                                disabled={!otp}
+                              >
+                                Confirm Donor
+                              </button>
+                            )}
+                            
+                            {donor.status === 'confirmed' && (
+                              <div className="donor-confirmed-badge">
+                                <span className="check-icon"><i className="fas fa-check"></i></span> Confirmed
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="welcome-screen">
+              <div className="welcome-icon"><i className="fas fa-tint"></i></div>
+              <h2>Blood Request Management</h2>
+              <p>Select a request from the list to view details and manage donors.</p>
+              
+              <div className="info-cards">
+                <div className="info-card">
+                  <h3>Request Lifecycle</h3>
+                  <ul>
+                    <li><strong>Pending:</strong> Initial state, awaiting donor confirmation</li>
+                    <li><strong>Confirmed:</strong> At least one donor confirmed, active for 24 hours</li>
+                    <li><strong>Fulfilled:</strong> Visible for 24 hours after fulfillment</li>
                   </ul>
-                </>
-              )}
+                </div>
+                
+                <div className="info-card">
+                  <h3>Quick Instructions</h3>
+                  <ul>
+                    <li>Click any request to see its full details</li>
+                    <li>Only the original requestor can confirm donors</li>
+                    <li>Email verification is required to confirm donors</li>
+                    <li>Donor registration closes 24 hours after first confirmation</li>
+                  </ul>
+                </div>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="no-selection">
-            <h2>Request Management</h2>
-            <p>Select a blood request from the list to see details and manage donors.</p>
-            <div className="instructions">
-              <h3>Request Lifecycle:</h3>
-              <ul>
-                <li><strong>Pending:</strong> Initial state, waiting for donors</li>
-                <li><strong>Confirmed:</strong> At least one donor confirmed, remains active for 24 hours</li>
-                <li><strong>Fulfilled:</strong> 24 hours after first confirmation, visible in management for another 24 hours</li>
-                <li><strong>Archived:</strong> No longer visible in UI, but retained in database</li>
-              </ul>
-              <h3>Instructions:</h3>
-              <ul>
-                <li>Click on any request to view details</li>
-                <li>Only the original requestor can confirm donors</li>
-                <li>Verification via OTP is required to confirm donors</li>
-                <li>New donor registrations close 24 hours after first confirmation</li>
-                <li>Urgent and critical requests are highlighted</li>
-              </ul>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

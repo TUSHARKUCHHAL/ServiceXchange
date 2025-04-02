@@ -6,7 +6,7 @@ const NeedBlood = () => {
     patientName: "",
     patientAge: "",
     bloodGroup: "",
-    hospitalName: "", // Changed from hospitalLocation to match schema
+    hospitalName: "",
     unitsRequired: "",
     requestorName: "",
     requestorEmail: "",
@@ -22,6 +22,8 @@ const NeedBlood = () => {
   const [submitted, setSubmitted] = useState(false);
   const [fieldFocus, setFieldFocus] = useState(null);
   const [animationComplete, setAnimationComplete] = useState(false);
+  const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+  const [locationError, setLocationError] = useState(null);
 
   useEffect(() => {
     // Set animation complete after initial load animations
@@ -71,7 +73,7 @@ const NeedBlood = () => {
           patientName: "",
           patientAge: "",
           bloodGroup: "",
-          hospitalName: "", // Changed from hospitalLocation to match schema
+          hospitalName: "",
           unitsRequired: "",
           requestorName: "",
           requestorEmail: "",
@@ -88,6 +90,70 @@ const NeedBlood = () => {
       alert("Failed to submit request. Check console for details.");
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  // Get user's current location
+  const getCurrentLocation = () => {
+    setIsLoadingLocation(true);
+    setLocationError(null);
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          try {
+            const { latitude, longitude } = position.coords;
+            
+            // Use reverse geocoding to get location name from coordinates
+            const response = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10`
+            );
+            
+            if (!response.ok) {
+              throw new Error("Failed to get location details");
+            }
+            
+            const data = await response.json();
+            
+            // Extract city and state from response
+            const city = data.address.city || data.address.town || data.address.village || "";
+            const state = data.address.state || "";
+            const locationString = city ? (state ? `${city}, ${state}` : city) : "Unknown location";
+            
+            setFormData({ ...formData, location: locationString });
+            setIsLoadingLocation(false);
+          } catch (error) {
+            console.error("Error getting location details:", error);
+            setLocationError("Failed to get location name. Please enter manually.");
+            setIsLoadingLocation(false);
+          }
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+          let errorMsg = "Failed to get your location.";
+          
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              errorMsg = "Location access denied. Please enable location services.";
+              break;
+            case error.POSITION_UNAVAILABLE:
+              errorMsg = "Location information unavailable.";
+              break;
+            case error.TIMEOUT:
+              errorMsg = "Location request timed out.";
+              break;
+            default:
+              errorMsg = "An unknown error occurred.";
+          }
+          
+          setLocationError(errorMsg);
+          setIsLoadingLocation(false);
+        },
+        { timeout: 10000, maximumAge: 60000 }
+      );
+    } else {
+      setLocationError("Geolocation is not supported by this browser.");
+      setIsLoadingLocation(false);
     }
   };
 
@@ -179,16 +245,16 @@ const NeedBlood = () => {
           
           <div className="form-row">
             <div className={getFieldClass("hospitalName")}>
-              <label htmlFor="hospitalName">Hospital Name</label> {/* Changed label */}
+              <label htmlFor="hospitalName">Hospital Name</label>
               <input 
                 type="text" 
-                id="hospitalName" // Changed ID
-                name="hospitalName" // Changed name to match schema
-                value={formData.hospitalName} // Changed to match new state property
-                placeholder="Enter hospital name" // Changed placeholder
+                id="hospitalName"
+                name="hospitalName"
+                value={formData.hospitalName}
+                placeholder="Enter hospital name"
                 required 
                 onChange={handleChange}
-                onFocus={() => handleFocus("hospitalName")} // Changed focus field name
+                onFocus={() => handleFocus("hospitalName")}
                 onBlur={handleBlur}
                 className={animationComplete ? "animated" : ""}
               />
@@ -304,20 +370,37 @@ const NeedBlood = () => {
             </div>
           </div>
           
-          <div className={getFieldClass("location")}>
+          <div className={`${getFieldClass("location")} location-field`}>
             <label htmlFor="location">General Location</label>
-            <input 
-              type="text" 
-              id="location"
-              name="location" 
-              value={formData.location}
-              placeholder="City/Area" 
-              required 
-              onChange={handleChange}
-              onFocus={() => handleFocus("location")} 
-              onBlur={handleBlur}
-              className={animationComplete ? "animated" : ""}
-            />
+            <div className="location-input-wrapper">
+              <input 
+                type="text" 
+                id="location"
+                name="location" 
+                value={formData.location}
+                placeholder="City/Area" 
+                required 
+                onChange={handleChange}
+                onFocus={() => handleFocus("location")} 
+                onBlur={handleBlur}
+                className={`${animationComplete ? "animated" : ""} ${isLoadingLocation ? "loading" : ""}`}
+              />
+              <button 
+                type="button" 
+                className="location-button"
+                onClick={getCurrentLocation}
+                disabled={isLoadingLocation}
+              >
+                {isLoadingLocation ? (
+                  <span className="location-spinner"></span>
+                ) : (
+                  "📍 Get My Location"
+                )}
+              </button>
+            </div>
+            {locationError && (
+              <p className="location-error">{locationError}</p>
+            )}
           </div>
           
           <div className={getFieldClass("reason")}>
