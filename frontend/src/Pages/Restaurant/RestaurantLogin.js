@@ -158,7 +158,7 @@ const RestaurantLogin = () => {
             </div>
 
             <div className="forgot-password">
-              <Link to="/forgot-password" className="text-link">
+              <Link to="/restaurant/forgot-password" className="text-link">
                 Forgot your password?
               </Link>
             </div>
