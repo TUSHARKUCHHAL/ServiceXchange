@@ -83,7 +83,7 @@ router.post('/forgot-password', async (req, res) => {
     await restaurant.save();
 
     // Create reset URL
-    const resetUrl = `${CLIENT_URL}/reset-password/${resetToken}`;
+    const resetUrl = `${CLIENT_URL}/restaurant/reset-password/${resetToken}`;
 
     // Email message
     const mailOptions = {

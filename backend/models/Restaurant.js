@@ -80,6 +80,14 @@ const restaurantSchema = new mongoose.Schema({
         type: Date,
         default: null
       },
+      resetPasswordToken: {
+        type: String,
+        default: undefined
+    },
+    resetPasswordExpires: {
+        type: Date,
+        default: undefined
+    },
     createdAt: {
         type: Date,
         default: Date.now

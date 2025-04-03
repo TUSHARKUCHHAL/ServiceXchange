@@ -72,7 +72,7 @@ const ResetPassword = () => {
       }
 
       // Redirect to login page with success message
-      navigate('/login', { state: { message: 'Password reset successful. Please login with your new password.' } });
+      navigate('/restaurant/login', { state: { message: 'Password reset successful. Please login with your new password.' } });
     } catch (err) {
       setError(err.message || 'An error occurred while resetting your password');
     } finally {
@@ -135,7 +135,7 @@ const ResetPassword = () => {
         </form>
         
         <div className="back-to-login">
-          <Link to="/login">Back to Login</Link>
+          <Link to="/restaurant/login">Back to Login</Link>
         </div>
       </div>
     </div>
