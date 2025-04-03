@@ -72,6 +72,14 @@ const restaurantSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    verificationOtp: {
+        type: String,
+        default: null
+      },
+      otpExpiry: {
+        type: Date,
+        default: null
+      },
     createdAt: {
         type: Date,
         default: Date.now
