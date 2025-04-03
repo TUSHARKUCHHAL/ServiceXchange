@@ -151,13 +151,13 @@ const RestaurantSignUp = () => {
                 break;
                 
             case 'zipCode':
-                const zipRegex = /^\d{5}(-\d{4})?$/;
+                // More flexible zipcode regex that accepts:
+                // - 5 digits (12345)
+                // - 5 digits + 4 digits with hyphen (12345-6789)
+                // - 5 digits + 4 digits without hyphen (123456789)
+                // - Spaces are also allowed (12345 6789)
+                
                 if (!formData.zipCode) {
-                    newErrors.zipCode = 'ZIP code is required';
-                } else if (!zipRegex.test(formData.zipCode)) {
-                    newErrors.zipCode = 'Please enter a valid ZIP code';
-                } else {
-                    newErrors.zipCode = '';
                 }
                 break;
                 
@@ -820,4 +820,4 @@ const RestaurantSignUp = () => {
     );
 };
 
-export default RestaurantSignUp;    
+export default RestaurantSignUp;
