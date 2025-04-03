@@ -31,6 +31,7 @@ import ManageRequests from './Pages/Hospital/ManageRequests';
 import FoodDonationForm from './Pages/Restaurant/FoodDonationForm';
 import MyDonations from './Pages/Restaurant/MyDonation';
 import DonationDetails from './Pages/Restaurant/DonationDetails';
+import EditDonation from './Pages/Restaurant/EditDonation';
 
 
 const App = () => {
@@ -56,6 +57,7 @@ const App = () => {
             <Route path="/restaurant/donate" element={<FoodDonationForm />} />
             <Route path="/restaurant/my-donations" element={<MyDonations />} />
             <Route path="/donations/:id" element={<DonationDetails />} />
+            <Route path="/donations/edit/:id" element={<EditDonation />} />
             <Route path="/hospital" element={<Hospital />} />
             <Route path="/hospital/need-blood" element={<NeedBlood />} />
             <Route path="/hospital/donate-blood" element={<BloodDonation />} />
