@@ -193,7 +193,7 @@ const MyDonations = () => {
           <h1>My Donations</h1>
           <p className="subtitle">Manage and track your food donation listings</p>
         </div>
-        <button className="btn-add" onClick={() => window.location.href = '/donations/donatee'}>
+        <button className="btn-add" onClick={() => window.location.href = '/restaurant/donate'}>
           <i className="fas fa-plus-circle"></i>
           <span className="btn-text">New Donation</span>
         </button>
@@ -306,13 +306,13 @@ const MyDonations = () => {
                   <i className="fas fa-external-link-alt"></i> View Details
                 </button>
                 <div className="action-buttons">
-                  <button 
+                  {/* <button 
                     className="btn-edit"
                     onClick={() => window.location.href = `/donations/edit/${donation._id}`}
                     title="Edit donation"
                   >
                     <i className="fas fa-edit"></i>
-                  </button>
+                  </button> */}
                   <button 
                     className="btn-delete"
                     onClick={() => confirmDelete(donation)}
