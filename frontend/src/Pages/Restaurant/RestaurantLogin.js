@@ -84,7 +84,7 @@ const Login = () => {
           </div>
           
           <div className="forgot-password">
-            <Link to="/forgot-password">Forgot Password?</Link>
+            <Link to="/restaurant/forgot-password">Forgot Password?</Link>
           </div>
           
           <button type="submit" className="login-button" disabled={loading}>
