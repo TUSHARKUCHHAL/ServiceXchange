@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const Restaurant = require('../models/Restaurant');
 const { generateOTP, saveOTP, verifyOTP, sendOTPEmail } = require('../utils/otpUtils');
+const auth = require('../middlewares/AuthenticationMiddleware');
 
 // Route to send OTP
 router.post('/send-otp', async (req, res) => {
@@ -110,5 +111,22 @@ router.post('/verify-otp', async (req, res) => {
         });
     }
 });
+
+// Get restaurant profile
+router.get('/me', auth, async (req, res) => {
+    try {
+      // req.restaurant should be set by your auth middleware
+      const restaurant = await Restaurant.findById(req.restaurant.id).select('-password -verificationOtp -otpExpiry');
+      
+      if (!restaurant) {
+        return res.status(404).json({ message: 'Restaurant not found' });
+      }
+      
+      res.json(restaurant);
+    } catch (error) {
+      console.error('Error fetching restaurant profile:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
 
 module.exports = router;
