@@ -9,12 +9,12 @@
 }
 
 /* Header */
-.servicesHeader {
+.servicesPage .servicesHeader {
   text-align: center;
   margin-bottom: 60px;
 }
 
-.servicesTitle {
+.servicesPage .servicesTitle {
   font-size: 3rem;
   font-weight: 800;
   color: #e74c3c;
@@ -23,7 +23,7 @@
   display: inline-block;
 }
 
-.servicesTitle::after {
+.servicesPage .servicesTitle::after {
   content: '';
   position: absolute;
   bottom: -10px;
@@ -35,7 +35,7 @@
   border-radius: 2px;
 }
 
-.servicesMission {
+.servicesPage .servicesMission {
   font-size: 1.4rem;
   color: #555;
   max-width: 800px;
@@ -43,7 +43,7 @@
   line-height: 1.6;
 }
 
-.servicesSubtitle {
+.servicesPage .servicesSubtitle {
   font-size: 1.1rem;
   color: #777;
   max-width: 700px;
@@ -51,7 +51,7 @@
 }
 
 /* Services Grid */
-.servicesContainer {
+.servicesPage .servicesContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 30px;
@@ -59,7 +59,7 @@
 }
 
 /* Service Cards */
-.serviceCard {
+.servicesPage .serviceCard {
   background: #ffffff;
   padding: 40px 30px;
   border-radius: 16px;
@@ -74,12 +74,12 @@
   height: 100%;
 }
 
-.serviceCard:hover {
+.servicesPage .serviceCard:hover {
   transform: translateY(-15px);
   box-shadow: 0 15px 35px rgba(231, 76, 60, 0.15);
 }
 
-.serviceCard::before {
+.servicesPage .serviceCard::before {
   content: '';
   position: absolute;
   top: 0;
@@ -92,11 +92,11 @@
   transition: transform 0.4s ease;
 }
 
-.serviceCard:hover::before {
+.servicesPage .serviceCard:hover::before {
   transform: scaleX(1);
 }
 
-.serviceIcon {
+.servicesPage .serviceIcon {
   width: 80px;
   height: 80px;
   background-color: rgba(231, 76, 60, 0.1);
@@ -108,12 +108,12 @@
   transition: all 0.3s ease;
 }
 
-.serviceCard:hover .serviceIcon {
+.servicesPage .serviceCard:hover .serviceIcon {
   background-color: rgba(231, 76, 60, 0.2);
   transform: rotateY(180deg);
 }
 
-.serviceCard h2 {
+.servicesPage .serviceCard h2 {
   font-size: 1.8rem;
   font-weight: 700;
   color: #333;
@@ -121,11 +121,11 @@
   transition: color 0.3s ease;
 }
 
-.serviceCard:hover h2 {
+.servicesPage .serviceCard:hover h2 {
   color: #e74c3c;
 }
 
-.serviceCard p {
+.servicesPage .serviceCard p {
   font-size: 1.1rem;
   color: #666;
   line-height: 1.6;
@@ -134,7 +134,7 @@
 }
 
 /* Service Stats */
-.serviceStats {
+.servicesPage .serviceStats {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -143,25 +143,25 @@
   border-top: 1px dashed rgba(0, 0, 0, 0.1);
 }
 
-.stat {
+.servicesPage .stat {
   padding: 0 15px;
   text-align: center;
 }
 
-.statNumber {
+.servicesPage .statNumber {
   font-size: 1.8rem;
   font-weight: 700;
   color: #e74c3c;
   margin-bottom: 5px;
 }
 
-.statLabel {
+.servicesPage .statLabel {
   font-size: 0.9rem;
   color: #777;
 }
 
 /* Impact Section */
-.impactSection {
+.servicesPage .impactSection {
   margin: 80px 0;
   padding: 60px;
   background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(231, 76, 60, 0.05));
@@ -169,7 +169,7 @@
   text-align: center;
 }
 
-.impactTitle {
+.servicesPage .impactTitle {
   font-size: 2.2rem;
   color: #333;
   margin-bottom: 40px;
@@ -178,7 +178,7 @@
   font-weight: 600;
 }
 
-.impactTitle::after {
+.servicesPage .impactTitle::after {
   content: '';
   position: absolute;
   bottom: -10px;
@@ -189,45 +189,45 @@
   background-color: #e74c3c;
 }
 
-.impactGrid {
+.servicesPage .impactGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 30px;
 }
 
-.impactItem {
+.servicesPage .impactItem {
   padding: 20px;
   transition: transform 0.3s ease;
 }
 
-.impactItem:hover {
+.servicesPage .impactItem:hover {
   transform: translateY(-8px);
 }
 
-.impactNumber {
+.servicesPage .impactNumber {
   font-size: 3rem;
   font-weight: 800;
   color: #e74c3c;
   margin-bottom: 10px;
 }
 
-.impactLabel {
+.servicesPage .servicesPage .impactLabel {
   font-size: 1.1rem;
   color: #555;
 }
 
-.testimonialSection {
+.servicesPage .servicesPage .testimonialSection {
   margin: 80px 0;
   text-align: center;
 }
 
-.testimonialTitle {
+.servicesPage .servicesPage .testimonialTitle {
   font-size: 2.2rem;
   color: #333;
   margin-bottom: 40px;
 }
 
-.testimonialContainer {
+.servicesPage .testimonialContainer {
   display: flex;
   overflow-x: hidden;
   scroll-snap-type: x mandatory;
@@ -236,7 +236,7 @@
   margin: 0 -20px;
 }
 
-.testimonialCard {
+.servicesPage .testimonialCard {
   flex: 0 0 calc(33.333% - 30px);
   scroll-snap-align: start;
   background: #fff;
@@ -248,12 +248,12 @@
   position: relative;
 }
 
-.testimonialCard:hover {
+.servicesPage .testimonialCard:hover {
   transform: translateY(-10px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
-.testimonialQuote {
+.servicesPage .testimonialQuote {
   font-size: 1.1rem;
   color: #555;
   font-style: italic;
@@ -261,18 +261,18 @@
   line-height: 1.6;
 }
 
-.testimonialAuthor {
+.servicesPage .testimonialAuthor {
   font-weight: 600;
   color: #333;
 }
 
-.testimonialRole {
+.servicesPage .testimonialRole {
   font-size: 0.9rem;
   color: #777;
 }
 
 /* CTA Section */
-.ctaSection {
+.servicesPage .ctaSection {
   text-align: center;
   margin: 60px 0 20px;
   padding: 40px;
@@ -280,14 +280,14 @@
   border-radius: 20px;
 }
 
-.ctaText {
+.servicesPage .ctaText {
   font-size: 1.6rem;
   color: #333;
   margin-bottom: 30px;
   font-weight: 600;
 }
 
-.ctaButton {
+.servicesPage .ctaButton {
   background: linear-gradient(135deg, #e74c3c, #c0392b);
   color: white;
   padding: 16px 32px;
@@ -299,23 +299,23 @@
   transition: 0.4s;
 }
 
-.ctaButton:hover {
+.servicesPage .ctaButton:hover {
   box-shadow: 0 15px 25px rgba(231, 76, 60, 0.4);
   transform: translateY(-5px);
 }
 
-.partnerSection {
+.servicesPage .partnerSection {
   margin: 80px 0 40px;
   text-align: center;
 }
 
-.partnerTitle {
+.servicesPage .partnerTitle {
   font-size: 2rem;
   color: #333;
   margin-bottom: 40px;
 }
 
-.partnerLogos {
+.servicesPage .partnerLogos {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -323,13 +323,13 @@
   gap: 40px;
 }
 
-.partnerLogo {
+.servicesPage .partnerLogo {
   opacity: 0.7;
   transition: all 0.3s ease;
   filter: grayscale(1);
 }
 
-.partnerogo:hover {
+.servicesPage .partnerogo:hover {
   opacity: 1;
   filter: grayscale(0);
   transform: scale(1.1);
@@ -347,7 +347,7 @@
   }
 }
 
-.fadeIn {
+.servicesPage .fadeIn {
   animation: fadeIn 0.8s ease forwards;
 }
 
@@ -357,21 +357,21 @@
     padding: 60px 20px;
   }
 
-  .servicesTitle {
+  .servicesPage .servicesTitle {
     font-size: 2.5rem;
   }
 }
 
 @media screen and (max-width: 480px) {
-  .servicesTitle {
+  .servicesPage .servicesTitle {
     font-size: 2rem;
   }
 
-  .serviceCard {
+  .servicesPage .serviceCard {
     padding: 30px 20px;
   }
 
-  .impactNumber {
+  .servicesPage .impactNumber {
     font-size: 2.5rem;
   }
 }

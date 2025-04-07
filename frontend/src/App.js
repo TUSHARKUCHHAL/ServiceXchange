@@ -1,6 +1,5 @@
 import React from 'react';
 import Home from './Pages/Home/Home';
-import NGODashboard from './Pages/NGODashboard/NGODashboard';
 import Footer from "./Components/Footer";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './Components/Navbar'; 
@@ -32,6 +31,7 @@ import FoodDonationForm from './Pages/Restaurant/FoodDonationForm';
 import MyDonations from './Pages/Restaurant/MyDonation';
 import DonationDetails from './Pages/Restaurant/DonationDetails';
 import EditDonation from './Pages/Restaurant/EditDonation';
+import DashboardHome from './Pages/NGODashboard/DashboardHome';
 
 
 const App = () => {
@@ -42,7 +42,7 @@ const App = () => {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/NGODashboard" element={<NGODashboard />} />
+    
             <Route path="/TaskList" element={<TaskList />} />
             <Route path='/Contact' element={<Contact />} />
             <Route path="/Services" element={<Services />} />
@@ -67,6 +67,7 @@ const App = () => {
             <Route path="/restaurant/excess-food" element={<ExcessFoodRequest />} />
             <Route path="/volunteer" element={<Volunteer />} />  
             <Route path="/restaurant/volunteer-r" element={<VolunteerRes />} />  
+            <Route path="/ngo-dashboard" element={<DashboardHome />} /> 
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           </Routes>

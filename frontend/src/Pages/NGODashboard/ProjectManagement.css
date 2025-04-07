@@ -1,0 +1,709 @@
+/* ProjectManagement.css */
+/* Main container styles */
+.project-management {
+  font-family: 'Poppins', sans-serif;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  color: #2c3e50;
+}
+
+/* Header styles */
+.project-management .project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.project-management .project-filters {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Stats Cards */
+.project-management .project-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.project-management .stat-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid #ecf0f1;
+}
+
+.project-management .stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.project-management .stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.project-management .stat-total {
+  background-color: #673ab7;
+}
+
+.project-management .stat-active {
+  background-color: #1976d2;
+}
+
+.project-management .stat-completed {
+  background-color: #388e3c;
+}
+
+.project-management .stat-volunteers {
+  background-color: #e74c3c;
+}
+
+.project-management .stat-content h4 {
+  font-size: 1.5rem;
+  margin: 0 0 0.25rem 0;
+  font-weight: 600;
+}
+
+.project-management .stat-content p {
+  margin: 0;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+/* Sort Controls */
+.project-management .sort-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.project-management .sort-controls h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.project-management .sort-options {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.project-management .sort-options span {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.project-management .sort-option {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.project-management .sort-option:hover {
+  background-color: #f8f9fa;
+}
+
+.project-management .sort-option.active {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  font-weight: 500;
+}
+
+.project-management .sort-icon {
+  font-size: 0.8rem;
+}
+
+/* Search input styles */
+.project-management .project-search {
+  position: relative;
+  min-width: 250px;
+}
+
+.project-management .search-input {
+  position: relative;
+}
+
+.project-management .search-icon {
+  position: absolute;
+  left: 1px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.project-management .search-input input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border-radius: 8px;
+  border: 1px solid #ecf0f1;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.project-management .search-input input:focus {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+}
+
+.project-management .clear-search {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+/* Project cards */
+.project-management .grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.project-management .project-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid #ecf0f1;
+}
+
+.project-management .project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.project-management .project-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.project-management .card-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.project-management .project-description {
+  margin: 0 0 1.25rem 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #5d6d7e;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.project-management .project-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.project-management .meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #7f8c8d;
+}
+
+/* Progress bar */
+.project-management .progress-container {
+  margin-top: 1rem;
+}
+
+.project-management .progress-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.project-management .progress-bar {
+  height: 8px;
+  background-color: #ecf0f1;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.project-management .progress-fill {
+  height: 100%;
+  background-color: #e74c3c;
+  border-radius: 4px;
+}
+
+/* Status badges */
+.project-management .status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.project-management .status-active {
+  background-color: rgba(25, 118, 210, 0.15);
+  color: #1976d2;
+}
+
+.project-management .status-completed {
+  background-color: rgba(56, 142, 60, 0.15);
+  color: #388e3c;
+}
+
+.project-management .status-planned {
+  background-color: rgba(103, 58, 183, 0.15);
+  color: #673ab7;
+}
+
+.project-management .status-selected {
+  background-color: #e74c3c;
+  color: white;
+}
+
+/* Button styles */
+.project-management .btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.project-management .btn-primary {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.project-management .btn-primary:hover {
+  background-color: #c0392b;
+}
+
+.project-management .btn-outline {
+  background-color: transparent;
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+}
+
+.project-management .btn-outline:hover {
+  background-color: #e74c3c;
+  color: white;
+}
+
+/* Loading state */
+.project-management .loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+  color: #7f8c8d;
+}
+
+.project-management .loader {
+  border: 4px solid #ecf0f1;
+  border-top: 4px solid #e74c3c;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* No results */
+.project-management .no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+  color: #7f8c8d;
+  text-align: center;
+}
+
+.project-management .no-results h3 {
+  margin: 1rem 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.project-management .no-results p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Project options */
+.project-management .project-options {
+  position: relative;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+}
+
+.project-management .project-options:hover {
+  background-color: #f8f9fa;
+}
+
+.project-management .options-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  min-width: 150px;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.project-management .option {
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.project-management .option:hover {
+  background-color: #f8f9fa;
+}
+
+.project-management .option-delete {
+  color: #e74c3c;
+}
+
+.project-management .option-delete:hover {
+  background-color: rgba(231, 76, 60, 0.1);
+}
+
+/* Modal styles */
+.project-management .modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.project-management .modal {
+  background-color: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+}
+
+.project-management .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.project-management .modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.project-management .close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #7f8c8d;
+}
+
+.project-management .close-btn:hover {
+  color: #e74c3c;
+}
+
+.project-management .modal form {
+  padding: 1.5rem;
+}
+
+.project-management .form-group {
+  margin-bottom: 1.25rem;
+}
+
+.project-management .form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.project-management .form-group input,
+.project-management .form-group select,
+.project-management .form-group textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ecf0f1;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.project-management .form-group input:focus,
+.project-management .form-group select:focus,
+.project-management .form-group textarea:focus {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+  outline: none;
+}
+
+.project-management .form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.project-management .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.project-management .progress-slider {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #ecf0f1;
+  border-radius: 3px;
+  outline: none;
+}
+
+.project-management .progress-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #e74c3c;
+  cursor: pointer;
+}
+
+.project-management .progress-value {
+  margin-left: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.project-management .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Filter modal */
+.project-management .filter-modal {
+  max-width: 500px;
+}
+
+.project-management .filter-sections {
+  padding: 1.5rem;
+}
+
+.project-management .filter-section {
+  margin-bottom: 1.5rem;
+}
+
+.project-management .filter-section h3 {
+  font-size: 1.1rem;
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+}
+
+.project-management .filter-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.project-management .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.project-management .checkbox-label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.project-management .checkbox-custom {
+  position: absolute;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background-color: #ecf0f1;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.project-management .checkbox-label:hover input ~ .checkbox-custom {
+  background-color: #e0e0e0;
+}
+
+.project-management .checkbox-label input:checked ~ .checkbox-custom {
+  background-color: #e74c3c;
+}
+
+.project-management .checkbox-custom:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.project-management .checkbox-label input:checked ~ .checkbox-custom:after {
+  display: block;
+}
+
+.project-management .checkbox-label .checkbox-custom:after {
+  left: 6px;
+  top: 2px;
+  width: 4px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.project-management .progress-range {
+  padding: 0 0.5rem;
+}
+
+.project-management .range-slider {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #ecf0f1;
+  border-radius: 3px;
+  outline: none;
+  margin-bottom: 0.5rem;
+}
+
+.project-management .range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #e74c3c;
+  cursor: pointer;
+}
+
+.project-management .range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #7f8c8d;
+}
+
+.project-management .date-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .project-management .project-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .project-management .project-filters {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .project-management .sort-controls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .project-management .sort-options {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+  
+  .project-management .project-search {
+    width: 100%;
+  }
+  
+  .project-management .form-row {
+    grid-template-columns: 1fr;
+  }
+}
