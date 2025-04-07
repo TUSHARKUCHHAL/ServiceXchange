@@ -159,8 +159,8 @@ const login = async (req, res) => {
       }
     } else {
       // If no password is set, it might mean the user registered via Google
-      return res.status(401).json({ message: 'Please login with Google' });
-    }
+      return res.status(401).json({ message: 'Please login with Google or Set Password using Forget-password' });
+z    }
 
     // Generate JWT token
     const token = generateToken(user);

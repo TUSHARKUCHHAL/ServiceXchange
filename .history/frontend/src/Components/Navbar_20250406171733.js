@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { User } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
-import ProfileDropdown from './ProfileDropdown'; // Import the new component
 import './Navbar.css';
 
 const Navbar = () => {
@@ -70,13 +69,15 @@ const Navbar = () => {
             <Link to="/contact" className="nav-link" onClick={closeMenu}>Contact Us</Link>
           </li>
 
-          {/* Authentication Buttons or Profile Dropdown */}
+          {/* Authentication Buttons */}
           <div className="nav-buttons">
             {user ? (
-              // Desktop view: Show ProfileDropdown component
-              <div className="desktop-profile">
-                <ProfileDropdown />
-              </div>
+              <>
+                <span className="profile">
+                  <User size={20} /> {user.email}
+                </span>
+                <button className="signup-btn" onClick={handleLogout}>Logout</button>
+              </>
             ) : (
               <>
                 <Link 
@@ -96,9 +97,6 @@ const Navbar = () => {
               </>
             )}
           </div>
-          
-          {/* Mobile view: Show logout button directly in menu */}
-         
         </ul>
       </div>
     </nav>

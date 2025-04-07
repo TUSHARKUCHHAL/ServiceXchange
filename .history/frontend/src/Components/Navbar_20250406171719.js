@@ -24,11 +24,7 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu when clicking a link
-  const closeMenu = () => {
-    setIsOpen(false);
-  };
-
+ 
   // Handle logout process
   const handleLogout = () => {
     logout(); // Use logout from AuthContext
@@ -94,15 +90,12 @@ const Navbar = () => {
                   Sign Up
                 </Link>
               </>
-            )}
-          </div>
-          
-          {/* Mobile view: Show logout button directly in menu */}
          
-        </ul>
-      </div>
-    </nav>
-  );
-};
+     
+          
+          
+         
+     
 
+ 
 export default Navbar;
