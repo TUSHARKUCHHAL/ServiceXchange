@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./Services.css"; // Importing CSS module
+import styles from "./Services.module.css"; // Importing CSS module
 import { FaHeartbeat, FaUtensils, FaHandsHelping, FaQuoteLeft } from "react-icons/fa";
 
 const Services = () => {
