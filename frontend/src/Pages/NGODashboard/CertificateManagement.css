@@ -670,7 +670,7 @@
   margin: 0 auto 10px;
 }
 
-.certificate-management .qr-code {
+.certificate-management 3.qr-code {
   width: 80px;
   height: 80px;
 }
