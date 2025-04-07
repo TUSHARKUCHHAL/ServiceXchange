@@ -334,20 +334,20 @@ const About = () => {
       </div>
 
       <div className="testimonial-section animate-on-scroll">
-        <h2 className="section-title">What People Say</h2>
-        <div className="testimonial-container">
-          {testimonials.map((testimonial, index) => (
-            <div key={index} className="testimonial-card">
-              <FaQuoteLeft size={24} color="#e74c3c" style={{ opacity: 0.3, marginBottom: '15px' }} />
-              <p className="testimonial-quote">
-                {testimonial.quote}
-              </p>
-              <p className="testimonial-author">{testimonial.author}</p>
-              <p className="testimonial-role">{testimonial.role}</p>
-            </div>
-          ))}
-        </div>
+  <h2 className="section-title">What People Say</h2>
+  <div className="testimonial-container">
+    {testimonials.map((testimonial, index) => (
+      <div key={index} className="testimonial-card">
+        <FaQuoteLeft size={24} color="#e74c3c" style={{ opacity: 0.3, marginBottom: '15px' }} />
+        <p className="testimonial-quote">
+          {testimonial.quote}
+        </p>
+        <p className="testimonial-author">{testimonial.author}</p>
+        <p className="testimonial-role">{testimonial.role}</p>
       </div>
+    ))}
+  </div>
+</div>
 
       <div className="faq-section animate-on-scroll">
         <h2 className="section-title">Frequently Asked Questions</h2>

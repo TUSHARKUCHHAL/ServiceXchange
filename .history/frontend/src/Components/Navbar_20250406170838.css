@@ -1,0 +1,63 @@
+/* Add these styles to your existing Navbar.css file */
+
+/* Profile dropdown positioning */
+.desktop-profile {
+  display: flex;
+  align-items: center;
+}
+
+/* Hide mobile profile section by default */
+.mobile-profile {
+  display: none;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 1rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.mobile-profile-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.mobile-email {
+  font-size: 14px;
+  color: #333;
+}
+
+.navbar.dark-bg .mobile-email {
+  color: white;
+}
+
+.mobile-logout {
+  margin-top: 10px;
+  width: 80%;
+  max-width: 200px;
+}
+
+/* Media queries for responsive design */
+@media screen and (max-width: 960px) {
+  .desktop-profile {
+    display: none;
+  }
+  
+  .nav-menu.active .mobile-profile {
+    display: flex;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+    animation-delay: 0.7s;
+  }
+}
+
+/* Add any additional styles needed for compatibility with your existing CSS */

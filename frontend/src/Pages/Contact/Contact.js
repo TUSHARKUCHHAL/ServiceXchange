@@ -14,25 +14,46 @@ const Contact = () => {
 
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMessage("");
     
-    // Simulate form submission
-    setTimeout(() => {
-      setSuccessMessage("Thank you for reaching out! Our team will contact you shortly.");
-      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+    try {
+      // Send data to backend API using fetch instead of axios
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+      
+      if (response.ok) {
+        setSuccessMessage("Thank you for reaching out! A confirmation email has been sent to your inbox. Our team will contact you shortly.");
+        setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+      } else {
+        throw new Error("Failed to submit form");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setErrorMessage("There was an error submitting your request. Please try again later.");
+    } finally {
       setLoading(false);
       
-      setTimeout(() => {
-        setSuccessMessage("");
-      }, 5000);
-    }, 1500);
+      // Clear success message after 5 seconds
+      if (successMessage) {
+        setTimeout(() => {
+          setSuccessMessage("");
+        }, 5000);
+      }
+    }
   };
 
   const faqs = [
@@ -143,6 +164,7 @@ const Contact = () => {
             </button>
 
             {successMessage && <p className="success-message">{successMessage}</p>}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
           </form>
         </div>
 
