@@ -1,0 +1,473 @@
+/* VolunteerManagement.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+.volunteer-management {
+  font-family: 'Inter', sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: #333;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Header Styles */
+.volunteer-management .vm-header {
+  margin-bottom: 2rem;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.volunteer-management .vm-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e40af;
+  margin-bottom: 0.5rem;
+}
+
+.volunteer-management .vm-header p {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+/* Controls Section */
+.volunteer-management .vm-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  animation: slideInFromRight 0.6s ease-in-out;
+}
+
+.volunteer-management .search-filter {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+}
+
+.volunteer-management .search-box {
+  position: relative;
+  flex: 1;
+}
+
+.volunteer-management .search-box input {
+  width: 100%;
+  padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.volunteer-management .search-box input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+.volunteer-management .search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+
+.volunteer-management .filter-options select {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 0.9rem;
+  min-width: 150px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.volunteer-management .filter-options select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+.volunteer-management .add-button {
+  padding: 0.75rem 1.25rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.volunteer-management .add-button:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+/* Form Styles */
+.volunteer-management .volunteer-form-container {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  animation: expandForm 0.4s ease-out;
+}
+
+@keyframes expandForm {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+}
+
+.volunteer-management .volunteer-form h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: #1e40af;
+}
+
+.volunteer-management .form-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.volunteer-management .form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.volunteer-management .form-group label {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.volunteer-management .form-group input,.volunteer-management 
+.form-group select {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.volunteer-management .form-group input:focus,.volunteer-management 
+.form-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+.volunteer-management .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.volunteer-management .reset-button {
+  padding: 0.75rem 1.25rem;
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.volunteer-management .reset-button:hover {
+  background-color: #e5e7eb;
+}
+
+.volunteer-management .submit-button {
+  padding: 0.75rem 1.25rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.volunteer-management .submit-button:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+/* Volunteers Table */
+.volunteer-management .volunteers-section {
+  margin-bottom: 2rem;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.volunteer-management .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.volunteer-management .section-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e40af;
+}
+
+.volunteer-management .volunteers-table-container {
+  overflow-x: auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.volunteer-management .volunteers-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.volunteer-management .volunteers-table th, 
+.volunteer-management .volunteers-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.volunteer-management .volunteers-table th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.volunteer-management .volunteers-table th:hover {
+  background-color: #f3f4f6;
+}
+
+.volunteer-management .volunteer-row {
+  transition: all 0.3s ease;
+}
+
+.volunteer-management .volunteer-row:hover {
+  background-color: #f9fafb;
+}
+
+.volunteer-management .status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.volunteer-management .status-active {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.volunteer-management .status-inactive {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.volunteer-management .status-onleave {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.volunteer-management .action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.volunteer-management .edit-button,.volunteer-management 
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.volunteer-management .edit-button:hover,
+.delete-button:hover {
+  transform: scale(1.2);
+}
+
+/* Stats Section */
+.volunteer-management .vm-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  animation: slideInFromBottom 0.8s ease-in-out;
+}
+
+.volunteer-management .stat-card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.volunteer-management .stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.volunteer-management .stat-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.volunteer-management .stat-card p {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e40af;
+  margin: 0;
+}
+
+.volunteer-management .stat-card p:last-child {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+/* Loading State */
+.volunteer-management .loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+}
+
+.volunteer-management .spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #3b82f6;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Notification */
+.volunteer-management .notification {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  animation: slideInFromTop 0.5s ease-in-out;
+}
+
+.volunteer-management .notification.success {
+  background-color: #dcfce7;
+  color: #166534;
+  border-left: 4px solid #16a34a;
+}
+
+.volunteer-management .notification.error {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border-left: 4px solid #dc2626;
+}
+
+.volunteer-management .notification.info {
+  background-color: #dbeafe;
+  color: #1e40af;
+  border-left: 4px solid #2563eb;
+}
+
+.volunteer-management .no-results {
+  font-style: italic;
+  color: #6b7280;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .volunteer-management .vm-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .volunteer-management .search-filter {
+    flex-direction: column;
+  }
+  
+  .volunteer-management .form-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .volunteer-management  .volunteers-table th:nth-child(3),
+  .volunteer-management  .volunteers-table td:nth-child(3),
+  .volunteer-management  .volunteers-table th:nth-child(4),
+  .volunteer-management .volunteers-table td:nth-child(4) {
+    display: none;
+  }
+}

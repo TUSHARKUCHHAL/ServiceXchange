@@ -1,0 +1,380 @@
+
+/* CertificateVerification.css */
+/* Specific styles for the certificate verification component */
+
+.certificate-verification-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+.certificate-verification-container .verification-header {
+  text-align: center;
+  margin-bottom: 40px;
+  animation: fadeDown 0.8s ease-out;
+}
+
+.certificate-verification-container .verification-header h1 {
+  color: #e74c3c;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.certificate-verification-container .verification-header p {
+  color: #555;
+  font-size: 1.1rem;
+}
+
+.certificate-verification-container .verification-form-container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.1);
+  padding: 30px;
+  margin-bottom: 40px;
+  animation: fadeUp 0.8s ease-out;
+}
+
+.certificate-verification-container .verification-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.certificate-verification-container .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.certificate-verification-container .form-group label {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+.certificate-verification-container .form-group input {
+  padding: 12px 16px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.certificate-verification-container .form-group input:focus {
+  outline: none;
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+}
+
+.certificate-verification-container .form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.certificate-verification-container .verify-btn, .reset-btn, .download-btn, .retry-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.certificate-verification-container .verify-btn {
+  background-color: #e74c3c;
+  color: white;
+  flex: 2;
+}
+
+.certificate-verification-container .verify-btn:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+}
+
+.certificate-verification-container .reset-btn {
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #ddd;
+  flex: 1;
+}
+
+.certificate-verification-container .reset-btn:hover {
+  background-color: #e9ecef;
+}
+
+.certificate-verification-container .verify-btn:disabled, .reset-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.certificate-verification-container .error-message {
+  color: #e74c3c;
+  font-size: 0.9rem;
+  margin-top: -10px;
+  animation: shake 0.5s ease-in-out;
+}
+
+.certificate-verification-container .loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px 0;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.certificate-verification-container .loader {
+  border: 4px solid rgba(231, 76, 60, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #e74c3c;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+.certificate-verification-container .verification-result {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  margin-bottom: 40px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  animation: scaleIn 0.5s ease-out;
+}
+
+.certificate-verification-container .verification-result.valid {
+  border-top: 5px solid #2ecc71;
+}
+
+.certificate-verification-container .verification-result.invalid {
+  border-top: 5px solid #e74c3c;
+}
+
+.certificate-verification-container .result-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.certificate-verification-container .verification-badge {
+  width: 80px;
+  height: 80px;
+  background-color: #2ecc71;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  animation: pulse 1.5s infinite;
+}
+
+.certificate-verification-container .verification-badge.invalid {
+  background-color: #e74c3c;
+}
+
+.certificate-verification-container .checkmark, .cross {
+  fill: white;
+  width: 50px;
+  height: 50px;
+}
+
+.certificate-verification-container .result-header h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.certificate-verification-container .certificate-details {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.certificate-verification-container .detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.certificate-verification-container .detail-item:last-child {
+  border-bottom: none;
+}
+
+.certificate-verification-container .detail-label {
+  font-weight: 600;
+  color: #555;
+}
+
+.certificate-verification-container .detail-value {
+  color: #333;
+}
+
+.certificate-verification-container .download-btn {
+  background-color: #2ecc71;
+  color: white;
+  margin-top: 10px;
+}
+
+.certificate-verification-container .download-btn:hover {
+  background-color: #27ae60;
+  transform: translateY(-2px);
+}
+
+.certificate-verification-container .retry-btn {
+  background-color: #e74c3c;
+  color: white;
+  margin-top: 10px;
+}
+
+.certificate-verification-container .retry-btn:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+}
+
+.certificate-verification-container .invalid-message {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+}
+
+.certificate-verification-container .verification-info {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.1);
+  animation: fadeUp 1s ease-out;
+}
+
+.certificate-verification-container .verification-info h3 {
+  color: #e74c3c;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.certificate-verification-container .verification-info ol {
+  margin-left: 20px;
+  margin-bottom: 25px;
+}
+
+.certificate-verification-container .verification-info li {
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.certificate-verification-container .verification-info p {
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(46, 204, 113, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+  .certificate-verification-container  .verification-header h1 {
+    font-size: 2rem;
+  }
+  
+  .certificate-verification-container  .verification-form-container,.certificate-verification-container  .verification-result, .verification-info {
+    padding: 20px;
+  }
+  
+  .certificate-verification-container .form-actions {
+    flex-direction: column;
+  }
+  
+  .certificate-verification-container .verify-btn, .reset-btn {
+    width: 100%;
+  }
+  
+  .certificate-verification-container   .certificate-details {
+    padding: 15px;
+  }
+  
+  .certificate-verification-container  .detail-item {
+    flex-direction: column;
+    gap: 5px;
+  }
+}

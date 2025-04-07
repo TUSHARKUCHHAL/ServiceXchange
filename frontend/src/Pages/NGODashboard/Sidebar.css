@@ -4,21 +4,21 @@
   top: 0;
   left: 0;
   height: 100vh;
-  background-color: white;
-  width: var(--sidebar-width);
-  box-shadow: var(--shadow);
-  transition: width var(--transition-speed) ease;
+  background-color: #ffffff;
+  width: 240px; /* Assuming --sidebar-width is 240px */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  transition: width 0.3s ease;
   z-index: 100;
   display: flex;
   flex-direction: column;
 }
 
 .sidebar.closed {
-  width: var(--sidebar-collapsed-width);
+  width: 70px; /* Assuming --sidebar-collapsed-width is 70px */
 }
 
-.logo-container {
-  height: var(--topbar-height);
+.sidebar .logo-container {
+  height: 60px; /* Assuming --topbar-height is 60px */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,52 +26,52 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.logo-container h2 {
-  color: var(--primary);
+.sidebar .logo-container h2 {
+  color: #e74c3c;
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.sidebar.closed .logo-container h2 {
+.sidebar .sidebar.closed .logo-container h2 {
   display: none;
 }
 
-.menu {
+.sidebar .menu {
   flex: 1;
   padding: 16px 0;
   overflow-y: auto;
 }
 
-.menu-item {
+.sidebar .menu-item {
   display: flex;
   align-items: center;
   padding: 12px 20px;
-  color: var(--dark);
-  transition: all 0.2s ease;
+  color: #333333;
+  transition: all 0.3s ease;
   text-decoration: none;
   margin: 2px 0;
 }
 
-.menu-item:hover {
-  background-color: #f8f9fa;
-  color: var(--primary);
+.sidebar .menu-item:hover {
+  background-color: rgba(231, 76, 60, 0.05);
+  color: #e74c3c;
 }
 
-.menu-item.active {
-  background-color: #f8d7d5; /* Light version of primary color */
-  color: var(--primary);
-  border-left: 3px solid var(--primary);
+.sidebar .menu-item.active {
+  background-color: rgba(231, 76, 60, 0.1); /* Light version of primary color */
+  color: #e74c3c;
+  border-left: 3px solid #e74c3c;
 }
 
-.menu-item .icon {
+.sidebar .menu-item .icon {
   min-width: 36px;
   display: flex;
   justify-content: center;
 }
 
-.menu-item .title {
+.sidebar .menu-item .title {
   margin-left: 12px;
   white-space: nowrap;
   overflow: hidden;
@@ -89,13 +89,13 @@
 
 .sidebar.closed .menu-item.active {
   border-left: none;
-  border-right: 3px solid var(--primary);
+  border-right: 3px solid #e74c3c;
 }
 
-.sidebar-footer {
+.sidebar .sidebar-footer {
   padding: 16px;
   font-size: 0.8rem;
-  color: var(--grey);
+  color: #666666;
   text-align: center;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
 }

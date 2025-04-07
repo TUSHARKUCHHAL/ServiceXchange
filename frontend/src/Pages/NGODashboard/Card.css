@@ -1,20 +1,20 @@
 /* Card.css */
 .stat-card {
   background-color: white;
-  border-radius: var(--border-radius);
+  border-radius: 8px; /* replaced var(--border-radius) with typical value */
   padding: 20px;
   display: flex;
   align-items: center;
-  box-shadow: var(--shadow);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* replaced var(--shadow) */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.stat-card:hover {
+.stat-card .stat-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
-.card-icon {
+.stat-card .card-icon {
   width: 50px;
   height: 50px;
   border-radius: 12px;
@@ -26,51 +26,51 @@
 }
 
 .stat-card.primary .card-icon {
-  background-color: var(--primary);
+  background-color: #e74c3c; /* replaced var(--primary) */
 }
 
 .stat-card.success .card-icon {
-  background-color: var(--success);
+  background-color: #2ecc71; /* replaced var(--success) with common success color */
 }
 
 .stat-card.warning .card-icon {
-  background-color: var(--warning);
+  background-color: #f39c12; /* replaced var(--warning) with common warning color */
 }
 
 .stat-card.info .card-icon {
-  background-color: var(--info);
+  background-color: #3498db; /* replaced var(--info) with common info color */
 }
 
-.card-content {
+.stat-card .card-content {
   flex: 1;
 }
 
-.card-content h3 {
+.stat-card .card-content h3 {
   font-size: 0.9rem;
-  color: var(--grey);
+  color: #6c757d; /* replaced var(--grey) with common grey color */
   margin: 0 0 5px;
   font-weight: 500;
 }
 
-.card-value {
+.stat-card .card-value {
   font-size: 1.75rem;
   font-weight: 600;
-  color: var(--dark);
+  color: #333333; /* replaced var(--dark) from root variables */
   margin: 0;
 }
 
 .stat-card.primary {
-  border-left: 4px solid var(--primary);
+  border-left: 4px solid #e74c3c; /* replaced var(--primary) */
 }
 
 .stat-card.success {
-  border-left: 4px solid var(--success);
+  border-left: 4px solid #2ecc71; /* replaced var(--success) */
 }
 
 .stat-card.warning {
-  border-left: 4px solid var(--warning);
+  border-left: 4px solid #f39c12; /* replaced var(--warning) */
 }
 
 .stat-card.info {
-  border-left: 4px solid var(--info);
+  border-left: 4px solid #3498db; /* replaced var(--info) */
 }

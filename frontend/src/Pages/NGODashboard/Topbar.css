@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   height: var(--topbar-height);
-  background-color: white;
+  background-color: var(--bg-light);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -16,19 +16,19 @@
   transition: margin-left var(--transition-speed) ease;
 }
 
-.content-full .topbar {
+.topbar .content-full .topbar {
   margin-left: var(--sidebar-collapsed-width);
 }
 
-.topbar-left {
+.topbar .topbar-left {
   display: flex;
   align-items: center;
 }
 
-.menu-toggle {
+.topbar .menu-toggle {
   background: none;
   border: none;
-  color: var(--dark);
+  color: var(--dark-text);
   margin-right: 16px;
   cursor: pointer;
   display: flex;
@@ -39,31 +39,31 @@
   transition: background-color 0.2s;
 }
 
-.menu-toggle:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+.topbar .menu-toggle:hover {
+  background-color: var(--hover-bg);
 }
 
-.search-bar {
+.topbar .search-bar {
   position: relative;
   width: 300px;
 }
 
-.search-bar input {
+.topbar .search-bar input {
   width: 100%;
   padding: 8px 12px 8px 36px;
   border-radius: 20px;
-  border: 1px solid #e1e1e1;
+  border: 1px solid var(--border-color);
   font-size: 0.9rem;
   outline: none;
-  transition: all 0.2s;
+  transition: var(--transition);
 }
 
-.search-bar input:focus {
+.topbar .search-bar input:focus {
   border-color: var(--primary-light);
   box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.1);
 }
 
-.search-bar svg {
+.topbar .search-bar svg {
   position: absolute;
   left: 12px;
   top: 50%;
@@ -71,20 +71,20 @@
   color: var(--grey);
 }
 
-.topbar-right {
+.topbar .topbar-right {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
-.notification-wrapper, .user-wrapper {
+.topbar .notification-wrapper, .user-wrapper {
   position: relative;
 }
 
-.notification-bell {
+.topbar .notification-bell {
   background: none;
   border: none;
-  color: var(--dark);
+  color: var(--dark-text);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -95,16 +95,16 @@
   position: relative;
 }
 
-.notification-bell:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+.topbar .notification-bell:hover {
+  background-color: var(--hover-bg);
 }
 
-.notification-badge {
+.topbar .notification-badge {
   position: absolute;
   top: 0;
   right: 0;
-  background-color: var(--primary);
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--light-text);
   font-size: 0.7rem;
   width: 18px;
   height: 18px;
@@ -114,7 +114,7 @@
   justify-content: center;
 }
 
-.user-profile {
+.topbar .user-profile {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -126,39 +126,39 @@
   transition: background-color 0.2s;
 }
 
-.user-profile:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+.topbar .user-profile:hover {
+  background-color: var(--hover-bg);
 }
 
-.avatar {
+.topbar .avatar {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-color: #f1f1f1;
+  background-color: var(--bg-gray);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--dark);
+  color: var(--dark-text);
 }
 
-.user-name {
+.topbar .user-name {
   font-weight: 500;
-  color: var(--dark);
+  color: var(--dark-text);
 }
 
-.dropdown-menu {
+.topbar .dropdown-menu {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
   min-width: 250px;
-  background-color: white;
+  background-color: var(--bg-light);
   border-radius: var(--border-radius);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow);
   z-index: 100;
   animation: fadeIn 0.2s ease-out;
 }
 
-.dropdown-header {
+.topbar .dropdown-header {
   padding: 16px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   display: flex;
@@ -166,101 +166,101 @@
   align-items: center;
 }
 
-.dropdown-header h3 {
+.topbar .dropdown-header h3 {
   margin: 0;
   font-size: 1rem;
 }
 
-.mark-all {
+.topbar .mark-all {
   font-size: 0.8rem;
-  color: var(--primary);
+  color: var(--primary-color);
 }
 
-.notification-list {
+.topbar .notification-list {
   max-height: 300px;
   overflow-y: auto;
 }
 
-.notification-item {
+.topbar .notification-item {
   padding: 12px 16px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
-.notification-item:hover {
-  background-color: #f9f9f9;
+.topbar .notification-item:hover {
+  background-color: var(--bg-gray);
 }
 
-.notification-item.unread {
-  background-color: #f8f8f8;
+.topbar .notification-item.unread {
+  background-color: var(--bg-gray);
   position: relative;
 }
 
-.notification-item.unread::before {
+.topbar .notification-item.unread::before {
   content: '';
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
   width: 3px;
-  background-color: var(--primary);
+  background-color: var(--primary-color);
 }
 
-.notification-text {
+.topbar .notification-text {
   margin: 0;
   font-size: 0.9rem;
   line-height: 1.4;
 }
 
-.notification-time {
+.topbar .notification-time {
   display: block;
   font-size: 0.75rem;
   color: var(--grey);
   margin-top: 4px;
 }
 
-.dropdown-footer {
+.topbar .dropdown-footer {
   padding: 12px;
   text-align: center;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.view-all {
+.topbar .view-all {
   font-size: 0.9rem;
-  color: var(--primary);
+  color: var(--primary-color);
 }
 
-.user-dropdown .dropdown-item {
+.topbar .user-dropdown .dropdown-item {
   padding: 12px 16px;
   display: flex;
   align-items: center;
   gap: 12px;
-  color: var(--dark);
+  color: var(--dark-text);
   text-decoration: none;
   transition: background-color 0.2s;
 }
 
-.user-dropdown .dropdown-item:hover {
-  background-color: #f9f9f9;
+.topbar .user-dropdown .dropdown-item:hover {
+  background-color: var(--bg-gray);
 }
 
-.dropdown-divider {
+.topbar .dropdown-divider {
   height: 1px;
   background-color: rgba(0, 0, 0, 0.05);
   margin: 8px 0;
 }
 
-.dropdown-item.logout {
-  color: var(--primary);
+.topbar .dropdown-item.logout {
+  color: var(--primary-color);
 }
 
 @media (max-width: 768px) {
-  .search-bar {
+  .topbar  .search-bar {
     display: none;
   }
   
-  .user-name {
+  .topbar .user-name {
     display: none;
   }
 }

@@ -32,6 +32,83 @@ const Analytics = () => {
   
   const COLORS = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6'];
   
+  // Download report function
+  const downloadReport = () => {
+    // Get the button element
+    const button = document.querySelector('.report-btn');
+    
+    // Add downloading class
+    button.classList.add('downloading');
+    button.innerHTML = '<span class="download-icon">↓</span> Downloading...';
+    
+    // Simulate download process (replace with actual API call if available)
+    setTimeout(() => {
+      // Create a sample data for the report (in real app, you would generate this from your actual data)
+      const reportData = {
+        title: "NGO Impact Report",
+        date: new Date().toLocaleDateString(),
+        summary: {
+          totalPeopleHelped: 2740,
+          activeVolunteers: 65,
+          eventsCompleted: 24,
+          volunteerHours: 670
+        },
+        details: {
+          monthlyBreakdown: impactData,
+          programCategories: categoryData,
+          volunteerHours: hoursData
+        }
+      };
+      
+      // Convert to JSON string
+      const jsonData = JSON.stringify(reportData, null, 2);
+      
+      // Create blob and download link
+      const blob = new Blob([jsonData], { type: 'application/json' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = 'ngo_impact_report.json';
+      
+      // Append to the body, trigger click and clean up
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      
+      // Show success state
+      button.classList.remove('downloading');
+      button.classList.add('success');
+      button.innerHTML = '✓ Downloaded';
+      
+      // Create and show toast notification
+      const toast = document.createElement('div');
+      toast.className = 'toast-notification';
+      toast.textContent = 'Report downloaded successfully!';
+      document.body.appendChild(toast);
+      
+      // Show the toast after a small delay
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 100);
+      
+      // Hide and remove the toast after 3 seconds
+      setTimeout(() => {
+        toast.classList.add('hide');
+        setTimeout(() => {
+          document.body.removeChild(toast);
+        }, 300);
+      }, 3000);
+      
+      // Reset button after 2 seconds
+      setTimeout(() => {
+        button.classList.remove('success');
+        button.innerHTML = '<span class="download-icon">↓</span> Download Full Report';
+      }, 2000);
+    }, 1500); // Simulate network delay
+  };
+  
   return (
     <div className="analytics-page">
       <div className="page-header">
@@ -128,7 +205,9 @@ const Analytics = () => {
               <li>Total volunteer hours exceeded 670 in June</li>
             </ul>
             <div className="download-report">
-              <button className="report-btn">Download Full Report</button>
+              <button className="report-btn" onClick={downloadReport}>
+                <span className="download-icon">↓</span> Download Full Report
+              </button>
             </div>
           </div>
         </div>

@@ -1,0 +1,323 @@
+/* DocumentCentre.css - Scoped styling for the Document Centre component */
+/* Base color theme: #e74c3c */
+
+/* Ensure CSS doesn't overlap with other pages by using specific class prefixes */
+.doc-centre-container {
+  font-family: 'Roboto', sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  color: #333333;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Header styles */
+.doc-centre-container .doc-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.doc-centre-container .doc-header h1 {
+  color: #e74c3c;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+.doc-centre-container .doc-header h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: #e74c3c;
+  border-radius: 2px;
+}
+
+.doc-centre-container .doc-header p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Controls section */
+.doc-centre-container .doc-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  animation: slideInUp 0.6s ease-out;
+}
+
+.doc-centre-container .doc-search {
+  position: relative;
+}
+
+.doc-centre-container .doc-search-input {
+  width: 100%;
+  padding: 12px 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 30px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.doc-centre-container doc-search-input:focus {
+  outline: none;
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px #f5b7b1;
+}
+
+.doc-centre-container .doc-search-clear {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #999;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.doc-centre-container .doc-search-clear:hover {
+  color: #e74c3c;
+}
+
+.doc-centre-container .doc-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.doc-centre-container .doc-category-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  background-color: #e0e0e0;
+  color: #555;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.doc-centre-container .doc-category-btn:hover {
+  background-color: #d0d0d0;
+}
+
+.doc-centre-container .doc-category-btn.active {
+  background-color: #e74c3c;
+  color: white;
+  box-shadow: 0 2px 4px rgba(231, 76, 60, 0.3);
+}
+
+/* Document table */
+.doc-centre-container .doc-table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.doc-centre-container .doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+}
+
+.doc-centre-container .doc-table th {
+  background-color: #f2f2f2;
+  text-align: left;
+  padding: 14px 20px;
+  font-weight: 600;
+  color: #555;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.doc-centre-container .doc-table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: middle;
+}
+
+.doc-centre-container .doc-item {
+  transition: background-color 0.2s ease;
+}
+
+.doc-centre-container .doc-item:hover {
+  background-color: rgba(231, 76, 60, 0.05);
+}
+
+.doc-centre-container .doc-title {
+  font-weight: 500;
+  color: #333;
+}
+
+.doc-centre-container .doc-category {
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.doc-centre-container .doc-category-forms {
+  background-color: #e8f4fd;
+  color: #3498db;
+}
+
+.doc-centre-container .doc-category-templates {
+  background-color: #e8f8ef;
+  color: #2ecc71;
+}
+
+.doc-centre-container .doc-category-reports {
+  background-color: #fef5e7;
+  color: #f39c12;
+}
+
+.doc-centre-container .doc-category-guidelines {
+  background-color: #f4e8fd;
+  color: #9b59b6;
+}
+
+.doc-centre-container .doc-download-btn {
+  padding: 6px 14px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.doc-centre-container .doc-download-btn:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.doc-centre-container .doc-download-btn:active {
+  transform: translateY(0);
+}
+
+/* Loading state */
+.doc-centre-container .doc-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.doc-centre-container .doc-loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(231, 76, 60, 0.3);
+  border-radius: 50%;
+  border-top-color: #e74c3c;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+.doc-centre-container .doc-loading p {
+  color: #777;
+}
+
+/* Empty state */
+.doc-centre-container .doc-empty {
+  text-align: center;
+  padding: 60px 0;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.doc-centre-container .doc-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  color: #ccc;
+}
+
+.doc-centre-container .doc-empty p {
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.doc-centre-container .doc-reset-btn {
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #e74c3c;
+  border: 2px solid #e74c3c;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.doc-centre-container .doc-reset-btn:hover {
+  background-color: #e74c3c;
+  color: white;
+}
+
+/* Animation for downloading */
+.doc-centre-container .doc-downloading {
+  animation: downloadPulse 1.5s ease;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .doc-centre-container {
+    padding: 1rem;
+  }
+  
+  .doc-centre-container .doc-header h1 {
+    font-size: 2rem;
+  }
+  
+  .doc-centre-container .doc-controls {
+    flex-direction: column;
+  }
+  
+  .doc-centre-container .doc-table th, .doc-table td {
+    padding: 10px 15px;
+  }
+  
+  .doc-centre-container .doc-category-btn {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes downloadPulse {
+  0% { background-color: rgba(231, 76, 60, 0); }
+  50% { background-color: rgba(231, 76, 60, 0.15); }
+  100% { background-color: rgba(231, 76, 60, 0); }
+}
