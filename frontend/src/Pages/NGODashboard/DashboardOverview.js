@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { 
   FaUsers, FaProjectDiagram, FaHandsHelping, 
-  FaPlus, FaCertificate, FaBullhorn 
+  FaPlus, FaCertificate, FaBullhorn, FaCheckCircle
 } from 'react-icons/fa';
 import './DashboardOverview.css';
 
@@ -15,6 +14,8 @@ const DashboardOverview = () => {
   });
 
   const [recentUpdates, setRecentUpdates] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [actionTaken, setActionTaken] = useState(null);
 
   useEffect(() => {
     // Simulate data loading with animation
@@ -25,6 +26,12 @@ const DashboardOverview = () => {
         conductedDrives: 7,
         peopleReached: 1250
       });
+      const animationTimer = setTimeout(() => {
+        const dashboardElement = document.querySelector('.dashboard-overview');
+        if (dashboardElement) {
+          dashboardElement.classList.add('loaded');
+        }
+      }, 100);
 
       setRecentUpdates([
         { id: 1, title: "Food Distribution Drive", time: "2 hours ago", message: "Successfully distributed food packets to 150 people in Riverside area." },
@@ -32,141 +39,223 @@ const DashboardOverview = () => {
         { id: 3, title: "Upcoming Event Reminder", time: "1 day ago", message: "Health Camp scheduled for next Monday. 8 volunteers assigned." },
         { id: 4, title: "Certificate Request", time: "2 days ago", message: "10 certificates issued for volunteers who participated in the Beach Cleanup Drive." }
       ]);
-    }, 300);
+      
+      setIsLoading(false);
+    }, 800);
 
     return () => clearTimeout(timer);
   }, []);
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (custom) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: custom * 0.1, duration: 0.5 }
-    })
+  // Handle button clicks
+  const handleCreateEvent = () => {
+    setActionTaken({
+      type: "event",
+      message: "New event creation initiated",
+      icon: <FaPlus className="action-icon" />
+    });
+    
+    // Add a new event to updates
+    const newUpdate = {
+      id: Date.now(),
+      title: "New Event Created",
+      time: "Just now",
+      message: "Event creation process has been initiated."
+    };
+    
+    setRecentUpdates([newUpdate, ...recentUpdates]);
   };
+
+  const handleAddCertificate = () => {
+    setActionTaken({
+      type: "certificate",
+      message: "Certificate creation started",
+      icon: <FaCertificate className="action-icon" />
+    });
+    
+    // Add certificate update
+    const newUpdate = {
+      id: Date.now(),
+      title: "Certificate Creation",
+      time: "Just now",
+      message: "Certificate generation process has been initiated."
+    };
+    
+    setRecentUpdates([newUpdate, ...recentUpdates]);
+  };
+
+  const handlePostRequirement = () => {
+    setActionTaken({
+      type: "requirement",
+      message: "New requirement posted",
+      icon: <FaBullhorn className="action-icon" />
+    });
+    
+    // Add requirement update
+    const newUpdate = {
+      id: Date.now(),
+      title: "Requirement Posted",
+      time: "Just now",
+      message: "New requirement has been posted for volunteers."
+    };
+    
+    setRecentUpdates([newUpdate, ...recentUpdates]);
+  };
+
+  // Clear action taken notification after 3 seconds
+  useEffect(() => {
+    if (actionTaken) {
+      const timer = setTimeout(() => {
+        setActionTaken(null);
+      }, 3000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [actionTaken]);
+
+  // Skeleton loader for stats cards
+  const SkeletonCard = () => (
+    <div className="skeleton-card">
+      <div className="skeleton-icon"></div>
+      <div className="skeleton-content">
+        <div className="skeleton-title"></div>
+        <div className="skeleton-text"></div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="dashboard-overview">
+      {/* Action Notification */}
+      {actionTaken && (
+        <div className="notification">
+          <div className="notification-icon">
+            {actionTaken.icon}
+          </div>
+          <div className="notification-content">
+            <div className="notification-title">Success!</div>
+            <div className="notification-message">{actionTaken.message}</div>
+          </div>
+        </div>
+      )}
+      
       {/* Stats Cards */}
-      <div className="grid-container">
-        <motion.div 
-          className="card stat-card"
-          variants={cardVariants}
-          initial="hidden"
-          animate="visible"
-          custom={1}
-        >
-          <div className="stat-icon project-icon">
-            <FaProjectDiagram />
-          </div>
-          <div className="stat-content">
-            <h3>{stats.totalProjects}</h3>
-            <p>Total Projects Running</p>
-          </div>
-        </motion.div>
+      <div className="stats-container">
+        {isLoading ? (
+          <>
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </>
+        ) : (
+          <>
+            <div className="stat-card" data-aos="fade-up" data-aos-delay="100">
+              <div className="stat-icon project-icon">
+                <FaProjectDiagram />
+              </div>
+              <div className="stat-content">
+                <h3>{stats.totalProjects}</h3>
+                <p>Total Projects Running</p>
+              </div>
+            </div>
 
-        <motion.div 
-          className="card stat-card"
-          variants={cardVariants}
-          initial="hidden"
-          animate="visible"
-          custom={2}
-        >
-          <div className="stat-icon volunteer-icon">
-            <FaUsers />
-          </div>
-          <div className="stat-content">
-            <h3>{stats.volunteersAssigned}</h3>
-            <p>Volunteers Assigned</p>
-          </div>
-        </motion.div>
+            <div className="stat-card" data-aos="fade-up" data-aos-delay="200">
+              <div className="stat-icon volunteer-icon">
+                <FaUsers />
+              </div>
+              <div className="stat-content">
+                <h3>{stats.volunteersAssigned}</h3>
+                <p>Volunteers Assigned</p>
+              </div>
+            </div>
 
-        <motion.div 
-          className="card stat-card"
-          variants={cardVariants}
-          initial="hidden"
-          animate="visible"
-          custom={3}
-        >
-          <div className="stat-icon drive-icon">
-            <FaHandsHelping />
-          </div>
-          <div className="stat-content">
-            <h3>{stats.conductedDrives}</h3>
-            <p>Drives This Week</p>
-          </div>
-        </motion.div>
+            <div className="stat-card" data-aos="fade-up" data-aos-delay="300">
+              <div className="stat-icon drive-icon">
+                <FaHandsHelping />
+              </div>
+              <div className="stat-content">
+                <h3>{stats.conductedDrives}</h3>
+                <p>Drives This Week</p>
+              </div>
+            </div>
 
-        <motion.div 
-          className="card stat-card"
-          variants={cardVariants}
-          initial="hidden"
-          animate="visible"
-          custom={4}
-        >
-          <div className="stat-icon people-icon">
-            <FaUsers />
-          </div>
-          <div className="stat-content">
-            <h3>{stats.peopleReached.toLocaleString()}</h3>
-            <p>People Reached</p>
-          </div>
-        </motion.div>
+            <div className="stat-card" data-aos="fade-up" data-aos-delay="400">
+              <div className="stat-icon people-icon">
+                <FaUsers />
+              </div>
+              <div className="stat-content">
+                <h3>{stats.peopleReached.toLocaleString()}</h3>
+                <p>People Reached</p>
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Quick Access Buttons */}
-      <motion.div 
-        className="card quick-access"
-        variants={cardVariants}
-        initial="hidden"
-        animate="visible"
-        custom={5}
-      >
-        <div className="card-header">
-          <h3 className="card-title">Quick Actions</h3>
+      <div className="quick-access" data-aos="fade-up" data-aos-delay="300">
+        <div className="section-header">
+          <h3>Quick Actions</h3>
         </div>
         <div className="quick-buttons">
-          <button className="btn btn-primary">
-            <FaPlus /> Create Event
+          <button 
+            onClick={handleCreateEvent}
+            className="primary-button"
+          >
+            <FaPlus className="button-icon" /> Create Event
           </button>
-          <button className="btn btn-outline">
-            <FaCertificate /> Add Certificate
+          <button 
+            onClick={handleAddCertificate}
+            className="secondary-button"
+          >
+            <FaCertificate className="button-icon" /> Add Certificate
           </button>
-          <button className="btn btn-outline">
-            <FaBullhorn /> Post Requirement
+          <button 
+            onClick={handlePostRequirement}
+            className="secondary-button"
+          >
+            <FaBullhorn className="button-icon" /> Post Requirement
           </button>
         </div>
-      </motion.div>
+      </div>
 
       {/* Recent Updates */}
-      <motion.div 
-        className="card recent-updates"
-        variants={cardVariants}
-        initial="hidden"
-        animate="visible"
-        custom={6}
-      >
-        <div className="card-header">
-          <h3 className="card-title">Recent Updates</h3>
-          <span className="card-action">View All</span>
+      <div className="updates-container" data-aos="fade-up" data-aos-delay="400">
+        <div className="updates-header">
+          <h3>Recent Updates</h3>
+          <button className="view-all">View All</button>
         </div>
-        <div className="updates-list">
-          {recentUpdates.map((update, index) => (
-            <motion.div 
-              key={update.id} 
-              className="update-item"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 + (index * 0.1) }}
-            >
-              <h4>{update.title}</h4>
-              <p>{update.message}</p>
-              <small>{update.time}</small>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+        
+        {isLoading ? (
+          <div className="updates-list">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="skeleton-update">
+                <div className="skeleton-header"></div>
+                <div className="skeleton-body"></div>
+                <div className="skeleton-body"></div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="updates-list">
+            {recentUpdates.map((update, index) => (
+              <div 
+                key={update.id} 
+                className="update-item"
+                style={{
+                  animationDelay: `${index * 0.1}s`
+                }}
+              >
+                <div className="update-header">
+                  <h4>{update.title}</h4>
+                  <span className="update-time">{update.time}</span>
+                </div>
+                <p>{update.message}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
