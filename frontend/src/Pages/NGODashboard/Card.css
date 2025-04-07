@@ -1,0 +1,76 @@
+/* Card.css */
+.stat-card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  color: white;
+}
+
+.stat-card.primary .card-icon {
+  background-color: var(--primary);
+}
+
+.stat-card.success .card-icon {
+  background-color: var(--success);
+}
+
+.stat-card.warning .card-icon {
+  background-color: var(--warning);
+}
+
+.stat-card.info .card-icon {
+  background-color: var(--info);
+}
+
+.card-content {
+  flex: 1;
+}
+
+.card-content h3 {
+  font-size: 0.9rem;
+  color: var(--grey);
+  margin: 0 0 5px;
+  font-weight: 500;
+}
+
+.card-value {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin: 0;
+}
+
+.stat-card.primary {
+  border-left: 4px solid var(--primary);
+}
+
+.stat-card.success {
+  border-left: 4px solid var(--success);
+}
+
+.stat-card.warning {
+  border-left: 4px solid var(--warning);
+}
+
+.stat-card.info {
+  border-left: 4px solid var(--info);
+}

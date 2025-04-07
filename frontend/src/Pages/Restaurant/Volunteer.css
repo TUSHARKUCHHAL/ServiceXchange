@@ -3,40 +3,40 @@
     max-width: 700px;
     margin: 30px auto;
     padding: 20px;
-    background: #e3f2fd;
+    background:whitesmoke;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
   }
   
   .volunteer-container h1 {
-    color: #0277bd;
+    color:#ff3b3b;
     font-size: 26px;
     margin-bottom: 15px;
   }
   
-  .volunteer-list {
+  .volunteer-container .volunteer-list {
     list-style: none;
     padding: 0;
   }
   
-  .volunteer-item {
+  .volunteer-container .volunteer-item {
     background: #ffffff;
     padding: 12px;
     margin: 10px 0;
-    border-left: 5px solid #0288d1;
+    border-left: 5px solid #ff3b3b;
     border-radius: 6px;
     font-size: 18px;
     text-align: left;
   }
   
-  .volunteer-item span {
+  .volunteer-container .volunteer-item span {
     font-weight: bold;
-    color: #0277bd;
+    color: #ff3b3b;
   }
   
   .volunteer-container button {
-    background: #0288d1;
+    background: #ff3b3b;
     color: white;
     border: none;
     padding: 12px;
