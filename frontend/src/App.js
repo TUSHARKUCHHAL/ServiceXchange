@@ -4,26 +4,35 @@ import NGODashboard from './Pages/NGODashboard/NGODashboard';
 import Footer from "./Components/Footer";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './Components/Navbar'; 
-import Login from './Pages/Login/Login';
+import RestaurantLogin from './Pages/Restaurant/RestaurantLogin';
 import Signup from './Pages/SignUp/SignUp';
+import Login from './Pages/Login/Login';
 import About from './Pages/About/About';
 import Services from './Pages/Services/Services';
 import TaskList from './Pages/TaskList/TaskList';
 import Contact from './Pages/Contact/Contact';
 import Restaurant from "./Pages/Restaurant/Restaurant";
-import ExcessFoodRequest from "./Pages/Restaurant/ExcessFoodRequest";
+import ExcessFoodRequest from "./Pages/Restaurant/FoodDonationForm";
 import Volunteer from "./Pages/Volunteer/Volunteer";
 import VolunteerRes from "./Pages/Restaurant/VolunteerRes";
 import Hospital from './Pages/Hospital/Hospital';
 import NeedBlood from './Pages/Hospital/NeedBlood';
-import DonateBlood from './Pages/Hospital/DonateBlood';
 import TermsOfService from './Utils/TermsOfService/TermsOfService';
 import PrivacyPolicy from './Utils/PrivacyPolicy/PrivacyPolicy';
-import Sign_Up from './Pages/Restaurant/SignUp';
+import Sign_Up from './Pages/Restaurant/RestaurantSignUp';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthProvider } from './context/AuthContext';
 import ForgotPassword from './Pages/Login/ForgotPassword';
+import ForgotPasswordRes from './Pages/Restaurant/ForgotPassword';
+import ResetPasswordRes from './Pages/Restaurant/ResetPassword';
 import ResetPassword from './Pages/Login/ResetPassword';
+import BloodDonation from "./Pages/Hospital/DonorPage";
+import ManageRequests from './Pages/Hospital/ManageRequests';
+import FoodDonationForm from './Pages/Restaurant/FoodDonationForm';
+import MyDonations from './Pages/Restaurant/MyDonation';
+import DonationDetails from './Pages/Restaurant/DonationDetails';
+import EditDonation from './Pages/Restaurant/EditDonation';
+
 
 const App = () => {
   return (
@@ -42,9 +51,17 @@ const App = () => {
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="/restaurant/login" element={<RestaurantLogin />} />
+            <Route path="/restaurant/forgot-password" element={<ForgotPasswordRes />} />
+            <Route path="/restaurant/reset-password/:token" element={<ResetPasswordRes />} />
+            <Route path="/restaurant/donate" element={<FoodDonationForm />} />
+            <Route path="/restaurant/my-donations" element={<MyDonations />} />
+            <Route path="/donations/:id" element={<DonationDetails />} />
+            <Route path="/donations/edit/:id" element={<EditDonation />} />
             <Route path="/hospital" element={<Hospital />} />
             <Route path="/hospital/need-blood" element={<NeedBlood />} />
-            <Route path="/hospital/donate-blood" element={<DonateBlood />} />
+            <Route path="/hospital/donate-blood" element={<BloodDonation />} />
+            <Route path="/hospital/manage-requests" element={<ManageRequests />} />
             <Route path="/restaurant" element={<Restaurant />} />
             <Route path="/restaurant/signup" element={<Sign_Up />} />
             <Route path="/restaurant/excess-food" element={<ExcessFoodRequest />} />

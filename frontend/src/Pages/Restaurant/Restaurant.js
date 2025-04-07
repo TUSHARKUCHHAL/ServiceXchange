@@ -218,7 +218,7 @@ const Restaurant = () => {
         {/* Buttons Section */}
         <div className="restaurant-buttons-light">
           <motion.button 
-            onClick={() => navigate("/restaurant/excess-food")}
+            onClick={() => navigate("/restaurant/donate")}
             whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(229, 57, 53, 0.3)" }}
             whileTap={{ scale: 0.98 }}
             className="donate-btn"
