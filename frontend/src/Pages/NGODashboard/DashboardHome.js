@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import { 
   FaHome, FaProjectDiagram, FaUsers, FaCalendarAlt, 
   FaCertificate, FaChartBar, FaBullhorn, FaFolder, 
-  FaUserCircle, FaQrcode, FaCog
+  FaUserCircle, FaQrcode, FaCog, 
+  FaChevronLeft, FaChevronRight // Add these two icons
 } from 'react-icons/fa';
 import './DashboardHome.css';
 
@@ -101,8 +102,8 @@ const Dashboard = () => {
         <div className="logo-container">
           <h2>ServiceXchange</h2>
           <button className="toggle-sidebar" onClick={toggleSidebar}>
-            {isSidebarCollapsed ? '→' : '←'}
-          </button>
+          {isSidebarCollapsed ? <FaChevronRight size={16} /> : <FaChevronLeft size={16} />}
+        </button>
         </div>
         
         <div className="menu-items">

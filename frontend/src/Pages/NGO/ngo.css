@@ -1,0 +1,239 @@
+/* NGO Connect - Specific CSS Styles */
+
+/* Page-specific container to prevent style leakage */
+.ngo-connect-container {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Header animations */
+.ngo-connect-container .ngo-connect-header h1 {
+  position: relative;
+}
+
+.ngo-connect-container .ngo-connect-header h1 span {
+  position: relative;
+  display: inline-block;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.8; }
+  100% { opacity: 1; }
+}
+
+/* Button hover effects */
+.ngo-connect-container .ngo-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.ngo-connect-container .ngo-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transition: transform 0.5s, opacity 0.3s;
+}
+
+.ngo-connect-container .ngo-button:hover::after {
+  transform: translate(-50%, -50%) scale(2);
+  opacity: 1;
+}
+
+/* Slider animations */
+.ngo-connect-container .ngo-slider {
+  position: relative;
+}
+
+.ngo-connect-container .ngo-slide {
+  transition: transform 0.5s ease, opacity 0.3s ease;
+  transform-origin: center;
+}
+
+.ngo-connect-container .ngo-slide:not(.active) {
+  opacity: 0.7;
+  transform: scale(0.95);
+}
+
+.ngo-connect-container .ngo-slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* NGO cards hover effect */
+.ngo-connect-container .ngo-card {
+  transition: all 0.3s ease;
+  backface-visibility: hidden;
+}
+
+.ngo-connect-container .ngo-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Value proposition section */
+.ngo-connect-container .value-prop-item {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.ngo-connect-container .value-prop-item:hover {
+  transform: scale(1.05) translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.ngo-connect-container .value-prop-item h3::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background-color: #ef4444;
+  margin-bottom: 15px;
+  transform: scaleX(0.6);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.ngo-connect-container .value-prop-item:hover h3::before {
+  transform: scaleX(1);
+}
+
+/* Latest updates section */
+.ngo-connect-container .update-item {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.ngo-connect-container .update-item:hover {
+  background-color: rgba(239, 68, 68, 0.05);
+  padding-left: 25px;
+}
+
+.ngo-connect-container .update-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background-color: #ef4444;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.3s ease;
+}
+
+.ngo-connect-container .update-item:hover::before {
+  transform: scaleY(1);
+}
+
+/* Login modal animation */
+.ngo-connect-container .login-modal {
+  animation: modalFadeIn 0.4s ease forwards;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ngo-connect-container .login-modal-backdrop {
+  animation: backdropFadeIn 0.3s ease forwards;
+}
+
+@keyframes backdropFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Form field focus effects */
+.ngo-connect-container .form-input {
+  transition: all 0.3s ease;
+}
+
+.ngo-connect-container .form-input:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+/* Button loading animation */
+.ngo-connect-container .btn-loading {
+  position: relative;
+}
+
+.ngo-connect-container .btn-loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: calc(50% - 10px);
+  left: calc(50% - 10px);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Pagination indicators */
+.ngo-connect-container .pagination-dot {
+  transition: all 0.3s ease;
+}
+
+.pagination-dot.active {
+  transform: scale(1.3);
+}
+
+/* Footer animation */
+.ngo-connect-container .footer-content {
+  position: relative;
+}
+
+.ngo-connect-container .footer-content::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #ef4444;
+  transform: translateX(-50%);
+  transition: width 0.5s ease;
+}
+
+.ngo-connect-container:hover .footer-content::before {
+  width: 100px;
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+  .ngo-connect-container .ngo-slide {
+    opacity: 1;
+    transform: scale(1);
+  }
+  
+  .ngo-connect-container .value-prop-item:hover {
+    transform: scale(1.02);
+  }
+}

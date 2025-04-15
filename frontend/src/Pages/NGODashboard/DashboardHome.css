@@ -27,7 +27,8 @@
   flex-direction: column;
 }
 
-.dashboard-container .sidebar-collapsed .sidebar {
+/* Fixed selector for collapsed sidebar */
+.dashboard-container.sidebar-collapsed .sidebar {
   width: 70px;
 }
 
@@ -43,6 +44,11 @@
   color: #e74c3c;
   font-size: 1.2rem;
   white-space: nowrap;
+}
+
+/* Fixed selector for hiding logo text when collapsed */
+.dashboard-container.sidebar-collapsed .logo-container h2 {
+  display: none;
 }
 
 .dashboard-container .toggle-sidebar {
@@ -94,7 +100,8 @@
   width: 20px;
 }
 
-.dashboard-container .sidebar-collapsed .menu-label {
+/* Fixed selector for hiding menu labels when collapsed */
+.dashboard-container.sidebar-collapsed .menu-label {
   display: none;
 }
 
@@ -233,7 +240,7 @@
   transition: all 0.3s ease;
 }
 
-.dashboard-container .dashboard-container .card:hover {
+.dashboard-container .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
@@ -327,7 +334,7 @@
   border-collapse: collapse;
 }
 
-.dashboard-container .table th, .table td {
+.dashboard-container .table th, .dashboard-container .table td {
   padding: 12px 15px;
   text-align: left;
   border-bottom: 1px solid #e1e1e1;
@@ -340,29 +347,6 @@
 
 .dashboard-container .table tr:last-child td {
   border-bottom: none;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .dashboard-container .sidebar {
-    width: 70px;
-  }
-  
-  .dashboard-container .menu-label {
-    display: none;
-  }
-  
-  .dashboard-container .header-title h2 {
-    font-size: 1.2rem;
-  }
-  
-  .dashboard-container .grid-container {
-    grid-template-columns: 1fr;
-  }
-  
-  .dashboard-container .profile-name {
-    display: none;
-  }
 }
 
 /* Animations */
@@ -382,4 +366,223 @@
 
 .dashboard-container .slide-in {
   animation: slideIn 0.5s ease-in-out;
+}
+
+/* Enhanced Responsive adjustments */
+/* Large devices (desktops, less than 1200px) */
+@media (max-width: 1199.98px) {
+  .dashboard-container .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  
+  .dashboard-container .notification-dropdown {
+    width: 250px;
+  }
+}
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+  .dashboard-container {
+    margin-top: 4rem;
+  }
+  
+  .dashboard-container .header {
+    padding: 12px 20px;
+  }
+  
+  .dashboard-container .header-title h2 {
+    font-size: 1.3rem;
+  }
+  
+  .dashboard-container .content-area {
+    padding: 15px;
+  }
+  
+  .dashboard-container .notification-dropdown {
+    width: 230px;
+  }
+  
+  .dashboard-container .card {
+    padding: 15px;
+  }
+}
+
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+  .dashboard-container {
+    margin-top: 3.5rem;
+  }
+  
+  .dashboard-container .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 70px;
+    z-index: 1000;
+  }
+  
+  .dashboard-container .menu-label {
+    display: none;
+  }
+  
+  .dashboard-container .sidebar:not(.sidebar-collapsed):hover {
+    width: 200px;
+  }
+  
+  .dashboard-container .sidebar:not(.sidebar-collapsed):hover .menu-label {
+    display: block;
+  }
+  
+  .dashboard-container .main-content {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+  }
+  
+  .dashboard-container .header-title h2 {
+    font-size: 1.2rem;
+  }
+  
+  .dashboard-container .grid-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .dashboard-container .profile-name {
+    display: none;
+  }
+  
+  .dashboard-container .notification-dropdown {
+    width: 200px;
+    right: -15px;
+  }
+  
+  .dashboard-container .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .dashboard-container .card-action {
+    margin-top: 5px;
+  }
+  
+  .dashboard-container .table {
+    font-size: 0.85rem;
+  }
+  
+  .dashboard-container .table th, .dashboard-container .table td {
+    padding: 8px 10px;
+  }
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+  .dashboard-container {
+    margin-top: 3rem;
+    flex-direction: column;
+  }
+  
+  .dashboard-container .sidebar {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    bottom: 0;
+    top: auto;
+    border-right: none;
+    border-top: 1px solid #e1e1e1;
+  }
+  
+  .dashboard-container .logo-container {
+    display: none;
+  }
+  
+  .dashboard-container .menu-items {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 5px;
+    justify-content: space-around;
+  }
+  
+  .dashboard-container .menu-item {
+    flex-direction: column;
+    margin: 0 5px;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .dashboard-container .menu-icon {
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+  
+  .dashboard-container .main-content {
+    margin-left: 0;
+    width: 100%;
+    margin-bottom: 60px; /* Space for bottom navbar */
+  }
+  
+  .dashboard-container .header {
+    padding: 10px 15px;
+  }
+  
+  .dashboard-container .notification-dropdown {
+    position: fixed;
+    top: auto;
+    bottom: 70px;
+    left: 10px;
+    right: 10px;
+    width: calc(100% - 20px);
+  }
+  
+  .dashboard-container .content-area {
+    padding: 10px;
+  }
+  
+  .dashboard-container .card {
+    padding: 12px;
+    margin-bottom: 15px;
+  }
+  
+  .dashboard-container .card-title {
+    font-size: 1.1rem;
+  }
+  
+  .dashboard-container .profile {
+    margin-left: auto;
+  }
+  
+  .dashboard-container .notification-wrapper {
+    margin-right: 15px;
+  }
+  
+  /* Show only icons in bottom mobile navbar */
+  .dashboard-container .menu-label {
+    font-size: 0.7rem;
+    display: block;
+  }
+  
+  /* Make sure form controls are easy to tap on mobile */
+  .dashboard-container .form-control {
+    padding: 12px;
+    font-size: 16px; /* Prevent iOS zoom on input focus */
+  }
+  
+  .dashboard-container .btn {
+    padding: 10px 16px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+/* Handle minimum height for very short screens */
+@media (max-height: 500px) {
+  .dashboard-container {
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  .dashboard-container .sidebar {
+    height: auto;
+    min-height: 100vh;
+  }
 }

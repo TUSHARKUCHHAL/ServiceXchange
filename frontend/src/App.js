@@ -8,7 +8,7 @@ import Signup from './Pages/SignUp/SignUp';
 import Login from './Pages/Login/Login';
 import About from './Pages/About/About';
 import Services from './Pages/Services/Services';
-import TaskList from './Pages/TaskList/TaskList';
+
 import Contact from './Pages/Contact/Contact';
 import Restaurant from "./Pages/Restaurant/Restaurant";
 import ExcessFoodRequest from "./Pages/Restaurant/FoodDonationForm";
@@ -32,6 +32,8 @@ import MyDonations from './Pages/Restaurant/MyDonation';
 import DonationDetails from './Pages/Restaurant/DonationDetails';
 import EditDonation from './Pages/Restaurant/EditDonation';
 import DashboardHome from './Pages/NGODashboard/DashboardHome';
+import NGOSignup from './Pages/NGO/ngosign';
+import NGOLogin from './Pages/NGO/ngologin';
 
 
 const App = () => {
@@ -42,13 +44,13 @@ const App = () => {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
-    
-            <Route path="/TaskList" element={<TaskList />} />
             <Route path='/Contact' element={<Contact />} />
             <Route path="/Services" element={<Services />} />
             <Route path="/About" element={<About />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/ngo-login" element={<NGOLogin />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/ngo-signup" element={<NGOSignup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/restaurant/login" element={<RestaurantLogin />} />
