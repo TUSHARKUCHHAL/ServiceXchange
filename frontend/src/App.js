@@ -34,6 +34,7 @@ import EditDonation from './Pages/Restaurant/EditDonation';
 import DashboardHome from './Pages/NGODashboard/DashboardHome';
 import NGOSignup from './Pages/NGO/ngosign';
 import NGOLogin from './Pages/NGO/ngologin';
+import NGO from './Pages/NGO/ngo';
 
 
 const App = () => {
@@ -51,6 +52,7 @@ const App = () => {
             <Route path="/ngo-login" element={<NGOLogin />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/ngo-signup" element={<NGOSignup />} />
+            <Route path="/ngo" element={<NGO />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/restaurant/login" element={<RestaurantLogin />} />

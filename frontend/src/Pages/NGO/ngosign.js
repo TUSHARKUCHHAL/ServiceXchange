@@ -1,203 +1,352 @@
-// Signup.js
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import './ngosign.css';
-import { Link } from 'react-router-dom';
 
 const Signup = () => {
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     orgName: '',
     email: '',
     password: '',
     confirmPassword: '',
-    ngoType: '',
+    logoUrl: '',
+    logoFile: null,
+    orgType: '',
+    description: '',
+    website: '',
+    phone: '',
+    address: '',
     agreeTerms: false
   });
-  
-  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
-  
+  const [passwordStrength, setPasswordStrength] = useState(0);
+
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value
-    });
+    const { name, value, type, checked, files } = e.target;
+    
+    if (name === 'password') {
+      calculatePasswordStrength(value);
+    }
+    
+    if (type === 'file' && files.length > 0) {
+      const file = files[0];
+      const reader = new FileReader();
+      
+      reader.onloadend = () => {
+        setFormData({
+          ...formData,
+          logoFile: file,
+          logoUrl: reader.result
+        });
+      };
+      
+      reader.readAsDataURL(file);
+    } else {
+      setFormData({
+        ...formData,
+        [name]: type === 'checkbox' ? checked : value
+      });
+    }
   };
-  
-  const handleNextStep = () => {
-    setCurrentStep(2);
+
+  const calculatePasswordStrength = (password) => {
+    let strength = 0;
+    
+    if (password.length >= 8) strength += 1;
+    if (/[A-Z]/.test(password)) strength += 1;
+    if (/[0-9]/.test(password)) strength += 1;
+    if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+    
+    setPasswordStrength(strength);
   };
-  
-  const handlePrevStep = () => {
-    setCurrentStep(1);
+
+  const nextStep = () => {
+    setStep(step + 1);
   };
-  
+
+  const prevStep = () => {
+    setStep(step - 1);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulating API call
+    // Simulate API call
     setTimeout(() => {
-      console.log('Registration data:', formData);
+      console.log('Signup data:', formData);
       setIsLoading(false);
       // Handle registration logic here
     }, 1500);
   };
-  
-  const ngoTypes = [
-    'Education', 
-    'Healthcare', 
-    'Environment', 
-    'Human Rights', 
-    'Animal Welfare',
-    'Poverty Alleviation',
-    'Disaster Relief',
-    'Arts & Culture',
-    'Community Development',
-    'Other'
-  ];
 
   return (
-    <div className="signup-container">
-      <div className="signup-card">
+    <div className="main-container signup-container">
+      <motion.div 
+        className="signup-card"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="signup-header">
-          <h1>Join Our Network</h1>
-          <p>Create an account to connect with other change-makers</p>
+          <h1>Create Your NGO Account</h1>
+          <p>Join our community and make a difference</p>
           
-          <div className="progress-bar">
-            <div className="progress-step completed">
-              <div className="step-number">1</div>
-              <span className="step-label">Account</span>
-            </div>
-            <div className="progress-line">
-              <div className={`line-fill ${currentStep === 2 ? 'filled' : ''}`}></div>
-            </div>
-            <div className={`progress-step ${currentStep === 2 ? 'completed' : ''}`}>
-              <div className="step-number">2</div>
-              <span className="step-label">Details</span>
-            </div>
+          <div className="step-indicator">
+            <div className={`step ${step >= 1 ? 'active' : ''}`}>1</div>
+            <div className="step-line"></div>
+            <div className={`step ${step >= 2 ? 'active' : ''}`}>2</div>
+            <div className="step-line"></div>
+            <div className={`step ${step >= 3 ? 'active' : ''}`}>3</div>
           </div>
         </div>
-        
-        <form className="signup-form" onSubmit={handleSubmit}>
-          {currentStep === 1 ? (
-            <div className="form-step">
-              <div className="form-group">
-                <label htmlFor="email">Email Address</label>
-                <div className="input-container">
-                  <i className="icon email-icon">✉️</i>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="Enter your email"
-                    required
-                  />
-                </div>
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <div className="input-container">
-                  <i className="icon password-icon">🔒</i>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    placeholder="Create a strong password"
-                    required
-                  />
-                  <span 
-                    className="toggle-password"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? "👁️" : "👁️‍🗨️"}
-                  </span>
-                </div>
-                <div className="password-strength">
-                  <div className={`strength-bar ${formData.password.length > 0 ? 'weak' : ''}`}></div>
-                  <div className={`strength-bar ${formData.password.length > 5 ? 'medium' : ''}`}></div>
-                  <div className={`strength-bar ${formData.password.length > 8 ? 'strong' : ''}`}></div>
-                  <span className="strength-text">
-                    {formData.password.length === 0 && 'Password strength'}
-                    {formData.password.length > 0 && formData.password.length <= 5 && 'Weak'}
-                    {formData.password.length > 5 && formData.password.length <= 8 && 'Medium'}
-                    {formData.password.length > 8 && 'Strong'}
-                  </span>
-                </div>
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="confirmPassword">Confirm Password</label>
-                <div className="input-container">
-                  <i className="icon password-icon">🔒</i>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    placeholder="Confirm your password"
-                    required
-                  />
-                </div>
-                {formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword && (
-                  <p className="password-mismatch">Passwords don't match</p>
-                )}
-              </div>
-              
-              <button 
-                type="button" 
-                className="continue-button"
-                onClick={handleNextStep}
-                disabled={!formData.email || !formData.password || !formData.confirmPassword || formData.password !== formData.confirmPassword}
-              >
-                Continue
-                <span className="button-overlay"></span>
-              </button>
-            </div>
-          ) : (
-            <div className="form-step">
+
+        <form onSubmit={handleSubmit} className="signup-form">
+          {step === 1 && (
+            <motion.div 
+              className="form-step"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
               <div className="form-group">
                 <label htmlFor="orgName">Organization Name</label>
-                <div className="input-container">
-                  <i className="icon org-icon">🏢</i>
-                  <input
-                    type="text"
-                    id="orgName"
-                    name="orgName"
-                    value={formData.orgName}
-                    onChange={handleChange}
-                    placeholder="Enter your organization name"
-                    required
-                  />
-                </div>
+                <input
+                  type="text"
+                  id="orgName"
+                  name="orgName"
+                  value={formData.orgName}
+                  onChange={handleChange}
+                  required
+                  placeholder="Enter your organization name"
+                />
               </div>
-              
+
               <div className="form-group">
-                <label htmlFor="ngoType">Organization Type</label>
-                <div className="input-container">
-                  <i className="icon type-icon">📋</i>
-                  <select
-                    id="ngoType"
-                    name="ngoType"
-                    value={formData.ngoType}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="" disabled>Select your organization type</option>
-                    {ngoTypes.map((type, index) => (
-                      <option key={index} value={type}>{type}</option>
-                    ))}
-                  </select>
+                <label htmlFor="email">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  placeholder="contact@yourorganization.org"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  placeholder="Create a secure password"
+                />
+                
+                <div className="password-strength">
+                  <div className="strength-meter">
+                    <div 
+                      className="strength-value" 
+                      style={{ 
+                        width: `${passwordStrength * 25}%`,
+                        backgroundColor: 
+                          passwordStrength === 0 ? '#e74c3c' :
+                          passwordStrength === 1 ? '#e67e22' :
+                          passwordStrength === 2 ? '#f1c40f' :
+                          passwordStrength === 3 ? '#2ecc71' :
+                          '#27ae60'
+                      }}
+                    ></div>
+                  </div>
+                  <span className="strength-text">
+                    {passwordStrength === 0 && 'Very Weak'}
+                    {passwordStrength === 1 && 'Weak'}
+                    {passwordStrength === 2 && 'Medium'}
+                    {passwordStrength === 3 && 'Strong'}
+                    {passwordStrength === 4 && 'Very Strong'}
+                  </span>
                 </div>
               </div>
-              
+
+              <div className="form-group">
+                <label htmlFor="confirmPassword">Confirm Password</label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                  placeholder="Confirm your password"
+                />
+                {formData.password && formData.confirmPassword && 
+                 formData.password !== formData.confirmPassword && (
+                  <p className="password-mismatch">Passwords do not match</p>
+                )}
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="next-button"
+                type="button"
+                onClick={nextStep}
+                disabled={!formData.orgName || !formData.email || !formData.password || 
+                         formData.password !== formData.confirmPassword}
+              >
+                Next
+              </motion.button>
+            </motion.div>
+          )}
+
+          {step === 2 && (
+            <motion.div 
+              className="form-step"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <div className="form-group">
+                <label htmlFor="orgType">Organization Type</label>
+                <select
+                  id="orgType"
+                  name="orgType"
+                  value={formData.orgType}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select type</option>
+                  <option value="nonprofit">Non-profit</option>
+                  <option value="charity">Charity</option>
+                  <option value="foundation">Foundation</option>
+                  <option value="trust">Trust</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="description">Organization Description</label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  rows="3"
+                  placeholder="Briefly describe your organization's mission"
+                ></textarea>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="website">Website (Optional)</label>
+                <input
+                  type="url"
+                  id="website"
+                  name="website"
+                  value={formData.website}
+                  onChange={handleChange}
+                  placeholder="https://www.yourorganization.org"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="phone">Contact Phone</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                  placeholder="+1 (123) 456-7890"
+                />
+              </div>
+
+              <div className="nav-buttons">
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="back-button"
+                  type="button"
+                  onClick={prevStep}
+                >
+                  Back
+                </motion.button>
+                
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="next-button"
+                  type="button"
+                  onClick={nextStep}
+                  disabled={!formData.orgType || !formData.description || !formData.phone}
+                >
+                  Next
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
+
+          {step === 3 && (
+            <motion.div 
+              className="form-step"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <div className="form-group logo-upload">
+                <label>Organization Logo</label>
+                <div className="logo-preview-container">
+                  {formData.logoUrl ? (
+                    <img 
+                      src={formData.logoUrl} 
+                      alt="Logo Preview" 
+                      className="logo-preview" 
+                    />
+                  ) : (
+                    <div className="logo-placeholder">
+                      <i className="fas fa-image"></i>
+                      <span>Upload Logo</span>
+                    </div>
+                  )}
+                  
+                  <input
+                    type="file"
+                    id="logoFile"
+                    name="logoFile"
+                    onChange={handleChange}
+                    accept="image/*"
+                    className="file-input"
+                  />
+                  
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    type="button"
+                    className="upload-btn"
+                    onClick={() => document.getElementById('logoFile').click()}
+                  >
+                    {formData.logoUrl ? 'Change Logo' : 'Select Logo'}
+                  </motion.button>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="address">Organization Address</label>
+                <textarea
+                  id="address"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  rows="2"
+                  required
+                  placeholder="Enter your organization's address"
+                ></textarea>
+              </div>
+
               <div className="form-group checkbox-group">
                 <input
                   type="checkbox"
@@ -208,43 +357,39 @@ const Signup = () => {
                   required
                 />
                 <label htmlFor="agreeTerms">
-                  I agree to the <a href="#" className="terms-link">Terms of Service</a> and <a href="#" className="terms-link">Privacy Policy</a>
+                  I agree to the <a href="#" className="terms-link">Terms of Service</a> and <a href="#" className="privacy-link">Privacy Policy</a>
                 </label>
               </div>
-              
-              <div className="form-buttons">
-                <button 
-                  type="button" 
+
+              <div className="nav-buttons">
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
                   className="back-button"
-                  onClick={handlePrevStep}
+                  type="button"
+                  onClick={prevStep}
                 >
                   Back
-                </button>
+                </motion.button>
                 
-                <button 
-                  type="submit" 
-                  className={`signup-button ${isLoading ? 'loading' : ''}`}
-                  disabled={isLoading || !formData.orgName || !formData.ngoType || !formData.agreeTerms}
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="signup-button"
+                  type="submit"
+                  disabled={isLoading || !formData.address || !formData.agreeTerms}
                 >
                   {isLoading ? 'Creating Account...' : 'Create Account'}
-                  <span className="button-overlay"></span>
-                </button>
+                </motion.button>
               </div>
-            </div>
+            </motion.div>
           )}
         </form>
-        
-        <div className="login-prompt">
-          <p>Already have an account? <Link to="/login">Login</Link></p>
+
+        <div className="signup-footer">
+          <p>Already have an account? <a href="/login">Sign In</a></p>
         </div>
-      </div>
-      
-      <div className="signup-image">
-        <div className="image-overlay">
-          <h2>Make An Impact</h2>
-          <p>Connect with other NGOs and amplify your impact in communities around the world</p>
-        </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
