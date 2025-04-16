@@ -1,240 +1,518 @@
-import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, LogIn, UserPlus } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
 import './ngo.css';
 
-// Sample NGO data - in a real app this would come from your API
-const sampleNGOs = [
-  { id: 1, name: "Save The Children", logo: "/api/placeholder/80/80", description: "Supporting children's rights and welfare globally" },
-  { id: 2, name: "Habitat for Humanity", logo: "/api/placeholder/80/80", description: "Building homes and communities for those in need" },
-  { id: 3, name: "Red Cross", logo: "/api/placeholder/80/80", description: "Providing humanitarian aid during emergencies" },
-  { id: 4, name: "World Wildlife Fund", logo: "/api/placeholder/80/80", description: "Preserving wildlife and natural habitats" },
-  { id: 5, name: "Doctors Without Borders", logo: "/api/placeholder/80/80", description: "Medical care in crisis regions worldwide" }
-];
+const NGOSubpage = () => {
+  // Sample registered NGOs data for the slider
+  const registeredNGOs = [
+    { id: 1, name: "Green Earth Foundation", logo: "/api/placeholder/80/80", focus: "Environmental Conservation" },
+    { id: 2, name: "Child Care International", logo: "/api/placeholder/80/80", focus: "Children's Rights" },
+    { id: 3, name: "Global Health Initiative", logo: "/api/placeholder/80/80", focus: "Healthcare Access" },
+    { id: 4, name: "Education For All", logo: "/api/placeholder/80/80", focus: "Educational Equity" },
+    { id: 5, name: "Women Empowerment Alliance", logo: "/api/placeholder/80/80", focus: "Gender Equality" },
+    { id: 6, name: "Food Security Network", logo: "/api/placeholder/80/80", focus: "Hunger Relief" },
+    { id: 7, name: "Digital Access Project", logo: "/api/placeholder/80/80", focus: "Technology Access" },
+    { id: 8, name: "Clean Water Action", logo: "/api/placeholder/80/80", focus: "Water Resources" },
+  ];
 
-export default function NGOUserPage() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showLoginForm, setShowLoginForm] = useState(false);
+  // Enhanced testimonials data
+  const testimonials = [
+    { 
+      id: 1, 
+      quote: "Working with NGOs through this platform has been an incredible experience. The certificate helped me in my college applications!", 
+      author: "Sarah J.", 
+      role: "Student Volunteer",
+      avatar: "/api/placeholder/60/60"
+    },
+    { 
+      id: 2, 
+      quote: "As the director of a small NGO, this platform has connected us with passionate volunteers who truly care about our cause.", 
+      author: "Michael T.", 
+      role: "NGO Director",
+      avatar: "/api/placeholder/60/60"
+    },
+    { 
+      id: 3, 
+      quote: "The certification process is streamlined and professional. My volunteer work here has opened doors to numerous opportunities.", 
+      author: "Priya K.", 
+      role: "Community Leader",
+      avatar: "/api/placeholder/60/60"
+    },
+    { 
+      id: 4, 
+      quote: "I've volunteered with three different organizations through this platform. Each experience has been transformative and well-organized.", 
+      author: "David L.", 
+      role: "Regular Volunteer",
+      avatar: "/api/placeholder/60/60"
+    },
+  ];
+
+  // Impact areas data
+  const impactAreas = [
+    { id: 1, icon: "🌿", title: "Environment", description: "Conservation and sustainability initiatives" },
+    { id: 2, icon: "🏥", title: "Healthcare", description: "Medical access and wellness programs" },
+    { id: 3, icon: "📚", title: "Education", description: "Learning and skill development" },
+    { id: 4, icon: "🏠", title: "Housing", description: "Shelter and community development" },
+    { id: 5, icon: "🍲", title: "Food Security", description: "Addressing hunger and nutrition" },
+    { id: 6, icon: "👩‍👧‍👦", title: "Social Justice", description: "Equality and human rights" }
+  ];
+
+  // State variables
+  const [ngoSliderPosition, setNgoSliderPosition] = useState(0);
+  const [currentTestimonialPage, setCurrentTestimonialPage] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isNavSticky, setIsNavSticky] = useState(false);
+  const [visibleSlides, setVisibleSlides] = useState(4);
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [touchEndX, setTouchEndX] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startDragX, setStartDragX] = useState(0);
+  const [currentDragX, setCurrentDragX] = useState(0);
   
-  // Animation states
-  const [fadeIn, setFadeIn] = useState(false);
+  // Refs for sliders
+  const ngoSliderRef = useRef(null);
   
+  // Calculate how many testimonial pages we need (showing 2 per page)
+  const testimonialsPerPage = 2;
+  const totalTestimonialPages = Math.ceil(testimonials.length / testimonialsPerPage);
+
+  // Filter NGOs based on search term
+  const filteredNGOs = registeredNGOs.filter(ngo => 
+    ngo.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    ngo.focus.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Update visible slides based on window width
   useEffect(() => {
-    setFadeIn(true);
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setVisibleSlides(1);
+      } else if (window.innerWidth < 992) {
+        setVisibleSlides(2);
+      } else if (window.innerWidth < 1200) {
+        setVisibleSlides(3);
+      } else {
+        setVisibleSlides(4);
+      }
+    };
+
+    handleResize(); // Initial call
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
-  
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === sampleNGOs.length - 1 ? 0 : prev + 1));
-  };
-  
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? sampleNGOs.length - 1 : prev - 1));
-  };
-  
-  const handleLoginClick = () => {
-    setShowLoginForm(true);
-  };
-  
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+
+  // Auto slide effect for NGOs with improved boundary checks
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isPaused && !isDragging) {
+        const maxPosition = Math.max(0, filteredNGOs.length - visibleSlides);
+        setNgoSliderPosition((prevPosition) => 
+          prevPosition >= maxPosition ? 0 : prevPosition + 1
+        );
+      }
+    }, 3000);
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      setShowLoginForm(false);
-      // Handle successful login here
-    }, 1500);
+    return () => clearInterval(interval);
+  }, [isPaused, filteredNGOs.length, visibleSlides, isDragging]);
+
+  // Auto rotate testimonials
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isPaused) {
+        setCurrentTestimonialPage((prev) => (prev + 1) % totalTestimonialPages);
+      }
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, [isPaused, totalTestimonialPages]);
+
+  // Sticky navigation on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsNavSticky(window.scrollY > 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Function to navigate to specific testimonial page
+  const goToTestimonialPage = (page) => {
+    setCurrentTestimonialPage(page);
+  };
+
+  // Function to handle slider hover (pause/play)
+  const handleSliderHover = (isPaused) => {
+    setIsPaused(isPaused);
+  };
+
+  // Function to handle search input change
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    // Reset slider position when search changes
+    setNgoSliderPosition(0);
+  };
+
+  // Get current testimonials to display
+  const getCurrentTestimonials = () => {
+    const startIndex = currentTestimonialPage * testimonialsPerPage;
+    return testimonials.slice(startIndex, startIndex + testimonialsPerPage);
+  };
+
+  // NGO Slider Navigation with boundary checks
+  const navigateNGOSlider = (direction) => {
+    const maxPosition = Math.max(0, filteredNGOs.length - visibleSlides);
+    
+    if (direction === 'prev') {
+      setNgoSliderPosition(prev => Math.max(0, prev - 1));
+    } else {
+      setNgoSliderPosition(prev => Math.min(maxPosition, prev + 1));
+    }
   };
   
-  const handleRegisterClick = () => {
-    // Here you would redirect to registration page
-    console.log("Redirect to NGO registration page");
+  // Touch event handlers for mobile swipe
+  const handleTouchStart = (e) => {
+    setTouchStartX(e.touches[0].clientX);
+    setIsPaused(true);
   };
   
+  const handleTouchMove = (e) => {
+    setTouchEndX(e.touches[0].clientX);
+  };
+  
+  const handleTouchEnd = () => {
+    if (touchStartX - touchEndX > 50) {
+      // Swipe left -> next slide
+      navigateNGOSlider('next');
+    } else if (touchEndX - touchStartX > 50) {
+      // Swipe right -> prev slide
+      navigateNGOSlider('prev');
+    }
+    setIsPaused(false);
+  };
+  
+  // Mouse drag event handlers
+  const handleDragStart = (e) => {
+    setIsDragging(true);
+    setStartDragX(e.clientX);
+    setCurrentDragX(e.clientX);
+    setIsPaused(true);
+    
+    // Prevent default behavior to avoid text selection during drag
+    e.preventDefault();
+  };
+  
+  const handleDragMove = (e) => {
+    if (isDragging) {
+      setCurrentDragX(e.clientX);
+      
+      // Optional: You can add visual feedback for dragging here
+      // such as slight movement of the slider based on drag distance
+    }
+  };
+  
+  const handleDragEnd = () => {
+    if (isDragging) {
+      const dragDistance = startDragX - currentDragX;
+      
+      if (Math.abs(dragDistance) > 50) {
+        if (dragDistance > 0) {
+          // Dragged left -> next slide
+          navigateNGOSlider('next');
+        } else {
+          // Dragged right -> prev slide
+          navigateNGOSlider('prev');
+        }
+      }
+      
+      setIsDragging(false);
+      setIsPaused(false);
+    }
+  };
+  
+  // Handle mouse leave during drag
+  const handleDragLeave = () => {
+    if (isDragging) {
+      setIsDragging(false);
+      setIsPaused(false);
+    }
+  };
+
   return (
-    <div className={`bg-white min-h-screen flex flex-col items-center p-6 ${fadeIn ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`}>
-      <header className="w-full max-w-5xl flex justify-between items-center py-4 mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">NGO <span className="text-red-500">Connect</span></h1>
-        <div className="flex gap-4">
-          <button 
-            onClick={handleLoginClick}
-            className="flex items-center gap-2 bg-white text-red-500 border border-red-500 px-4 py-2 rounded-lg hover:bg-red-50 transition-colors duration-300"
-          >
-            <LogIn size={18} />
-            NGO Login
-          </button>
-          <button 
-            onClick={handleRegisterClick}
-            className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-300"
-          >
-            <UserPlus size={18} />
-            Register NGO
-          </button>
+    <div className="ngo-subpage">
+      <nav className={`ngo-navigation ${isNavSticky ? 'sticky' : ''}`}>
+        <div className="nav-logo">NGO Connect</div>
+        <div className="nav-links">
+          <a href="#join">Join</a>
+          <a href="#certificate">Certificate</a>
+          <a href="#register">Register</a>
+          <a href="#about">About</a>
+        </div>
+        <button className="nav-cta">Sign In</button>
+      </nav>
+
+      <header className="ngo-header">
+        <h1>Make a Difference Today</h1>
+        <p>Join forces with registered NGOs and contribute to meaningful causes</p>
+        <div className="search-bar">
+          <input 
+            type="text" 
+            placeholder="Search for NGOs or causes..." 
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+          <button className="search-button">Search</button>
         </div>
       </header>
 
-      <main className="w-full max-w-5xl">
-        {/* Featured NGOs Slider */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-6">Featured NGOs</h2>
-          <div className="relative bg-gray-50 rounded-xl p-6 shadow-lg">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-medium">Discover Organizations Making a Difference</h3>
-              <div className="flex gap-2">
-                <button 
-                  onClick={prevSlide}
-                  className="p-2 rounded-full bg-white shadow hover:bg-red-50 text-red-500 transition-colors duration-300"
-                >
-                  <ChevronLeft size={24} />
-                </button>
-                <button 
-                  onClick={nextSlide}
-                  className="p-2 rounded-full bg-white shadow hover:bg-red-50 text-red-500 transition-colors duration-300"
-                >
-                  <ChevronRight size={24} />
-                </button>
-              </div>
-            </div>
+      <section className="ngo-actions" id="join">
+        <div className="action-card">
+          <div className="card-icon">🤝</div>
+          <h2>Join an NGO</h2>
+          <p>Connect with organizations making a difference in various causes</p>
+          <button className="action-button">Join Now</button>
+        </div>
 
-            <div className="overflow-hidden">
-              <div 
-                className="flex transition-transform duration-500 ease-in-out" 
-                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-              >
-                {sampleNGOs.map((ngo) => (
-                  <div key={ngo.id} className="min-w-full flex flex-col md:flex-row items-center gap-6 p-4">
-                    <div className="bg-white p-4 rounded-xl shadow">
-                      <img src={ngo.logo} alt={ngo.name} className="w-20 h-20 object-cover rounded" />
-                    </div>
-                    <div>
-                      <h4 className="text-xl font-semibold text-gray-800 mb-2">{ngo.name}</h4>
-                      <p className="text-gray-600 mb-4">{ngo.description}</p>
-                      <button className="text-red-500 font-medium hover:text-red-600 transition-colors">
-                        Learn More →
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+        <div className="action-card" id="certificate">
+          <div className="card-icon">🎓</div>
+          <h2>Student Certificate</h2>
+          <p>Get certification for your volunteer hours and experiences</p>
+          <button className="action-button">Get Certificate</button>
+        </div>
 
-            <div className="flex justify-center mt-6 gap-2">
-              {sampleNGOs.map((_, index) => (
-                <button 
-                  key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-                    currentSlide === index ? 'bg-red-500' : 'bg-gray-300'
-                  }`}
-                />
+        <div className="action-card" id="register">
+          <div className="card-icon">🏢</div>
+          <h2>Register Your NGO</h2>
+          <p>Add your organization to our growing network of change-makers</p>
+          <button className="action-button">Register NGO</button>
+        </div>
+      </section>
+
+      <section className="impact-areas" id="about">
+        <h2>Areas of Impact</h2>
+        <div className="impact-grid">
+          {impactAreas.map(area => (
+            <div key={area.id} className="impact-area-card">
+              <div className="impact-icon">{area.icon}</div>
+              <h3>{area.title}</h3>
+              <p>{area.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="ngo-statistics">
+        <div className="stat-item">
+          <span className="stat-number">200+</span>
+          <span className="stat-label">Registered NGOs</span>
+        </div>
+        <div className="stat-item">
+          <span className="stat-number">5K+</span>
+          <span className="stat-label">Student Volunteers</span>
+        </div>
+        <div className="stat-item">
+          <span className="stat-number">50K+</span>
+          <span className="stat-label">Hours Contributed</span>
+        </div>
+        <div className="stat-item">
+          <span className="stat-number">120+</span>
+          <span className="stat-label">Active Projects</span>
+        </div>
+      </section>
+
+      <section className="ngo-slider-section">
+        <h2>Our Registered NGOs</h2>
+        {searchTerm && filteredNGOs.length === 0 ? (
+          <div className="no-results">No NGOs found matching "{searchTerm}"</div>
+        ) : (
+          <div 
+            className="ngo-slider-container"
+            onMouseEnter={() => handleSliderHover(true)}
+            onMouseLeave={() => {
+              handleSliderHover(false); 
+              handleDragLeave();
+            }}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onMouseDown={handleDragStart}
+            onMouseMove={handleDragMove}
+            onMouseUp={handleDragEnd}
+            ref={ngoSliderRef}
+          >
+            <div 
+              className={`ngo-slider ${isDragging ? 'dragging' : ''}`} 
+              style={{ 
+                transform: `translateX(-${ngoSliderPosition * 280}px)`,
+                transition: isDragging ? 'none' : 'transform 0.5s ease'
+              }}
+            >
+              {filteredNGOs.map(ngo => (
+                <div key={ngo.id} className="ngo-card">
+                  <img src={ngo.logo} alt={ngo.name} className="ngo-logo" />
+                  <h3>{ngo.name}</h3>
+                  <p>{ngo.focus}</p>
+                  <button className="ngo-details-button">View Details</button>
+                </div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* Value Proposition */}
-        <section className="grid md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-red-50 p-6 rounded-xl shadow-md transform hover:scale-105 transition-transform duration-300">
-            <h3 className="text-xl font-semibold text-red-500 mb-4">Connect</h3>
-            <p className="text-gray-700">Find and connect with NGOs that share your mission and vision for a better world.</p>
-          </div>
-          <div className="bg-red-50 p-6 rounded-xl shadow-md transform hover:scale-105 transition-transform duration-300">
-            <h3 className="text-xl font-semibold text-red-500 mb-4">Collaborate</h3>
-            <p className="text-gray-700">Work together on impactful projects that help communities and drive sustainable change.</p>
-          </div>
-          <div className="bg-red-50 p-6 rounded-xl shadow-md transform hover:scale-105 transition-transform duration-300">
-            <h3 className="text-xl font-semibold text-red-500 mb-4">Contribute</h3>
-            <p className="text-gray-700">Share resources, knowledge and expertise to maximize your organization's impact.</p>
-          </div>
-        </section>
-
-        {/* Latest Updates */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-6">Latest Updates</h2>
-          <div className="bg-gray-50 rounded-xl p-6 shadow-lg">
-            <div className="space-y-4">
-              <div className="border-l-4 border-red-500 pl-4 py-2">
-                <h4 className="font-medium text-gray-800">New Partnership Program Launched</h4>
-                <p className="text-gray-600 text-sm">Join our new initiative connecting NGOs for collaborative projects.</p>
-              </div>
-              <div className="border-l-4 border-red-500 pl-4 py-2">
-                <h4 className="font-medium text-gray-800">Upcoming Virtual Conference</h4>
-                <p className="text-gray-600 text-sm">Register for our annual conference featuring speakers from global organizations.</p>
-              </div>
-              <div className="border-l-4 border-red-500 pl-4 py-2">
-                <h4 className="font-medium text-gray-800">Resource Sharing Platform Enhancement</h4>
-                <p className="text-gray-600 text-sm">New tools added to help NGOs share and request resources more effectively.</p>
-              </div>
+            <div className="slider-controls">
+              <button 
+                className="slider-arrow prev" 
+                onClick={() => navigateNGOSlider('prev')}
+                disabled={ngoSliderPosition === 0}
+              >
+                &#8592;
+              </button>
+              <button 
+                className="slider-arrow next" 
+                onClick={() => navigateNGOSlider('next')}
+                disabled={ngoSliderPosition >= filteredNGOs.length - visibleSlides}
+              >
+                &#8594;
+              </button>
             </div>
-            <button className="mt-4 text-red-500 font-medium hover:text-red-600 transition-colors">
-              View All Updates →
-            </button>
           </div>
-        </section>
-      </main>
+        )}
+      </section>
 
-      {/* Login Modal */}
-      {showLoginForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 max-w-md w-full animate-fadeIn">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">NGO Login</h2>
-            <form onSubmit={handleLoginSubmit}>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="email">
-                  Email
-                </label>
-                <input
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                  id="email"
-                  type="email"
-                  placeholder="your@email.com"
-                  required
-                />
+      <section className="testimonials">
+        <h2>What Our Volunteers Say</h2>
+        <div 
+          className="testimonial-slider"
+          onMouseEnter={() => handleSliderHover(true)}
+          onMouseLeave={() => handleSliderHover(false)}
+        >
+          <div className="testimonial-container">
+            {getCurrentTestimonials().map(testimonial => (
+              <div key={testimonial.id} className="testimonial-card">
+                <div className="testimonial-header">
+                  <img 
+                    src={testimonial.avatar} 
+                    alt={testimonial.author} 
+                    className="testimonial-avatar" 
+                  />
+                  <div className="testimonial-meta">
+                    <h4>{testimonial.author}</h4>
+                    <span>{testimonial.role}</span>
+                  </div>
+                </div>
+                <p>"{testimonial.quote}"</p>
               </div>
-              <div className="mb-6">
-                <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="password">
-                  Password
-                </label>
-                <input
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  required
-                />
-              </div>
-              <div className="flex justify-between mb-4">
-                <label className="flex items-center text-sm text-gray-700">
-                  <input type="checkbox" className="mr-2" />
-                  Remember me
-                </label>
-                <a href="#" className="text-sm text-red-500 hover:text-red-600">Forgot password?</a>
-              </div>
-              <div className="flex gap-4">
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition-colors disabled:bg-red-300"
-                >
-                  {isLoading ? 'Logging in...' : 'Login'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowLoginForm(false)}
-                  className="w-full bg-gray-200 text-gray-800 py-3 rounded-lg hover:bg-gray-300 transition-colors"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
+            ))}
+          </div>
+          <div className="testimonial-dots">
+            {Array.from({ length: totalTestimonialPages }).map((_, index) => (
+              <span 
+                key={index} 
+                className={`testimonial-dot ${index === currentTestimonialPage ? 'active' : ''}`}
+                onClick={() => goToTestimonialPage(index)}
+              ></span>
+            ))}
           </div>
         </div>
-      )}
+      </section>
 
-      <footer className="w-full max-w-5xl mt-12 py-6 border-t border-gray-200 text-center text-gray-600">
-        <p>&copy; {new Date().getFullYear()} NGO Connect. All rights reserved.</p>
+      <section className="how-it-works">
+        <h2>How It Works</h2>
+        <div className="steps-container">
+          <div className="step">
+            <div className="step-number">1</div>
+            <h3>Sign Up</h3>
+            <p>Create your account and complete your profile</p>
+          </div>
+          <div className="step">
+            <div className="step-number">2</div>
+            <h3>Find NGOs</h3>
+            <p>Browse organizations by cause or location</p>
+          </div>
+          <div className="step">
+            <div className="step-number">3</div>
+            <h3>Apply</h3>
+            <p>Send applications to NGOs you're interested in</p>
+          </div>
+          <div className="step">
+            <div className="step-number">4</div>
+            <h3>Volunteer</h3>
+            <p>Contribute your time and skills</p>
+          </div>
+          <div className="step">
+            <div className="step-number">5</div>
+            <h3>Get Certified</h3>
+            <p>Receive recognition for your contributions</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div className="faq-container">
+          <details className="faq-item">
+            <summary>How do I get a volunteer certificate?</summary>
+            <p>Complete at least 40 hours of volunteer work with a registered NGO. The organization will verify your hours and our system will generate an official certificate.</p>
+          </details>
+          <details className="faq-item">
+            <summary>What requirements must my NGO meet to register?</summary>
+            <p>Your organization must be legally registered, have active community projects, and provide documentation of your nonprofit status.</p>
+          </details>
+          <details className="faq-item">
+            <summary>Can international students participate?</summary>
+            <p>Yes! We welcome volunteers from around the world. Many of our NGOs offer remote volunteering opportunities.</p>
+          </details>
+          <details className="faq-item">
+            <summary>How long does the verification process take?</summary>
+            <p>NGO registration verification typically takes 3-5 business days. Volunteer certificates are usually processed within 48 hours after hour verification.</p>
+          </details>
+        </div>
+      </section>
+
+      <section className="newsletter">
+        <div className="newsletter-content">
+          <h2>Stay Updated</h2>
+          <p>Subscribe to our newsletter for the latest NGO opportunities and impact stories</p>
+          <div className="newsletter-form">
+            <input type="email" placeholder="Your email address" />
+            <button className="subscribe-button">Subscribe</button>
+          </div>
+        </div>
+      </section>
+
+      <section className="cta-section">
+        <h2>Ready to Make an Impact?</h2>
+        <p>Start your journey with our network of NGOs today</p>
+        <button className="cta-button">Get Started</button>
+      </section>
+
+      <footer className="ngo-footer">
+        <div className="footer-columns">
+          <div className="footer-column">
+            <h3>NGO Connect</h3>
+            <p>Bridging volunteers and organizations for positive social impact</p>
+          </div>
+          <div className="footer-column">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="#join">Join an NGO</a></li>
+              <li><a href="#certificate">Get Certificate</a></li>
+              <li><a href="#register">Register NGO</a></li>
+              <li><a href="#about">About Us</a></li>
+            </ul>
+          </div>
+          <div className="footer-column">
+            <h3>Contact</h3>
+            <ul>
+              <li>Email: info@ngoconnect.org</li>
+              <li>Phone: +1 (555) 123-4567</li>
+              <li>Address: 123 Impact Street, Global City</li>
+            </ul>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <p>&copy; 2025 NGO Connect. All rights reserved.</p>
+        </div>
       </footer>
     </div>
   );
-}
+};
+
+export default NGOSubpage;

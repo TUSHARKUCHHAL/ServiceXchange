@@ -1,239 +1,923 @@
-/* NGO Connect - Specific CSS Styles */
-
-/* Page-specific container to prevent style leakage */
-.ngo-connect-container {
-  font-family: 'Inter', sans-serif;
+/* NGO Subpage Specific Styles */
+.ngo-subpage {
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  margin-top: 5rem;
 }
 
-/* Header animations */
-.ngo-connect-container .ngo-connect-header h1 {
+/* Navigation bar */
+.ngo-subpage .ngo-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #fff;
+  border-bottom: 1px solid rgba(231, 76, 60, 0.1);
   position: relative;
-}
-
-.ngo-connect-container .ngo-connect-header h1 span {
-  position: relative;
-  display: inline-block;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.8; }
-  100% { opacity: 1; }
-}
-
-/* Button hover effects */
-.ngo-connect-container .ngo-button {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.ngo-connect-container .ngo-button::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  z-index: 100;
   width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-  transition: transform 0.5s, opacity 0.3s;
 }
 
-.ngo-connect-container .ngo-button:hover::after {
-  transform: translate(-50%, -50%) scale(2);
-  opacity: 1;
-}
-
-/* Slider animations */
-.ngo-connect-container .ngo-slider {
-  position: relative;
-}
-
-.ngo-connect-container .ngo-slide {
-  transition: transform 0.5s ease, opacity 0.3s ease;
-  transform-origin: center;
-}
-
-.ngo-connect-container .ngo-slide:not(.active) {
-  opacity: 0.7;
-  transform: scale(0.95);
-}
-
-.ngo-connect-container .ngo-slide.active {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* NGO cards hover effect */
-.ngo-connect-container .ngo-card {
-  transition: all 0.3s ease;
-  backface-visibility: hidden;
-}
-
-.ngo-connect-container .ngo-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* Value proposition section */
-.ngo-connect-container .value-prop-item {
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.ngo-connect-container .value-prop-item:hover {
-  transform: scale(1.05) translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-}
-
-.ngo-connect-container .value-prop-item h3::before {
-  content: '';
-  display: block;
-  width: 40px;
-  height: 3px;
-  background-color: #ef4444;
-  margin-bottom: 15px;
-  transform: scaleX(0.6);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-}
-
-.ngo-connect-container .value-prop-item:hover h3::before {
-  transform: scaleX(1);
-}
-
-/* Latest updates section */
-.ngo-connect-container .update-item {
-  transition: all 0.3s ease;
-  overflow: hidden;
-}
-
-.ngo-connect-container .update-item:hover {
-  background-color: rgba(239, 68, 68, 0.05);
-  padding-left: 25px;
-}
-
-.ngo-connect-container .update-item::before {
-  content: '';
-  position: absolute;
-  left: 0;
+.ngo-subpage .ngo-navigation.sticky {
+  position: fixed;
   top: 0;
-  height: 100%;
-  width: 4px;
-  background-color: #ef4444;
-  transform: scaleY(0);
-  transform-origin: bottom;
-  transition: transform 0.3s ease;
+  left: 0;
+  right: 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.3s ease;
 }
 
-.ngo-connect-container .update-item:hover::before {
-  transform: scaleY(1);
-}
-
-/* Login modal animation */
-.ngo-connect-container .login-modal {
-  animation: modalFadeIn 0.4s ease forwards;
-}
-
-@keyframes modalFadeIn {
+@keyframes slideDown {
   from {
-    opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(-100%);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }
 
-.ngo-connect-container .login-modal-backdrop {
-  animation: backdropFadeIn 0.3s ease forwards;
+.ngo-subpage .nav-logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #e74c3c;
 }
 
-@keyframes backdropFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.ngo-subpage .nav-links {
+  display: flex;
+  gap: 2rem;
 }
 
-/* Form field focus effects */
-.ngo-connect-container .form-input {
-  transition: all 0.3s ease;
+.ngo-subpage .nav-links a {
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
 
-.ngo-connect-container .form-input:focus {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+.ngo-subpage .nav-links a:hover {
+  color: #e74c3c;
 }
 
-/* Button loading animation */
-.ngo-connect-container .btn-loading {
+.ngo-subpage .nav-cta {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ngo-subpage .nav-cta:hover {
+  background-color: #c0392b;
+}
+
+/* Header styles */
+.ngo-subpage .ngo-header {
+  text-align: center;
+  margin: 7rem 0 3rem;
+}
+
+.ngo-subpage .ngo-header h1 {
+  color: #e74c3c;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ngo-subpage .ngo-header p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+/* Search bar */
+.ngo-subpage .search-bar {
+  display: flex;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.ngo-subpage .search-bar input {
+  flex-grow: 1;
+  padding: 0.8rem 1.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 50px 0 0 50px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.ngo-subpage .search-bar input:focus {
+  border-color: #e74c3c;
+}
+
+.ngo-subpage .search-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 0 50px 50px 0;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ngo-subpage .search-button:hover {
+  background-color: #c0392b;
+}
+
+.ngo-subpage .no-results {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Action cards section */
+.ngo-subpage .ngo-actions {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 4rem;
+}
+
+.ngo-subpage .action-card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 300px;
+  box-shadow: 0 10px 20px rgba(231, 76, 60, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ngo-subpage .action-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(231, 76, 60, 0.2);
+}
+
+.ngo-subpage .card-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.ngo-subpage .action-card h2 {
+  color: #e74c3c;
+  margin-bottom: 1rem;
+}
+
+.ngo-subpage .action-card p {
+  color: #666;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.ngo-subpage .action-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ngo-subpage .action-button:hover {
+  background-color: #c0392b;
+}
+
+/* Impact Areas */
+.ngo-subpage .impact-areas {
+  margin: 4rem 0;
+}
+
+.ngo-subpage .impact-areas h2 {
+  text-align: center;
+  color: #e74c3c;
+  margin-bottom: 2rem;
+}
+
+.ngo-subpage .impact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.ngo-subpage .impact-area-card {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.ngo-subpage .impact-area-card:hover {
+  transform: translateY(-5px);
+}
+
+.ngo-subpage .impact-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.ngo-subpage .impact-area-card h3 {
+  color: #e74c3c;
+  margin-bottom: 0.5rem;
+}
+
+.ngo-subpage .impact-area-card p {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Statistics section */
+.ngo-subpage .ngo-statistics {
+  display: flex;
+  justify-content: space-around;
+  margin: 4rem 0;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  flex-wrap: wrap;
+}
+
+.ngo-subpage .stat-item {
+  text-align: center;
+  margin: 1rem;
+}
+
+.ngo-subpage .stat-number {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #e74c3c;
+}
+
+.ngo-subpage .stat-label {
+  color: #666;
+}
+
+/* NGO Slider section */
+.ngo-subpage .ngo-slider-section {
+  margin: 4rem 0;
   position: relative;
 }
 
-.ngo-connect-container .btn-loading::after {
-  content: '';
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  top: calc(50% - 10px);
-  left: calc(50% - 10px);
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-top-color: white;
+.ngo-subpage .ngo-slider-section h2 {
+  text-align: center;
+  color: #e74c3c;
+  margin-bottom: 2rem;
+}
+
+.ngo-subpage .ngo-slider-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 1rem 0;
+}
+
+.ngo-subpage .ngo-slider {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.ngo-subpage .ngo-card {
+  min-width: 250px;
+  margin-right: 30px;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.ngo-subpage .ngo-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.15);
+}
+
+.ngo-subpage .ngo-logo {
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  object-fit: cover;
+  margin: 0 auto 1rem auto;
+  border: 3px solid #e74c3c;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+.ngo-subpage .ngo-card h3 {
+  color: #e74c3c;
+  margin-bottom: 0.5rem;
 }
 
-/* Pagination indicators */
-.ngo-connect-container .pagination-dot {
+.ngo-subpage .ngo-card p {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.ngo-subpage .ngo-details-button {
+  background-color: transparent;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.pagination-dot.active {
-  transform: scale(1.3);
+.ngo-subpage .ngo-details-button:hover {
+  background-color: #e74c3c;
+  color: white;
 }
 
-/* Footer animation */
-.ngo-connect-container .footer-content {
+.ngo-subpage .slider-controls {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+  z-index: 5;
+}
+
+.ngo-subpage .slider-arrow {
+  background-color: white;
+  color: #e74c3c;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.ngo-subpage .slider-arrow:hover {
+  background-color: #e74c3c;
+  color: white;
+}
+
+/* Modified Testimonials section */
+.ngo-subpage .testimonials {
+  margin: 4rem 0;
+}
+
+.ngo-subpage .testimonials h2 {
+  text-align: center;
+  color: #e74c3c;
+  margin-bottom: 2rem;
+}
+
+.ngo-subpage .testimonial-slider {
   position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
-.ngo-connect-container .footer-content::before {
+.ngo-subpage .testimonial-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.ngo-subpage .testimonial-card {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  border-radius: 12px;
+  position: relative;
+  border-left: 4px solid #e74c3c;
+  width: calc(50% - 1rem);
+  flex-basis: calc(50% - 1rem);
+  min-width: 260px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.5s ease;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.ngo-subpage .testimonial-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.ngo-subpage .testimonial-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 2px solid #e74c3c;
+}
+
+.ngo-subpage .testimonial-meta h4 {
+  margin: 0 0 0.3rem 0;
+  color: #e74c3c;
+}
+
+.ngo-subpage .testimonial-meta span {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.ngo-subpage .testimonial-card p {
+  font-style: italic;
+  line-height: 1.6;
+  color: #444;
+}
+
+.ngo-subpage .testimonial-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.ngo-subpage .testimonial-dot {
+  width: 12px;
+  height: 12px;
+  background-color: #ddd;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ngo-subpage .testimonial-dot.active {
+  background-color: #e74c3c;
+  transform: scale(1.2);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* How It Works section */
+.ngo-subpage .how-it-works {
+  margin: 4rem 0;
+  text-align: center;
+}
+
+.ngo-subpage .how-it-works h2 {
+  color: #e74c3c;
+  margin-bottom: 2rem;
+}
+
+.ngo-subpage .steps-container {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.ngo-subpage .steps-container::before {
   content: '';
   position: absolute;
-  top: -2px;
-  left: 50%;
-  width: 0;
+  top: 40px;
+  left: 60px;
+  right: 60px;
   height: 2px;
-  background-color: #ef4444;
-  transform: translateX(-50%);
-  transition: width 0.5s ease;
+  background-color: #e0e0e0;
+  z-index: -1;
 }
 
-.ngo-connect-container:hover .footer-content::before {
-  width: 100px;
+.ngo-subpage .step {
+  text-align: center;
+  width: 150px;
+  margin: 0 10px 30px;
 }
 
-/* Mobile optimization */
+.ngo-subpage .step-number {
+  width: 50px;
+  height: 50px;
+  background-color: #e74c3c;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.ngo-subpage .step h3 {
+  color: #e74c3c;
+  margin-bottom: 0.5rem;
+}
+
+.ngo-subpage .step p {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* FAQ Section */
+.ngo-subpage .faq-section {
+  margin: 4rem 0;
+}
+
+.ngo-subpage .faq-section h2 {
+  text-align: center;
+  color: #e74c3c;
+  margin-bottom: 2rem;
+}
+
+.ngo-subpage .faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.ngo-subpage .faq-item {
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
+.ngo-subpage .faq-item summary {
+  padding: 1rem 1.5rem;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.ngo-subpage .faq-item summary:hover {
+  background-color: #f0f0f0;
+}
+
+.ngo-subpage .faq-item summary::after {
+  content: "+";
+  font-size: 1.5rem;
+  color: #e74c3c;
+}
+
+.ngo-subpage .faq-item[open] summary::after {
+  content: "−";
+}
+
+.ngo-subpage .faq-item p {
+  padding: 1rem 1.5rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* Newsletter section */
+.ngo-subpage .newsletter {
+  margin: 4rem 0;
+  background-color: #f9f9f9;
+  padding: 3rem;
+  border-radius: 12px;
+}
+
+.ngo-subpage .newsletter-content {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ngo-subpage .newsletter h2 {
+  color: #e74c3c;
+  margin-bottom: 1rem;
+}
+
+.ngo-subpage .newsletter p {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.ngo-subpage .newsletter-form {
+  display: flex;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.ngo-subpage .newsletter-form input {
+  flex-grow: 1;
+  padding: 0.8rem 1.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 50px 0 0 50px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.ngo-subpage .newsletter-form input:focus {
+  border-color: #e74c3c;
+}
+
+.ngo-subpage .subscribe-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 0 50px 50px 0;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ngo-subpage .subscribe-button:hover {
+  background-color: #c0392b;
+}
+
+/* CTA Section */
+.ngo-subpage .cta-section {
+  background-color: #e74c3c;
+  color: white;
+  text-align: center;
+  padding: 3rem;
+  border-radius: 12px;
+  margin-top: 4rem;
+  box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
+}
+
+.ngo-subpage .cta-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.ngo-subpage .cta-section p {
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.ngo-subpage .cta-button {
+  background-color: white;
+  color: #e74c3c;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ngo-subpage .cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer */
+.ngo-subpage .ngo-footer {
+  margin-top: 5rem;
+  padding-top: 3rem;
+  background-color: #f9f9f9;
+  border-top: 1px solid #e0e0e0;
+}
+
+.ngo-subpage .footer-columns {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 0 2rem;
+}
+
+.ngo-subpage .footer-column {
+  flex: 1;
+  min-width: 200px;
+}
+
+.ngo-subpage .footer-column h3 {
+  color: #e74c3c;
+  margin-bottom: 1rem;
+}
+
+.ngo-subpage .footer-column p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.ngo-subpage .footer-column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.ngo-subpage .footer-column ul li {
+  margin-bottom: 0.5rem;
+}
+
+.ngo-subpage .footer-column ul li a {
+  color: #666;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.ngo-subpage .footer-column ul li a:hover {
+  color: #e74c3c;
+}
+
+.ngo-subpage .footer-bottom {
+  text-align: center;
+  padding: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+  color: #666;
+}
+/* Additional Slider Styles */
+.ngo-subpage .ngo-slider.dragging {
+  cursor: grabbing;
+}
+
+.ngo-subpage .ngo-slider-container {
+  cursor: grab;
+}
+
+.ngo-subpage .slider-arrow {
+  opacity: 0.7;
+  transition: opacity 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.ngo-subpage .slider-arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background-color: #f0f0f0;
+  color: #aaa;
+}
+
+.ngo-subpage .slider-arrow:not(:disabled):hover {
+  opacity: 1;
+}
+
+/* Responsive adjustments for the slider */
+@media (max-width: 992px) {
+  .ngo-subpage .ngo-card {
+    min-width: 220px;
+  }
+}
+
 @media (max-width: 768px) {
-  .ngo-connect-container .ngo-slide {
-    opacity: 1;
-    transform: scale(1);
+  .ngo-subpage .ngo-card {
+    min-width: 200px;
   }
   
-  .ngo-connect-container .value-prop-item:hover {
-    transform: scale(1.02);
+  .ngo-subpage .slider-controls {
+    padding: 0 0.5rem;
+  }
+  
+  .ngo-subpage .slider-arrow {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ngo-subpage .ngo-card {
+    min-width: calc(100% - 30px);
+    margin-right: 15px;
+    margin-left: 15px;
+  }
+}
+
+/* Animation for slider transition */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.ngo-subpage .ngo-card {
+  animation: slideIn 0.3s ease;
+}
+/* Responsive adjustments */
+@media (max-width: 992px) {  
+  .ngo-subpage .steps-container::before {
+    display: none;
+  }
+  
+  .ngo-subpage .step {
+    width: 30%;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .ngo-subpage .ngo-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .ngo-subpage .ngo-statistics {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .ngo-subpage .stat-item {
+    margin-bottom: 1.5rem;
+  }
+  
+  .ngo-subpage .nav-links {
+    display: none;
+  }
+  
+  .ngo-subpage .nav-logo {
+    font-size: 1.2rem;
+  }
+  
+  .ngo-subpage .ngo-header h1 {
+    font-size: 2rem;
+  }
+  
+  .ngo-subpage .ngo-header p {
+    font-size: 1rem;
+  }
+  
+  .ngo-subpage .search-bar {
+    flex-direction: column;
+  }
+  
+  .ngo-subpage .search-bar input {
+    border-radius: 50px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .ngo-subpage .search-button {
+    border-radius: 50px;
+  }
+  
+  .ngo-subpage .newsletter-form {
+    flex-direction: column;
+  }
+  
+  .ngo-subpage .newsletter-form input {
+    border-radius: 50px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .ngo-subpage .subscribe-button {
+    border-radius: 50px;
+  }
+  
+  .ngo-subpage .step {
+    width: 45%;
+  }
+  
+  .ngo-subpage .footer-columns {
+    flex-direction: column;
+  }
+  
+  /* Fix for testimonial cards on mobile */
+  .ngo-subpage  .testimonial-card {
+    width: 100%;
+    flex-basis: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .ngo-subpage .ngo-subpage {
+    padding: 0.5rem;
+  }
+  
+  .ngo-subpage .action-card {
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  .ngo-subpage .ngo-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .ngo-subpage .cta-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .ngo-subpage .step {
+    width: 100%;
+  }
+  
+  .ngo-subpage .slider-arrow {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
   }
 }
