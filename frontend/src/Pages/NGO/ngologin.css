@@ -5,10 +5,159 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
- 
+  position: relative; /* Important for positioning the background animations */
+  background-color: #f9f9f9; /* Light background to enhance visibility of animations */
+  overflow: hidden; /* Prevent animations from causing scrollbars */
 }
 
-.login-container .login-card {
+/* Background Animation Container */
+.bg-animation {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 0; /* Ensure background stays behind content */
+  pointer-events: none; /* Prevent background from interfering with interactions */
+}
+
+/* Background Elements */
+.bg-element {
+  position: absolute;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(231, 76, 60, 0.2) 100%);
+  opacity: 0.7;
+  filter: blur(3px);
+  transform-origin: center center;
+  z-index: 0;
+}
+
+.element-1 {
+  width: 300px;
+  height: 300px;
+  left: -50px;
+  top: -50px;
+  animation: moveBg 12s infinite alternate ease-in-out;
+}
+
+.element-2 {
+  width: 200px;
+  height: 200px;
+  right: -30px;
+  bottom: 20%;
+  animation: moveBg 15s infinite alternate-reverse ease-in-out;
+}
+
+.element-3 {
+  width: 250px;
+  height: 250px;
+  left: 30%;
+  bottom: -50px;
+  animation: moveBg 10s infinite alternate ease-in-out;
+  animation-delay: 2s;
+}
+
+.element-4 {
+  width: 180px;
+  height: 180px;
+  right: 20%;
+  top: 10%;
+  animation: moveBg 14s infinite alternate-reverse ease-in-out;
+  animation-delay: 1s;
+}
+
+/* Smaller decorative elements */
+.decor-element {
+  position: absolute;
+  background-color: rgba(231, 76, 60, 0.1);
+  border-radius: 10px;
+  transform: rotate(45deg);
+  opacity: 0.5;
+  animation: floatAndRotate 8s infinite ease-in-out;
+  z-index: 0;
+}
+
+.decor-1 {
+  width: 40px;
+  height: 40px;
+  left: 15%;
+  top: 25%;
+  animation-delay: 0s;
+}
+
+.decor-2 {
+  width: 30px;
+  height: 30px;
+  right: 25%;
+  top: 35%;
+  animation-delay: 2s;
+}
+
+.decor-3 {
+  width: 25px;
+  height: 25px;
+  left: 65%;
+  bottom: 15%;
+  animation-delay: 4s;
+}
+
+.decor-4 {
+  width: 20px;
+  height: 20px;
+  left: 35%;
+  top: 65%;
+  animation-delay: 1s;
+}
+
+.decor-5 {
+  width: 15px;
+  height: 15px;
+  right: 10%;
+  bottom: 30%;
+  animation-delay: 3s;
+}
+
+/* Animation for the main background elements */
+@keyframes moveBg {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(50px, 25px) scale(1.05);
+  }
+  50% {
+    transform: translate(-20px, 40px) scale(0.95);
+  }
+  75% {
+    transform: translate(35px, -30px) scale(1.02);
+  }
+  100% {
+    transform: translate(-40px, -25px) scale(1);
+  }
+}
+
+/* Animation for the decorative elements */
+@keyframes floatAndRotate {
+  0% {
+    transform: translateY(0) rotate(45deg);
+  }
+  25% {
+    transform: translateY(-15px) rotate(60deg);
+  }
+  50% {
+    transform: translateY(10px) rotate(30deg);
+  }
+  75% {
+    transform: translateY(-5px) rotate(50deg);
+  }
+  100% {
+    transform: translateY(0) rotate(45deg);
+  }
+}
+
+/* Login card styling */
+.login-card {
   width: 100%;
   max-width: 420px;
   background-color: #ffffff;
@@ -16,14 +165,16 @@
   box-shadow: 0 8px 30px rgba(231, 76, 60, 0.12);
   padding: 32px;
   overflow: hidden;
+  position: relative; /* Ensure proper stacking context */
+  z-index: 1; /* Ensure card appears above background */
 }
 
-.login-container .login-header {
+.login-header {
   text-align: center;
   margin-bottom: 24px;
 }
 
-.login-container .logo-container {
+.logo-container {
   width: 80px;
   height: 80px;
   margin: 0 auto 16px;
@@ -36,33 +187,33 @@
   box-shadow: 0 4px 12px rgba(231, 76, 60, 0.1);
 }
 
-.login-container .ngo-logo {
+.ngo-logo {
   width: 100%;
   height: auto;
   object-fit: contain;
 }
 
-.login-container .login-header h1 {
+.login-header h1 {
   font-size: 24px;
   font-weight: 600;
   color: #333;
   margin-bottom: 8px;
 }
 
-.login-container .login-header p {
+.login-header p {
   color: #666;
   font-size: 14px;
 }
 
-.login-container .login-form {
+.login-form {
   margin-bottom: 24px;
 }
 
-.login-container .form-group {
+.form-group {
   margin-bottom: 18px;
 }
 
-.login-container .form-group label {
+.form-group label {
   display: block;
   margin-bottom: 6px;
   font-size: 14px;
@@ -70,7 +221,7 @@
   font-weight: 500;
 }
 
-.login-container .form-group input {
+.form-group input {
   width: 100%;
   padding: 12px 16px;
   border: 1px solid #ddd;
@@ -79,20 +230,21 @@
   transition: all 0.3s ease;
 }
 
-.login-container .form-group input:focus {
+.form-group input:focus {
   outline: none;
   border-color: #e74c3c;
   box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
 }
 
-.login-container .form-options {
+.form-options {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
   font-size: 14px;
 }
-.login-container .remember-me {
+
+.remember-me {
   display: flex;
   align-items: center;
   margin: 12px 0;
@@ -100,7 +252,7 @@
   color: #555;
 }
 
-.login-container .remember-me input[type="checkbox"] {
+.remember-me input[type="checkbox"] {
   margin-right: 8px;
   accent-color: #e74c3c;
   width: 16px;
@@ -108,28 +260,28 @@
   cursor: pointer;
 }
 
-.login-container .remember-me label {
+.remember-me label {
   cursor: pointer;
   user-select: none;
 }
 
-.login-container .remember-me:hover input[type="checkbox"] {
+.remember-me:hover input[type="checkbox"] {
   box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
 }
 
-.login-container .forgot-password {
+.forgot-password {
   color: #e74c3c;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.2s ease;
 }
 
-.login-container .forgot-password:hover {
+.forgot-password:hover {
   text-decoration: underline;
   color: #c0392b;
 }
 
-.login-container .login-button {
+.login-button {
   width: 100%;
   padding: 14px;
   background-color: #e74c3c;
@@ -142,43 +294,43 @@
   transition: all 0.3s ease;
 }
 
-.login-container .login-button:hover {
+.login-button:hover {
   background-color: #c0392b;
 }
 
-.login-container .login-button:disabled {
+.login-button:disabled {
   background-color: #e77c70;
   cursor: not-allowed;
 }
 
-.login-container .login-footer {
+.login-footer {
   text-align: center;
   margin-top: 24px;
   color: #666;
   font-size: 14px;
 }
 
-.login-container .login-footer a {
+.login-footer a {
   color: #e74c3c;
   font-weight: 500;
   text-decoration: none;
 }
 
-.login-container .login-footer a:hover {
+.login-footer a:hover {
   text-decoration: underline;
 }
 
-.login-container .social-login {
+.social-login {
   margin-top: 24px;
 }
 
-.login-container .social-login p {
+.social-login p {
   margin-bottom: 12px;
   position: relative;
 }
 
-.login-container .social-login p:before, 
-.login-container .social-login p:after {
+.social-login p:before, 
+.social-login p:after {
   content: "";
   position: absolute;
   top: 50%;
@@ -187,21 +339,21 @@
   background-color: #ddd;
 }
 
-.login-container .social-login p:before {
+.social-login p:before {
   left: 0;
 }
 
-.login-container .social-login p:after {
+.social-login p:after {
   right: 0;
 }
 
-.login-container .social-icons {
+.social-icons {
   display: flex;
   justify-content: center;
   gap: 16px;
 }
 
-.login-container .social-btn {
+.social-btn {
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -215,34 +367,34 @@
   transition: all 0.3s ease;
 }
 
-.login-container .social-btn:hover {
+.social-btn:hover {
   border-color: #e74c3c;
 }
 
-.login-container .social-btn.google {
+.social-btn.google {
   color: #DB4437;
 }
 
-.login-container .social-btn.facebook {
+.social-btn.facebook {
   color: #4267B2;
 }
 
-.login-container .social-btn.twitter {
+.social-btn.twitter {
   color: #1DA1F2;
 }
 
 @media (max-width: 480px) {
-  .login-container .login-card {
+  .login-card {
     padding: 24px 16px;
   }
   
-  .login-container .form-options {
+  .form-options {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
   
-  .login-container .login-button {
+  .login-button {
     padding: 12px;
   }
 }

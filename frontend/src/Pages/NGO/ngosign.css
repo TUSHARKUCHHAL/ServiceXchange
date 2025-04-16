@@ -17,12 +17,137 @@
   background: linear-gradient(135deg, #f5f7fa 0%, #e8eaed 100%);
   color: #333;
   line-height: 1.6;
+  position: relative;
+  overflow: hidden;
 }
 
 .main-container .signup-container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
+  z-index: 10;
+}
+
+/* Background Animation Elements */
+.main-container .bg-animation {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.main-container .bg-element {
+  position: absolute;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(231, 76, 60, 0.2) 100%);
+  opacity: 0.7;
+  filter: blur(3px);
+  transform-origin: center center;
+}
+
+.main-container .element-1 {
+  width: 300px;
+  height: 300px;
+  left: -50px;
+  top: -50px;
+  animation: moveBg 12s infinite alternate ease-in-out;
+}
+
+.main-container .element-2 {
+  width: 200px;
+  height: 200px;
+  right: -30px;
+  bottom: 20%;
+  animation: moveBg 15s infinite alternate-reverse ease-in-out;
+}
+
+.main-container .element-3 {
+  width: 250px;
+  height: 250px;
+  left: 30%;
+  bottom: -50px;
+  animation: moveBg 10s infinite alternate ease-in-out;
+  animation-delay: 2s;
+}
+
+.main-container .element-4 {
+  width: 180px;
+  height: 180px;
+  right: 20%;
+  top: 10%;
+  animation: moveBg 14s infinite alternate-reverse ease-in-out;
+  animation-delay: 1s;
+}
+
+/* Smaller decorative elements */
+.main-container .decor-element {
+  position: absolute;
+  background-color: rgba(231, 76, 60, 0.1);
+  border-radius: 10px;
+  transform: rotate(45deg);
+  opacity: 0.5;
+  animation: floatAndRotate 8s infinite ease-in-out;
+}
+
+.main-container .decor-1 {
+  width: 40px;
+  height: 40px;
+  left: 15%;
+  top: 25%;
+  animation-delay: 0s;
+}
+
+.main-container .decor-2 {
+  width: 30px;
+  height: 30px;
+  right: 25%;
+  top: 35%;
+  animation-delay: 2s;
+}
+
+.main-container .decor-3 {
+  width: 25px;
+  height: 25px;
+  left: 65%;
+  bottom: 15%;
+  animation-delay: 4s;
+}
+
+.main-container .decor-4 {
+  width: 20px;
+  height: 20px;
+  left: 35%;
+  top: 65%;
+  animation-delay: 1s;
+}
+
+.main-container .decor-5 {
+  width: 15px;
+  height: 15px;
+  right: 10%;
+  bottom: 30%;
+  animation-delay: 3s;
+}
+
+/* Animation for the main background elements */
+@keyframes moveBg {
+  0% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(50px, 25px) scale(1.05); }
+  50% { transform: translate(-20px, 40px) scale(0.95); }
+  75% { transform: translate(35px, -30px) scale(1.02); }
+  100% { transform: translate(-40px, -25px) scale(1); }
+}
+
+/* Animation for the decorative elements */
+@keyframes floatAndRotate {
+  0% { transform: translateY(0) rotate(45deg); }
+  25% { transform: translateY(-15px) rotate(60deg); }
+  50% { transform: translateY(10px) rotate(30deg); }
+  75% { transform: translateY(-5px) rotate(50deg); }
+  100% { transform: translateY(0) rotate(45deg); }
 }
 
 /* Card Styles */
@@ -37,6 +162,15 @@
   padding: 40px;
   transition: all 0.3s ease;
   margin-top: 6rem;
+  position: relative;
+  z-index: 20;
+  backdrop-filter: blur(5px);
+  animation: cardFloat 6s infinite ease-in-out;
+}
+
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 .main-container .signup-card:hover {

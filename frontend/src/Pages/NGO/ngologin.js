@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './ngologin.css';
 
@@ -32,6 +32,20 @@ const Login = () => {
 
   return (
     <div className="main-container login-container">
+      {/* Background Animation */}
+      <div className="bg-animation">
+        <div className="bg-element element-1"></div>
+        <div className="bg-element element-2"></div>
+        <div className="bg-element element-3"></div>
+        <div className="bg-element element-4"></div>
+        
+        <div className="decor-element decor-1"></div>
+        <div className="decor-element decor-2"></div>
+        <div className="decor-element decor-3"></div>
+        <div className="decor-element decor-4"></div>
+        <div className="decor-element decor-5"></div>
+      </div>
+      
       <motion.div 
         className="login-card"
         initial={{ opacity: 0, y: 20 }}

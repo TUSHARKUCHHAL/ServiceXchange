@@ -80,8 +80,28 @@ const Signup = () => {
     }, 1500);
   };
 
+  // Background animation elements
+  const renderBackgroundElements = () => {
+    return (
+      <div className="bg-animation">
+        <div className="bg-element element-1"></div>
+        <div className="bg-element element-2"></div>
+        <div className="bg-element element-3"></div>
+        <div className="bg-element element-4"></div>
+        
+        <div className="decor-element decor-1"></div>
+        <div className="decor-element decor-2"></div>
+        <div className="decor-element decor-3"></div>
+        <div className="decor-element decor-4"></div>
+        <div className="decor-element decor-5"></div>
+      </div>
+    );
+  };
+
   return (
     <div className="main-container signup-container">
+      {renderBackgroundElements()}
+      
       <motion.div 
         className="signup-card"
         initial={{ opacity: 0, y: 20 }}
@@ -94,9 +114,9 @@ const Signup = () => {
           
           <div className="step-indicator">
             <div className={`step ${step >= 1 ? 'active' : ''}`}>1</div>
-            <div className="step-line"></div>
+            <div className={`step-line ${step >= 2 ? 'active' : ''}`}></div>
             <div className={`step ${step >= 2 ? 'active' : ''}`}>2</div>
-            <div className="step-line"></div>
+            <div className={`step-line ${step >= 3 ? 'active' : ''}`}></div>
             <div className={`step ${step >= 3 ? 'active' : ''}`}>3</div>
           </div>
         </div>
