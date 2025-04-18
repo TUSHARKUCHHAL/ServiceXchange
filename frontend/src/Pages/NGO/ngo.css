@@ -9,20 +9,25 @@
   line-height: 1.6;
 }
 
-.main-content {
+.ngo-connect .main-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+.ngo-connect h1, 
+.ngo-connect h2, 
+.ngo-connect h3, 
+.ngo-connect h4, 
+.ngo-connect h5, 
+.ngo-connect h6 {
   margin-top: 0;
   font-weight: 600;
   color: #2d3748;
 }
 
-h1 {
+.ngo-connect h1 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
   background: linear-gradient(90deg, #e74c3c, #ff6b6b);
@@ -31,14 +36,14 @@ h1 {
   background-clip: text;
 }
 
-h2 {
+.ngo-connect h2 {
   font-size: 2rem;
   margin-bottom: 1.5rem;
   position: relative;
   text-align: center;
 }
 
-h2:after {
+.ngo-connect h2:after {
   content: '';
   display: block;
   width: 60px;
@@ -49,7 +54,7 @@ h2:after {
 }
 
 /* Introduction Panel */
-.intro-panel {
+.ngo-connect .intro-panel {
   padding: 5rem 0 3rem;
   text-align: center;
   background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.95));
@@ -58,7 +63,7 @@ h2:after {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
-.intro-panel p {
+.ngo-connect .intro-panel p {
   font-size: 1.2rem;
   max-width: 700px;
   margin: 0 auto 2rem;
@@ -66,7 +71,7 @@ h2:after {
 }
 
 /* Search bar */
-.search-bar {
+.ngo-connect .search-bar {
   display: flex;
   max-width: 600px;
   margin: 0 auto;
@@ -75,7 +80,7 @@ h2:after {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.search-bar input {
+.ngo-connect .search-bar input {
   flex-grow: 1;
   padding: 15px 20px;
   border: none;
@@ -84,7 +89,7 @@ h2:after {
   background: white;
 }
 
-.search-button {
+.ngo-connect .search-button {
   background: linear-gradient(90deg, #e74c3c, #ff6b6b);
   color: white;
   border: none;
@@ -97,11 +102,11 @@ h2:after {
   transition: all 0.3s ease;
 }
 
-.search-button:hover {
+.ngo-connect .search-button:hover {
   background: linear-gradient(90deg, #e74c3c, #e74c3c);
 }
 
-.no-results {
+.ngo-connect .no-results {
   text-align: center;
   padding: 2rem;
   color: #718096;
@@ -112,7 +117,7 @@ h2:after {
 }
 
 /* Action cards section */
-.ngo-actions {
+.ngo-connect .ngo-actions {
   display: flex;
   gap: 24px;
   justify-content: center;
@@ -120,7 +125,7 @@ h2:after {
   margin-bottom: 4rem;
 }
 
-.action-card {
+.ngo-connect .action-card {
   background-color: white;
   border-radius: 16px;
   padding: 32px;
@@ -132,7 +137,7 @@ h2:after {
   position: relative;
 }
 
-.action-card:before {
+.ngo-connect .action-card:before {
   content: '';
   position: absolute;
   top: 0;
@@ -142,12 +147,12 @@ h2:after {
   background: linear-gradient(90deg, #e74c3c, #ff6b6b);
 }
 
-.action-card:hover {
+.ngo-connect .action-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
 }
 
-.card-icon {
+.ngo-connect .card-icon {
   width: 80px;
   height: 80px;
   background: #fef2f2;
@@ -159,23 +164,23 @@ h2:after {
   color: #e74c3c;
 }
 
-.action-card h2 {
+.ngo-connect .action-card h2 {
   color: #2d3748;
   margin-bottom: 12px;
   font-size: 1.5rem;
 }
 
-.action-card h2:after {
+.ngo-connect .action-card h2:after {
   display: none;
 }
 
-.action-card p {
+.ngo-connect .action-card p {
   color: #718096;
   margin-bottom: 20px;
   line-height: 1.6;
 }
 
-.action-button {
+.ngo-connect .action-button {
   background: linear-gradient(90deg, #e74c3c, #ff6b6b);
   color: white;
   border: none;
@@ -187,23 +192,23 @@ h2:after {
   box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
 }
 
-.action-button:hover {
+.ngo-connect .action-button:hover {
   background: linear-gradient(90deg, #e74c3c, #e74c3c);
   box-shadow: 0 4px 12px rgba(231, 76, 60, 0.5);
 }
 
 /* Impact Areas */
-.impact-areas {
+.ngo-connect .impact-areas {
   margin: 5rem 0;
 }
 
-.impact-grid {
+.ngo-connect .impact-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
 }
 
-.impact-area-card {
+.ngo-connect .impact-area-card {
   background-color: white;
   padding: 24px;
   border-radius: 12px;
@@ -212,12 +217,12 @@ h2:after {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.impact-area-card:hover {
+.ngo-connect .impact-area-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-.impact-icon {
+.ngo-connect .impact-icon {
   width: 70px;
   height: 70px;
   background: #fef2f2;
@@ -229,19 +234,19 @@ h2:after {
   color: #e74c3c;
 }
 
-.impact-area-card h3 {
+.ngo-connect .impact-area-card h3 {
   color: #2d3748;
   margin-bottom: 12px;
   font-size: 1.2rem;
 }
 
-.impact-area-card p {
+.ngo-connect .impact-area-card p {
   color: #718096;
   font-size: 14px;
 }
 
 /* Statistics section */
-.ngo-statistics {
+.ngo-connect .ngo-statistics {
   display: flex;
   justify-content: space-around;
   margin: 4rem 0;
@@ -252,13 +257,13 @@ h2:after {
   box-shadow: 0 10px 30px rgba(231, 76, 60, 0.2);
 }
 
-.stat-item {
+.ngo-connect .stat-item {
   text-align: center;
   margin: 1rem;
   color: white;
 }
 
-.stat-number {
+.ngo-connect .stat-number {
   display: block;
   font-size: 3rem;
   font-weight: 700;
@@ -266,19 +271,19 @@ h2:after {
   margin-bottom: 8px;
 }
 
-.stat-label {
+.ngo-connect .stat-label {
   font-size: 1rem;
   opacity: 0.9;
   font-weight: 500;
 }
 
 /* NGO Slider section */
-.ngo-slider-section {
+.ngo-connect .ngo-slider-section {
   margin: 5rem 0;
   position: relative;
 }
 
-.ngo-slider-container {
+.ngo-connect .ngo-slider-container {
   width: 100%;
   overflow: hidden;
   position: relative;
@@ -287,7 +292,7 @@ h2:after {
 }
 
 /* Infinite Slider Styles */
-.ngo-slider {
+.ngo-connect .ngo-slider {
   display: flex;
   transition: transform 0.5s ease;
   will-change: transform;
@@ -303,17 +308,17 @@ h2:after {
   }
 }
 
-.ngo-slider:hover {
+.ngo-connect .ngo-slider:hover {
   animation-play-state: paused;
 }
 
-.ngo-slider.dragging {
+.ngo-connect .ngo-slider.dragging {
   cursor: grabbing;
   transition: none;
   animation-play-state: paused;
 }
 
-.ngo-card {
+.ngo-connect .ngo-card {
   min-width: 250px;
   margin-right: 30px;
   padding: 24px;
@@ -328,12 +333,12 @@ h2:after {
   flex-direction: column;
 }
 
-.ngo-card:hover {
+.ngo-connect .ngo-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
-.ngo-logo {
+.ngo-connect .ngo-logo {
   width: 80px;
   height: 80px;
   border-radius: 50%;
@@ -343,7 +348,7 @@ h2:after {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
-.ngo-card h3 {
+.ngo-connect .ngo-card h3 {
   color: #2d3748;
   margin-bottom: 8px;
   font-size: 1.1rem;
@@ -354,7 +359,7 @@ h2:after {
   justify-content: center;
 }
 
-.ngo-card p {
+.ngo-connect .ngo-card p {
   color: #718096;
   font-size: 14px;
   margin-bottom: 20px;
@@ -364,7 +369,7 @@ h2:after {
   flex-grow: 1;
 }
 
-.ngo-details-button {
+.ngo-connect .ngo-details-button {
   background: transparent;
   color: #e74c3c;
   border: 2px solid #e74c3c;
@@ -379,16 +384,16 @@ h2:after {
   align-self: center;
 }
 
-.ngo-details-button:hover {
+.ngo-connect .ngo-details-button:hover {
   background: #e74c3c;
   color: white;
 }
 
-.slider-clone {
+.ngo-connect .slider-clone {
   display: flex;
 }
 
-.slider-controls {
+.ngo-connect .slider-controls {
   position: absolute;
   width: 100%;
   top: 50%;
@@ -400,7 +405,7 @@ h2:after {
   pointer-events: none;
 }
 
-.slider-arrow {
+.ngo-connect .slider-arrow {
   background-color: white;
   color: #e74c3c;
   border: none;
@@ -416,33 +421,32 @@ h2:after {
   pointer-events: auto;
 }
 
-.slider-arrow:hover {
+.ngo-connect .slider-arrow:hover {
   background-color: #e74c3c;
   color: white;
   box-shadow: 0 6px 16px rgba(231, 76, 60, 0.3);
 }
 
 /* Testimonials section */
-.testimonials {
+.ngo-connect .testimonials {
   margin: 5rem 0;
 }
 
-.testimonial-slider {
+.ngo-connect .testimonial-slider {
   position: relative;
   max-width: 900px;
   margin: 0 auto;
   padding: 20px;
 }
 
-/* Testimonials section - continuing from where the file left off */
-.testimonial-container {
+.ngo-connect .testimonial-container {
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
   justify-content: center;
 }
 
-.testimonial-card {
+.ngo-connect .testimonial-card {
   background-color: white;
   padding: 24px;
   border-radius: 12px;
@@ -456,13 +460,13 @@ h2:after {
   flex-direction: column;
 }
 
-.testimonial-header {
+.ngo-connect .testimonial-header {
   display: flex;
   align-items: center;
   margin-bottom: 16px;
 }
 
-.testimonial-avatar {
+.ngo-connect .testimonial-avatar {
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -471,18 +475,18 @@ h2:after {
   border: 3px solid #fef2f2;
 }
 
-.testimonial-meta h4 {
+.ngo-connect .testimonial-meta h4 {
   margin: 0;
   font-size: 16px;
   color: #2d3748;
 }
 
-.testimonial-meta span {
+.ngo-connect .testimonial-meta span {
   font-size: 14px;
   color: #718096;
 }
 
-.testimonial-card p {
+.ngo-connect .testimonial-card p {
   font-style: italic;
   color: #4a5568;
   line-height: 1.6;
@@ -491,14 +495,14 @@ h2:after {
   overflow: hidden;
 }
 
-.testimonial-dots {
+.ngo-connect .testimonial-dots {
   display: flex;
   justify-content: center;
   margin-top: 24px;
   gap: 8px;
 }
 
-.testimonial-dot {
+.ngo-connect .testimonial-dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -507,18 +511,18 @@ h2:after {
   transition: all 0.3s ease;
 }
 
-.testimonial-dot.active {
+.ngo-connect .testimonial-dot.active {
   background-color: #e74c3c;
   transform: scale(1.2);
 }
 
 /* How it works section */
-.how-it-works {
+.ngo-connect .how-it-works {
   margin: 5rem 0;
   text-align: center;
 }
 
-.steps-container {
+.ngo-connect .steps-container {
   display: flex;
   justify-content: space-between;
   margin-top: 3rem;
@@ -526,7 +530,7 @@ h2:after {
   flex-wrap: wrap;
 }
 
-.steps-container:before {
+.ngo-connect .steps-container:before {
   content: '';
   position: absolute;
   top: 40px;
@@ -537,7 +541,7 @@ h2:after {
   z-index: 0;
 }
 
-.step {
+.ngo-connect .step {
   position: relative;
   z-index: 1;
   flex: 1;
@@ -545,7 +549,7 @@ h2:after {
   margin: 0 10px 30px;
 }
 
-.step-number {
+.ngo-connect .step-number {
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -560,28 +564,28 @@ h2:after {
   box-shadow: 0 8px 16px rgba(231, 76, 60, 0.3);
 }
 
-.step h3 {
+.ngo-connect .step h3 {
   margin-bottom: 10px;
   font-size: 18px;
   color: #2d3748;
 }
 
-.step p {
+.ngo-connect .step p {
   color: #718096;
   font-size: 14px;
 }
 
 /* FAQ section */
-.faq-section {
+.ngo-connect .faq-section {
   margin: 5rem 0;
 }
 
-.faq-container {
+.ngo-connect .faq-container {
   max-width: 800px;
   margin: 0 auto;
 }
 
-.faq-item {
+.ngo-connect .faq-item {
   background: white;
   border-radius: 12px;
   margin-bottom: 16px;
@@ -589,7 +593,7 @@ h2:after {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
-.faq-item summary {
+.ngo-connect .faq-item summary {
   padding: 20px;
   cursor: pointer;
   position: relative;
@@ -602,30 +606,30 @@ h2:after {
   align-items: center;
 }
 
-.faq-item summary::-webkit-details-marker {
+.ngo-connect .faq-item summary::-webkit-details-marker {
   display: none;
 }
 
-.faq-item summary:after {
+.ngo-connect .faq-item summary:after {
   content: '+';
   font-size: 22px;
   color: #e74c3c;
   transition: transform 0.3s ease;
 }
 
-.faq-item[open] summary:after {
+.ngo-connect .faq-item[open] summary:after {
   content: '−';
   transform: rotate(180deg);
 }
 
-.faq-item p {
+.ngo-connect .faq-item p {
   padding: 0 20px 20px;
   margin: 0;
   color: #718096;
 }
 
 /* Newsletter section */
-.newsletter {
+.ngo-connect .newsletter {
   margin: 5rem 0;
   background: linear-gradient(135deg, #fef2f2, #fee2e2);
   padding: 4rem 2rem;
@@ -633,21 +637,21 @@ h2:after {
   text-align: center;
 }
 
-.newsletter-content {
+.ngo-connect .newsletter-content {
   max-width: 600px;
   margin: 0 auto;
 }
 
-.newsletter h2 {
+.ngo-connect .newsletter h2 {
   margin-bottom: 16px;
 }
 
-.newsletter p {
+.ngo-connect .newsletter p {
   color: #4a5568;
   margin-bottom: 30px;
 }
 
-.newsletter-form {
+.ngo-connect .newsletter-form {
   display: flex;
   max-width: 500px;
   margin: 0 auto;
@@ -656,7 +660,7 @@ h2:after {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.newsletter-form input {
+.ngo-connect .newsletter-form input {
   flex-grow: 1;
   padding: 15px 20px;
   border: none;
@@ -664,7 +668,7 @@ h2:after {
   font-size: 16px;
 }
 
-.subscribe-button {
+.ngo-connect .subscribe-button {
   background: linear-gradient(90deg, #e74c3c, #ff6b6b);
   color: white;
   border: none;
@@ -677,12 +681,12 @@ h2:after {
   transition: all 0.3s ease;
 }
 
-.subscribe-button:hover {
+.ngo-connect .subscribe-button:hover {
   background: linear-gradient(90deg, #e74c3c, #e74c3c);
 }
 
 /* CTA section */
-.cta-section {
+.ngo-connect .cta-section {
   margin: 5rem 0;
   text-align: center;
   padding: 4rem 2rem;
@@ -691,7 +695,7 @@ h2:after {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
-.cta-section p {
+.ngo-connect .cta-section p {
   font-size: 1.2rem;
   color: #4a5568;
   margin-bottom: 30px;
@@ -700,7 +704,7 @@ h2:after {
   margin-right: auto;
 }
 
-.cta-button {
+.ngo-connect .cta-button {
   background: linear-gradient(90deg, #e74c3c, #ff6b6b);
   color: white;
   border: none;
@@ -713,7 +717,7 @@ h2:after {
   box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
 }
 
-.cta-button:hover {
+.ngo-connect .cta-button:hover {
   background: linear-gradient(90deg, #e74c3c, #e74c3c);
   transform: translateY(-5px);
   box-shadow: 0 12px 24px rgba(231, 76, 60, 0.4);
@@ -721,77 +725,77 @@ h2:after {
 
 /* Responsive styles */
 @media (max-width: 1200px) {
-  .ngo-actions {
+  .ngo-connect .ngo-actions {
     justify-content: center;
   }
   
-  .action-card {
+  .ngo-connect .action-card {
     margin-bottom: 30px;
   }
   
-  .steps-container:before {
+  .ngo-connect .steps-container:before {
     display: none;
   }
 }
 
 @media (max-width: 992px) {
-  .intro-panel {
+  .ngo-connect .intro-panel {
     padding: 3rem 1rem;
   }
   
-  .ngo-statistics {
+  .ngo-connect .ngo-statistics {
     flex-wrap: wrap;
   }
 
-  .stat-item {
+  .ngo-connect .stat-item {
     flex: 1 0 40%;
   }
   
-  .testimonial-container {
+  .ngo-connect .testimonial-container {
     flex-direction: column;
   }
 }
 
 @media (max-width: 768px) {
-  h1 {
+  .ngo-connect h1 {
     font-size: 2rem;
   }
   
-  h2 {
+  .ngo-connect h2 {
     font-size: 1.5rem;
   }
   
-  .search-bar {
+  .ngo-connect .search-bar {
     flex-direction: column;
     border-radius: 16px;
   }
   
-  .search-bar input {
+  .ngo-connect .search-bar input {
     width: 100%;
     border-radius: 16px 16px 0 0;
   }
   
-  .search-button {
+  .ngo-connect .search-button {
     width: 100%;
     justify-content: center;
     padding: 12px;
     border-radius: 0 0 16px 16px;
   }
   
-  .stat-item {
+  .ngo-connect .stat-item {
     flex: 1 0 100%;
   }
   
-  .newsletter-form {
+  .ngo-connect .newsletter-form {
     flex-direction: column;
   }
   
-  .newsletter-form input {
+  .ngo-connect .newsletter-form input {
     width: 100%;
     border-radius: 16px 16px 0 0;
   }
   
-  .subscribe-button {
+  .ngo-connect .subscribe-button {
     width: 100%;
     justify-content: center;
     padding: 12px;
@@ -800,14 +804,14 @@ h2:after {
 }
 
 /* Footer (added to complete the layout) */
-.footer {
+.ngo-connect .footer {
   background-color: #2d3748;
   color: white;
   padding: 4rem 2rem 2rem;
   margin-top: 5rem;
 }
 
-.footer-content {
+.ngo-connect .footer-content {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
@@ -815,14 +819,14 @@ h2:after {
   gap: 40px;
 }
 
-.footer-column h3 {
+.ngo-connect .footer-column h3 {
   color: white;
   margin-bottom: 20px;
   font-size: 18px;
   position: relative;
 }
 
-.footer-column h3:after {
+.ngo-connect .footer-column h3:after {
   content: '';
   position: absolute;
   bottom: -8px;
@@ -832,33 +836,33 @@ h2:after {
   background: linear-gradient(90deg, #e74c3c, #ff6b6b);
 }
 
-.footer-column ul {
+.ngo-connect .footer-column ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.footer-column ul li {
+.ngo-connect .footer-column ul li {
   margin-bottom: 12px;
 }
 
-.footer-column ul li a {
+.ngo-connect .footer-column ul li a {
   color: #a0aec0;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.footer-column ul li a:hover {
+.ngo-connect .footer-column ul li a:hover {
   color: white;
 }
 
-.social-links {
+.ngo-connect .social-links {
   display: flex;
   gap: 16px;
   margin-top: 20px;
 }
 
-.social-icon {
+.ngo-connect .social-icon {
   background: rgba(255, 255, 255, 0.1);
   width: 40px;
   height: 40px;
@@ -869,12 +873,12 @@ h2:after {
   transition: all 0.3s ease;
 }
 
-.social-icon:hover {
+.ngo-connect .social-icon:hover {
   background: linear-gradient(90deg, #e74c3c, #ff6b6b);
   transform: translateY(-3px);
 }
 
-.copyright {
+.ngo-connect .copyright {
   text-align: center;
   padding-top: 30px;
   margin-top: 30px;
