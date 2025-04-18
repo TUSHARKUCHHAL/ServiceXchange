@@ -1,13 +1,22 @@
-// Login.js
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import './ngologin.css';
-import { Link } from 'react-router-dom';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    rememberMe: false
+  });
   const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,95 +24,136 @@ const Login = () => {
     
     // Simulate API call
     setTimeout(() => {
-      console.log('Login attempt with:', { email, password });
+      console.log('Login attempt:', formData);
       setIsLoading(false);
-      // Handle login logic here
+      // Handle authentication logic here
     }, 1500);
   };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <div className="login-header">
-          <h1>Welcome Back</h1>
-          <p>Login to continue your journey of making a difference</p>
-        </div>
+    <div className="main-container login-container">
+      {/* Background Animation */}
+      <div className="bg-animation">
+        <div className="bg-element element-1"></div>
+        <div className="bg-element element-2"></div>
+        <div className="bg-element element-3"></div>
+        <div className="bg-element element-4"></div>
         
-        <form className="login-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <div className="input-container">
-              <i className="icon email-icon">✉️</i>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                required
-              />
-            </div>
+        <div className="decor-element decor-1"></div>
+        <div className="decor-element decor-2"></div>
+        <div className="decor-element decor-3"></div>
+        <div className="decor-element decor-4"></div>
+        <div className="decor-element decor-5"></div>
+      </div>
+      
+      <motion.div 
+        className="login-card"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="login-header">
+          <div className="logo-container">
+            <img 
+              src={formData.logoUrl || "/placeholder-logo.png"} 
+              alt="NGO Logo" 
+              className="ngo-logo" 
+            />
           </div>
-          
+          <h1>Welcome Back</h1>
+          <p>Sign in to continue your mission</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label htmlFor="email">Email Address</label>
+            <motion.input
+              whileFocus={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              placeholder="yourname@example.com"
+            />
+          </div>
+
           <div className="form-group">
             <label htmlFor="password">Password</label>
-            <div className="input-container">
-              <i className="icon password-icon">🔒</i>
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                required
-              />
-              <span 
-                className="toggle-password"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? "👁️" : "👁️‍🗨️"}
-              </span>
-            </div>
+            <motion.input
+              whileFocus={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              placeholder="••••••••"
+            />
           </div>
-          
-          <div className="remember-forgot">
+
+          <div className="form-options">
             <div className="remember-me">
-              <input type="checkbox" id="remember" />
-              <label htmlFor="remember">Remember me</label>
+              <input
+                type="checkbox"
+                id="rememberMe"
+                name="rememberMe"
+                checked={formData.rememberMe}
+                onChange={handleChange}
+              />
+              <label htmlFor="rememberMe">Remember me</label>
             </div>
             <a href="#" className="forgot-password">Forgot Password?</a>
           </div>
-          
-          <button 
-            type="submit" 
-            className={`login-button ${isLoading ? 'loading' : ''}`}
+
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            className="login-button"
+            type="submit"
             disabled={isLoading}
           >
-            {isLoading ? 'Logging in...' : 'Login'}
-            <span className="button-overlay"></span>
-          </button>
+            {isLoading ? 'Signing in...' : 'Sign In'}
+          </motion.button>
         </form>
-        
-        <div className="social-login">
-          <p>Or login with</p>
-          <div className="social-icons">
-            <button className="social-icon google">G</button>
-            <button className="social-icon facebook">f</button>
-            <button className="social-icon twitter">X</button>
+
+        <div className="login-footer">
+          <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+          
+          <div className="social-login">
+            <p>Or sign in with</p>
+            <div className="social-icons">
+              <motion.button 
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="social-btn google"
+                aria-label="Sign in with Google"
+              >
+                <i className="fab fa-google"></i>
+              </motion.button>
+              <motion.button 
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="social-btn facebook"
+                aria-label="Sign in with Facebook"
+              >
+                <i className="fab fa-facebook-f"></i>
+              </motion.button>
+              <motion.button 
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="social-btn twitter"
+                aria-label="Sign in with Twitter"
+              >
+                <i className="fab fa-twitter"></i>
+              </motion.button>
+            </div>
           </div>
         </div>
-        
-        <div className="signup-prompt">
-          <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
-        </div>
-      </div>
-      
-      <div className="login-image">
-        <div className="image-overlay">
-          <h2>Making A Difference Together</h2>
-          <p>Join our network of NGOs committed to creating positive change</p>
-        </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

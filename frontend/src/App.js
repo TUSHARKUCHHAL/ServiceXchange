@@ -52,6 +52,7 @@ const App = () => {
             <Route path="/ngo-login" element={<NGOLogin />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/ngo-signup" element={<NGOSignup />} />
+            <Route path="/ngo" element={<NGO />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/restaurant/login" element={<RestaurantLogin />} />
