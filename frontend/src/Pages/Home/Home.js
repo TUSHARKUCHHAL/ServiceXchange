@@ -187,7 +187,7 @@ const Home = () => {
             <div className="card-hover-effect"></div>
           </Link>
           
-          <Link to="/ngo-dashboard" className="category-card">
+          <Link to="/ngo" className="category-card">
             <div className="category-icon ngo-icon">
               <i className="fas fa-globe-americas"></i>
               <div className="icon-glow"></div>
