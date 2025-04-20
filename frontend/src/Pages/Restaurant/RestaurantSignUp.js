@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import './RestaurantSignUp.css'; // Import your CSS file for styling
 
@@ -60,7 +59,7 @@ const RestaurantSignUp = () => {
     if (/[^A-Za-z0-9]/.test(password)) strength += 1;
     
     setPasswordStrength(strength);
-  }, [formData.password]); // formData is not needed as a dependency, only formData.password
+  }, [formData.password]);
 
   // Form field change handler
   const handleChange = (e) => {
@@ -181,7 +180,7 @@ const RestaurantSignUp = () => {
         break;
         
       case 'zipCode':
-        const zipRegex = /^\d{5}(-\d{4})?$/;
+        const zipRegex = /^\d{6}(-\d{4})?$/;
         if (!formData.zipCode) {
           newErrors.zipCode = 'ZIP code is required';
         } else if (!zipRegex.test(formData.zipCode)) {
@@ -236,7 +235,7 @@ const RestaurantSignUp = () => {
       'password', 'confirmPassword'
     ];
     
-    // Mark all as touched
+    // Mark all as touched to trigger error display
     const newTouched = fields.reduce((acc, field) => {
       acc[field] = true;
       return acc;
@@ -244,8 +243,17 @@ const RestaurantSignUp = () => {
     
     setTouched(newTouched);
     
+    // Add console log to see which fields are invalid
+    let invalidFields = [];
+    
     // Validate each field
-    const validationResults = fields.map(field => validateField(field));
+    const validationResults = fields.map(field => {
+      const isValid = validateField(field);
+      if (!isValid) invalidFields.push(field);
+      return isValid;
+    });
+    
+    console.log("Invalid fields:", invalidFields);
     
     return validationResults.every(isValid => isValid);
   };
@@ -267,11 +275,12 @@ const RestaurantSignUp = () => {
           const { latitude, longitude } = position.coords;
           
           // Use reverse geocoding to get address details
-          const response = await axios.get(
+          const response = await fetch(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
           );
+          const data = await response.json();
           
-          const addressData = response.data.address;
+          const addressData = data.address;
           
           setFormData(prev => ({
             ...prev,
@@ -312,8 +321,10 @@ const RestaurantSignUp = () => {
   // Handle main form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Form submission attempted");
     
     if (!validateForm()) {
+      console.log("Form validation failed", errors);
       // Scroll to the first error
       const firstErrorField = document.querySelector('.error-text');
       if (firstErrorField) {
@@ -322,24 +333,34 @@ const RestaurantSignUp = () => {
       return;
     }
     
+    console.log("Form validation passed, proceeding to OTP");
+    
     try {
       setErrors({});
       setSuccess('');
       setIsLoading(true);
       
       // Send request to generate OTP
-      const response = await axios.post('http://localhost:5000/api/restaurants/send-otp', {
-        email: formData.email
+      const response = await fetch('http://localhost:5000/api/restaurants/send-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: formData.email })
       });
       
-      if (response.data.success) {
+      const data = await response.json();
+      
+      if (data.success) {
         setSuccess('OTP sent to your email. Please verify to complete registration.');
         setStep(2);
+      } else {
+        throw new Error(data.message || 'Failed to send OTP');
       }
     } catch (err) {
       setErrors(prev => ({ 
         ...prev, 
-        submit: err.response?.data?.message || 'Failed to send OTP. Please try again.'
+        submit: err.message || 'Failed to send OTP. Please try again.'
       }));
     } finally {
       setIsLoading(false);
@@ -384,24 +405,47 @@ const RestaurantSignUp = () => {
       setErrors({});
       setIsLoading(true);
       
-      // Verify OTP and create restaurant account
-      const response = await axios.post('http://localhost:5000/api/restaurants/verify-otp', {
+      // Make a deep copy of formData to avoid sending unnecessary fields
+      const registrationData = {
+        restaurantName: formData.restaurantName,
         email: formData.email,
-        otp: otpString,
-        restaurantData: formData
+        phoneNumber: formData.phoneNumber,
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        zipCode: formData.zipCode,
+        openingHours: formData.openingHours,
+        password: formData.password
+      };
+      
+      // Verify OTP and create restaurant account
+      const response = await fetch('http://localhost:5000/api/restaurants/verify-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          otp: otpString,
+          restaurantData: registrationData
+        })
       });
       
-      if (response.data.success) {
+      const data = await response.json();
+      
+      if (data.success) {
         setSuccess('Restaurant registration successful! Redirecting to login...');
         // Redirect to login after 3 seconds
         setTimeout(() => {
           window.location.href = '/login';
         }, 3000);
+      } else {
+        throw new Error(data.message || 'Verification failed');
       }
     } catch (err) {
       setErrors(prev => ({ 
         ...prev, 
-        otp: err.response?.data?.message || 'Invalid OTP. Please try again.'
+        otp: err.message || 'Invalid OTP. Please try again.'
       }));
     } finally {
       setIsLoading(false);
@@ -414,19 +458,29 @@ const RestaurantSignUp = () => {
       setErrors({});
       setIsLoading(true);
       
-      const response = await axios.post('http://localhost:5000/api/restaurants/send-otp', {
-        email: formData.email,
-        resend: true
+      const response = await fetch('http://localhost:5000/api/restaurants/send-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          resend: true
+        })
       });
       
-      if (response.data.success) {
+      const data = await response.json();
+      
+      if (data.success) {
         setSuccess('New OTP sent to your email.');
         setOtp(['', '', '', '', '', '']);
+      } else {
+        throw new Error(data.message || 'Failed to resend OTP');
       }
     } catch (err) {
       setErrors(prev => ({ 
         ...prev, 
-        otp: err.response?.data?.message || 'Failed to resend OTP. Please try again.'
+        otp: err.message || 'Failed to resend OTP. Please try again.'
       }));
     } finally {
       setIsLoading(false);
@@ -781,7 +835,7 @@ const RestaurantSignUp = () => {
             >
               <h2 className="section-title">OTP Verification</h2>
               <p className="otp-instructions">
-                Please enter the 6-digit code sent to your email
+                Please enter the 6-digit code sent to your email{' '}
                 <span className="otp-email">{formData.email}</span>
               </p>
               
@@ -807,7 +861,7 @@ const RestaurantSignUp = () => {
               
               <div className="otp-actions">
                 <p className="otp-resend-text">
-                  Didn't receive the code?
+                  Didn't receive the code?{' '}
                   <button 
                     type="button" 
                     onClick={resendOtp} 
