@@ -1,7 +1,7 @@
 /* RestaurantSignUp.css - Modern animated styles for restaurant registration */
 
 /* Main container styles */
-.signup-containerr {
+.signup-container {
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -11,7 +11,7 @@
     font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
 }
   
-.signup-containerr .signup-card {
+.signup-container .signup-card {
     width: 100%;
     max-width: 900px;
     background-color: #fff;
@@ -22,7 +22,7 @@
     position: relative;
 }
   
-.signup-containerr .signup-card::before {
+.signup-container .signup-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -33,12 +33,12 @@
 }
   
 /* Header styles */
-.signup-containerr .signup-header {
+.signup-container .signup-header {
     text-align: center;
     margin-bottom: 30px;
 }
   
-.signup-containerr .signup-title {
+.signup-container .signup-title {
     font-size: 2.2rem;
     font-weight: 700;
     margin-bottom: 8px;
@@ -47,7 +47,7 @@
     display: inline-block;
 }
   
-.signup-containerr .signup-title::after {
+.signup-container .signup-title::after {
     content: '';
     position: absolute;
     bottom: -8px;
@@ -59,14 +59,14 @@
     border-radius: 3px;
 }
   
-.signup-containerr .signup-subtitle {
+.signup-container .signup-subtitle {
     font-size: 1rem;
     color: #7d8791;
     font-weight: 400;
 }
   
 /* Notification styles */
-.signup-containerr .notification {
+.signup-container .notification {
     padding: 15px;
     border-radius: 6px;
     margin-bottom: 20px;
@@ -75,27 +75,27 @@
     align-items: center;
 }
   
-.signup-containerr .notification.success {
+.signup-container .notification.success {
     background-color: rgba(39, 174, 96, 0.1);
     color: #27ae60;
     border-left: 4px solid #27ae60;
 }
   
-.signup-containerr .notification.error {
+.signup-container .notification.error {
     background-color: rgba(231, 76, 60, 0.1);
     color: #e74c3c;
     border-left: 4px solid #e74c3c;
 }
   
 /* Step indicator styles */
-.signup-containerr .step-indicator {
+.signup-container .step-indicator {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 30px;
 }
   
-.signup-containerr .step {
+.signup-container .step {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -103,7 +103,7 @@
     z-index: 1;
 }
   
-.signup-containerr .step-number {
+.signup-container .step-number {
     width: 40px;
     height: 40px;
     background-color: #f0f2f5;
@@ -117,14 +117,14 @@
     transition: all 0.3s ease;
 }
   
-.signup-containerr .step.active .step-number {
+.signup-container .step.active .step-number {
     background-color: #e74c3c;
     color: white;
     transform: scale(1.1);
     box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
 }
   
-.signup-containerr .step-label {
+.signup-container .step-label {
     margin-top: 10px;
     font-size: 0.9rem;
     color: #7d8791;
@@ -132,12 +132,12 @@
     transition: all 0.3s ease;
 }
   
-.signup-containerr .step.active .step-label {
+.signup-container .step.active .step-label {
     color: #e74c3c;
     font-weight: 600;
 }
   
-.signup-containerr .step-divider {
+.signup-container .step-divider {
     width: 100px;
     height: 3px;
     background-color: #f0f2f5;
@@ -147,31 +147,31 @@
 }
   
 /* Form section styles */
-.signup-containerr .form-section {
+.signup-container .form-section {
     margin-bottom: 30px;
     padding-bottom: 20px;
     border-bottom: 1px dashed #e1e5eb;
 }
   
-.signup-containerr .section-title {
+.signup-container .section-title {
     font-size: 1.4rem;
     color: #2d3436;
     margin-bottom: 20px;
     font-weight: 600;
 }
   
-.signup-containerr .form-row {
+.signup-container .form-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 20px;
 }
   
-.signup-containerr .form-field {
+.signup-container .form-field {
     margin-bottom: 20px;
     position: relative;
 }
   
-.signup-containerr .form-label {
+.signup-container .form-label {
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
@@ -179,7 +179,7 @@
     font-size: 0.95rem;
 }
   
-.signup-containerr .form-input {
+.signup-container .form-input {
     width: 100%;
     padding: 12px 15px;
     border: 1px solid #dcdfe6;
@@ -189,22 +189,22 @@
     transition: all 0.3s ease;
 }
   
-.signup-containerr .form-input:focus {
+.signup-container .form-input:focus {
     border-color: #e74c3c;
     box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
     outline: none;
 }
   
-.signup-containerr .input-error {
+.signup-container .input-error {
     border-color: #e74c3c;
 }
   
-.signup-containerr .required {
+.signup-container .required {
     color: #e74c3c;
     margin-left: 3px;
 }
   
-.signup-containerr .error-text {
+.signup-container .error-text {
     color: #e74c3c;
     font-size: 0.85rem;
     margin-top: 5px;
@@ -212,24 +212,24 @@
     animation: fadeIn 0.3s ease-in-out;
 }
   
-.signup-containerr .password-hint {
+.signup-container .password-hint {
     font-size: 0.8rem;
     color: #95a5a6;
     margin-top: 5px;
 }
   
 /* Password strength indicator */
-.signup-containerr .password-strength {
+.signup-container .password-strength {
     margin-top: 8px;
 }
   
-.signup-containerr .strength-bars {
+.signup-container .strength-bars {
     display: flex;
     gap: 5px;
     margin-bottom: 5px;
 }
   
-.signup-containerr .strength-bar {
+.signup-container .strength-bar {
     height: 5px;
     flex: 1;
     background-color: #e9ecef;
@@ -237,49 +237,49 @@
     transition: all 0.3s ease;
 }
   
-.signup-containerr .strength-bar.weak {
+.signup-container .strength-bar.weak {
     background-color: #e74c3c;
 }
   
-.signup-containerr .strength-bar.medium {
+.signup-container .strength-bar.medium {
     background-color: #f39c12;
 }
   
-.signup-containerr .strength-bar.strong {
+.signup-container .strength-bar.strong {
     background-color: #3498db;
 }
   
-.signup-containerr .strength-bar.very-strong {
+.signup-container .strength-bar.very-strong {
     background-color: #27ae60;
 }
   
-.signup-containerr .strength-label {
+.signup-container .strength-label {
     font-size: 0.8rem;
     font-weight: 500;
 }
   
-.signup-containerr .strength-label.weak {
+.signup-container .strength-label.weak {
     color: #e74c3c;
 }
   
-.signup-containerr .strength-label.medium {
+.signup-container .strength-label.medium {
     color: #f39c12;
 }
   
-.signup-containerr .strength-label.strong {
+.signup-container .strength-label.strong {
     color: #3498db;
 }
   
-.signup-containerr .strength-label.very-strong {
+.signup-container .strength-label.very-strong {
     color: #27ae60;
 }
   
 /* Location styles */
-.signup-containerr .location-actions {
+.signup-container .location-actions {
     margin-bottom: 20px;
 }
   
-.signup-containerr .btn-location {
+.signup-container .btn-location {
     display: flex;
     align-items: center;
     background-color: #f8f9fa;
@@ -292,11 +292,11 @@
     transition: all 0.3s ease;
 }
   
-.signup-containerr .btn-location:hover {
+.signup-container .btn-location:hover {
     background-color: #e9ecef;
 }
   
-.signup-containerr .location-icon {
+.signup-container .location-icon {
     width: 18px;
     height: 18px;
     margin-right: 8px;
@@ -304,34 +304,34 @@
 }
   
 /* Opening hours styles */
-.signup-containerr .hours-grid {
+.signup-container .hours-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 15px;
 }
   
-.signup-containerr .day-hours-card {
+.signup-container .day-hours-card {
     background-color: #f8f9fa;
     border-radius: 8px;
     padding: 15px;
     border: 1px solid #e1e5eb;
 }
   
-.signup-containerr .day-toggle {
+.signup-container .day-toggle {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
 }
   
-.signup-containerr .toggle-label {
+.signup-container .toggle-label {
     display: flex;
     align-items: center;
     cursor: pointer;
     user-select: none;
 }
   
-.signup-containerr .toggle-input {
+.signup-container .toggle-input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
@@ -339,7 +339,7 @@
     width: 0;
 }
   
-.signup-containerr .toggle-switch {
+.signup-container .toggle-switch {
     position: relative;
     display: inline-block;
     width: 44px;
@@ -350,7 +350,7 @@
     transition: all 0.3s ease;
 }
   
-.signup-containerr .toggle-switch:before {
+.signup-container .toggle-switch:before {
     position: absolute;
     content: "";
     height: 18px;
@@ -362,45 +362,45 @@
     transition: all 0.3s ease;
 }
   
-.signup-containerr .toggle-input:checked + .toggle-switch {
+.signup-container .toggle-input:checked + .toggle-switch {
     background-color: #e74c3c;
 }
   
-.signup-containerr .toggle-input:checked + .toggle-switch:before {
+.signup-container .toggle-input:checked + .toggle-switch:before {
     transform: translateX(20px);
 }
   
-.signup-containerr .day-name {
+.signup-container .day-name {
     font-weight: 500;
     color: #4a5568;
 }
   
-.signup-containerr .time-inputs {
+.signup-container .time-inputs {
     display: flex;
     align-items: center;
     gap: 10px;
     overflow: hidden;
 }
   
-.signup-containerr .time-field {
+.signup-container .time-field {
     flex: 1;
 }
   
-.signup-containerr .time-label {
+.signup-container .time-label {
     display: block;
     font-size: 0.8rem;
     color: #7d8791;
     margin-bottom: 5px;
 }
   
-.signup-containerr .time-input {
+.signup-container .time-input {
     width: 100%;
     padding: 8px 10px;
     border: 1px solid #dcdfe6;
     border-radius: 6px;
 }
   
-.signup-containerr .time-separator {
+.signup-container .time-separator {
     color: #7d8791;
     font-weight: 500;
     padding: 0 5px;
@@ -408,30 +408,30 @@
 }
   
 /* OTP form styles */
-.signup-containerr .otp-form {
+.signup-container .otp-form {
     text-align: center;
 }
   
-.signup-containerr .otp-instructions {
+.signup-container .otp-instructions {
     margin-bottom: 25px;
     color: #4a5568;
 }
   
-.signup-containerr .otp-email {
+.signup-container .otp-email {
     display: block;
     font-weight: 600;
     margin-top: 5px;
     color: #2d3436;
 }
   
-.signup-containerr .otp-container {
+.signup-container .otp-container {
     display: flex;
     justify-content: center;
     gap: 12px;
     margin-bottom: 25px;
 }
   
-.signup-containerr .otp-digit {
+.signup-container .otp-digit {
     width: 50px;
     height: 60px;
     font-size: 1.5rem;
@@ -441,22 +441,22 @@
     transition: all 0.3s ease;
 }
   
-.signup-containerr .otp-digit:focus {
+.signup-container .otp-digit:focus {
     border-color: #e74c3c;
     box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
     outline: none;
 }
   
-.signup-containerr .otp-actions {
+.signup-container .otp-actions {
     margin: 20px 0;
 }
   
-.signup-containerr .otp-resend-text {
+.signup-container .otp-resend-text {
     color: #7d8791;
     font-size: 0.95rem;
 }
   
-.signup-containerr .btn-link {
+.signup-container .btn-link {
     background: none;
     border: none;
     color: #e74c3c;
@@ -467,24 +467,24 @@
     transition: all 0.3s ease;
 }
   
-.signup-containerr .btn-link:hover {
+.signup-container .btn-link:hover {
     color: #c0392b;
 }
   
-.signup-containerr .text-center {
+.signup-container .text-center {
     text-align: center;
 }
   
 /* Form actions */
-.signup-containerr .form-actions {
+.signup-container .form-actions {
     display: flex;
     justify-content: center;
     gap: 15px;
     margin-top: 30px;
 }
   
-.signup-containerr .btn-primary, 
-.signup-containerr .btn-secondary {
+.signup-container .btn-primary, 
+.signup-container .btn-secondary {
     padding: 12px 30px;
     border-radius: 8px;
     font-size: 1rem;
@@ -498,36 +498,36 @@
     border: none;
 }
   
-.signup-containerr .btn-primary {
+.signup-container .btn-primary {
     background-color: #e74c3c;
     color: white;
     box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
 }
   
-.signup-containerr .btn-primary:hover {
+.signup-container .btn-primary:hover {
     background-color: #c0392b;
     box-shadow: 0 7px 20px rgba(231, 76, 60, 0.4);
 }
   
-.signup-containerr .btn-secondary {
+.signup-container .btn-secondary {
     background-color: #f0f2f5;
     color: #4a5568;
 }
   
-.signup-containerr .btn-secondary:hover {
+.signup-container .btn-secondary:hover {
     background-color: #e1e5eb;
     color: #2d3436;
 }
   
-.signup-containerr .btn-primary:disabled, 
-.signup-containerr .btn-secondary:disabled, 
-.signup-containerr .btn-link:disabled {
+.signup-container .btn-primary:disabled, 
+.signup-container .btn-secondary:disabled, 
+.signup-container .btn-link:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }
   
 /* Loading spinner */
-.signup-containerr .spinner {
+.signup-container .spinner {
     width: 20px;
     height: 20px;
     border: 3px solid rgba(255, 255, 255, 0.3);
@@ -549,43 +549,43 @@
   
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
-    .signup-containerr .signup-card {
+    .signup-container .signup-card {
         padding: 20px;
     }
     
-    .signup-containerr .signup-title {
+    .signup-container .signup-title {
         font-size: 1.8rem;
     }
     
-    .signup-containerr .section-title {
+    .signup-container .section-title {
         font-size: 1.2rem;
     }
     
-    .signup-containerr .form-actions {
+    .signup-container .form-actions {
         flex-direction: column;
     }
     
-    .signup-containerr .btn-primary, 
-    .signup-containerr .btn-secondary {
+    .signup-container .btn-primary, 
+    .signup-container .btn-secondary {
         width: 100%;
     }
     
-    .signup-containerr .hours-grid {
+    .signup-container .hours-grid {
         grid-template-columns: 1fr;
     }
     
-    .signup-containerr .otp-digit {
+    .signup-container .otp-digit {
         width: 40px;
         height: 50px;
     }
 }
   
 @media (max-width: 480px) {
-    .signup-containerr .form-row {
+    .signup-container .form-row {
         grid-template-columns: 1fr;
     }
     
-    .signup-containerr .otp-digit {
+    .signup-container .otp-digit {
         width: 35px;
         height: 45px;
         font-size: 1.2rem;

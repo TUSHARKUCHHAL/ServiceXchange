@@ -61,13 +61,16 @@ const RestaurantSignUp = () => {
     setPasswordStrength(strength);
   }, [formData.password]);
 
-  // Form field change handler
+  // Form field change handler - Fixed to properly update state
   const handleChange = (e) => {
     const { name, value } = e.target;
     
     // Handle nested state for opening hours
     if (name.includes('openingHours')) {
-      const [day, field] = name.split('.').slice(1);
+      const parts = name.split('.');
+      const day = parts[1];
+      const field = parts[2];
+      
       setFormData(prev => ({
         ...prev,
         openingHours: {
@@ -522,41 +525,8 @@ const RestaurantSignUp = () => {
     );
   };
 
-  // Form field component for reusability
-  const FormField = ({ 
-    id, 
-    label, 
-    type = 'text', 
-    required = false, 
-    placeholder = '', 
-    minLength,
-    children 
-  }) => (
-    <div className={`form-field ${touched[id] && errors[id] ? 'error' : ''}`}>
-      <label htmlFor={id} className="form-label">
-        {label}{required && <span className="required">*</span>}
-      </label>
-      <input
-        type={type}
-        id={id}
-        name={id}
-        value={formData[id]}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        required={required}
-        placeholder={placeholder}
-        minLength={minLength}
-        className={`form-input ${touched[id] && errors[id] ? 'input-error' : ''}`}
-      />
-      {children}
-      {touched[id] && errors[id] && (
-        <div className="error-text">{errors[id]}</div>
-      )}
-    </div>
-  );
-
   return (
-    <div className="signup-containerr">
+    <div className="signup-container">
       <motion.div 
         className="signup-card"
         initial={{ opacity: 0, y: 20 }}
@@ -624,26 +594,63 @@ const RestaurantSignUp = () => {
               <section className="form-section">
                 <h2 className="section-title">Basic Information</h2>
                 
-                <FormField 
-                  id="restaurantName" 
-                  label="Restaurant Name" 
-                  required={true} 
-                />
+                <div className={`form-field ${touched.restaurantName && errors.restaurantName ? 'error' : ''}`}>
+                  <label htmlFor="restaurantName" className="form-label">
+                    Restaurant Name<span className="required">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="restaurantName"
+                    name="restaurantName"
+                    value={formData.restaurantName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    className={`form-input ${touched.restaurantName && errors.restaurantName ? 'input-error' : ''}`}
+                  />
+                  {touched.restaurantName && errors.restaurantName && (
+                    <div className="error-text">{errors.restaurantName}</div>
+                  )}
+                </div>
                 
-                <FormField 
-                  id="email" 
-                  label="Email Address" 
-                  type="email" 
-                  required={true} 
-                />
+                <div className={`form-field ${touched.email && errors.email ? 'error' : ''}`}>
+                  <label htmlFor="email" className="form-label">
+                    Email Address<span className="required">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    className={`form-input ${touched.email && errors.email ? 'input-error' : ''}`}
+                  />
+                  {touched.email && errors.email && (
+                    <div className="error-text">{errors.email}</div>
+                  )}
+                </div>
                 
-                <FormField 
-                  id="phoneNumber" 
-                  label="Phone Number" 
-                  type="tel" 
-                  required={true} 
-                  placeholder="10-digit number" 
-                />
+                <div className={`form-field ${touched.phoneNumber && errors.phoneNumber ? 'error' : ''}`}>
+                  <label htmlFor="phoneNumber" className="form-label">
+                    Phone Number<span className="required">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    placeholder="10-digit number"
+                    className={`form-input ${touched.phoneNumber && errors.phoneNumber ? 'input-error' : ''}`}
+                  />
+                  {touched.phoneNumber && errors.phoneNumber && (
+                    <div className="error-text">{errors.phoneNumber}</div>
+                  )}
+                </div>
               </section>
               
               {/* Location Section */}
@@ -674,30 +681,82 @@ const RestaurantSignUp = () => {
                   {errors.location && <div className="error-text">{errors.location}</div>}
                 </div>
                 
-                <FormField 
-                  id="address" 
-                  label="Street Address" 
-                  required={true} 
-                />
+                <div className={`form-field ${touched.address && errors.address ? 'error' : ''}`}>
+                  <label htmlFor="address" className="form-label">
+                    Street Address<span className="required">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    className={`form-input ${touched.address && errors.address ? 'input-error' : ''}`}
+                  />
+                  {touched.address && errors.address && (
+                    <div className="error-text">{errors.address}</div>
+                  )}
+                </div>
                 
                 <div className="form-row">
-                  <FormField 
-                    id="city" 
-                    label="City" 
-                    required={true} 
-                  />
+                  <div className={`form-field ${touched.city && errors.city ? 'error' : ''}`}>
+                    <label htmlFor="city" className="form-label">
+                      City<span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="city"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      required
+                      className={`form-input ${touched.city && errors.city ? 'input-error' : ''}`}
+                    />
+                    {touched.city && errors.city && (
+                      <div className="error-text">{errors.city}</div>
+                    )}
+                  </div>
                   
-                  <FormField 
-                    id="state" 
-                    label="State" 
-                    required={true} 
-                  />
+                  <div className={`form-field ${touched.state && errors.state ? 'error' : ''}`}>
+                    <label htmlFor="state" className="form-label">
+                      State<span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="state"
+                      name="state"
+                      value={formData.state}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      required
+                      className={`form-input ${touched.state && errors.state ? 'input-error' : ''}`}
+                    />
+                    {touched.state && errors.state && (
+                      <div className="error-text">{errors.state}</div>
+                    )}
+                  </div>
                   
-                  <FormField 
-                    id="zipCode" 
-                    label="ZIP Code" 
-                    required={true} 
-                  />
+                  <div className={`form-field ${touched.zipCode && errors.zipCode ? 'error' : ''}`}>
+                    <label htmlFor="zipCode" className="form-label">
+                      ZIP Code<span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="zipCode"
+                      name="zipCode"
+                      value={formData.zipCode}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      required
+                      className={`form-input ${touched.zipCode && errors.zipCode ? 'input-error' : ''}`}
+                    />
+                    {touched.zipCode && errors.zipCode && (
+                      <div className="error-text">{errors.zipCode}</div>
+                    )}
+                  </div>
                 </div>
               </section>
               
@@ -797,13 +856,25 @@ const RestaurantSignUp = () => {
                   )}
                 </div>
                 
-                <FormField 
-                  id="confirmPassword" 
-                  label="Confirm Password" 
-                  type="password" 
-                  required={true} 
-                  minLength="8"
-                />
+                <div className={`form-field ${touched.confirmPassword && errors.confirmPassword ? 'error' : ''}`}>
+                  <label htmlFor="confirmPassword" className="form-label">
+                    Confirm Password<span className="required">*</span>
+                  </label>
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    minLength="8"
+                    className={`form-input ${touched.confirmPassword && errors.confirmPassword ? 'input-error' : ''}`}
+                  />
+                  {touched.confirmPassword && errors.confirmPassword && (
+                    <div className="error-text">{errors.confirmPassword}</div>
+                  )}
+                </div>
               </section>
               
               {/* Form Actions */}
