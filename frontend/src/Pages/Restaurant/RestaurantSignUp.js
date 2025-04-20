@@ -526,7 +526,7 @@ const RestaurantSignUp = () => {
   };
 
   return (
-    <div className="signup-container">
+    <div className="signup-containerr">
       <motion.div 
         className="signup-card"
         initial={{ opacity: 0, y: 20 }}
