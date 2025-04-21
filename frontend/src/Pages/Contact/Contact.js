@@ -225,11 +225,11 @@ const Contact = () => {
         </div>
       </div>
       
-      <div className="map-wrapper">
+      {/* <div className="map-wrapper">
         <div className="map-placeholder">
           <p>Interactive Map Will Be Displayed Here</p>
         </div>
-      </div>
+      </div> */}
       
       <div className="faq-section">
         <div className="faq-header">

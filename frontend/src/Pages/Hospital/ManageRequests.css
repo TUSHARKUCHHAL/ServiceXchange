@@ -2,7 +2,7 @@
 .manage-requests-container {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   max-width: 1440px;
-  margin: 0 auto;
+  margin: 5rem auto;
   background-color: #f5f7fa;
   min-height: 100vh;
   color: #1a2236;
