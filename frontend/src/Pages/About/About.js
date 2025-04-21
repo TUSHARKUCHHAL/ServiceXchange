@@ -313,23 +313,31 @@ const About = () => {
         <h2 className="section-title">Meet Our Team</h2>
         <div className="team-cards">
           <div className="team-card">
-            <div className="team-avatar"></div>
-            <h3>Sarah Johnson</h3>
-            <p className="team-role">Founder & CEO</p>
-            <p className="team-bio">Former hospital administrator with a passion for community service.</p>
+            <img className="team-avatar" src="/shruti.png" alt="Tushar" />
+            <h3>Shruti Sanwal</h3>
+            <p className="team-role">Founder</p>
+            <p className="team-bio">Frontend Developer</p>
           </div>
           <div className="team-card">
-            <div className="team-avatar"></div>
-            <h3>David Chen</h3>
-            <p className="team-role">CTO</p>
-            <p className="team-bio">Tech innovator focused on creating platforms for social good.</p>
+          <img className="team-avatar" src="/tushar.jpg" alt="Tushar" />
+          <h3>Tushar</h3>
+            <p className="team-role">Founder</p>
+            <p className="team-bio">Backend Developer</p>
           </div>
           <div className="team-card">
-            <div className="team-avatar"></div>
-            <h3>Maria Rodriguez</h3>
-            <p className="team-role">Community Director</p>
-            <p className="team-bio">10+ years experience in nonprofit management and volunteer coordination.</p>
+          <img className="team-avatar" src="/vanshika.jpg" alt="Tushar" />
+            <h3>vanshika Rajput</h3>
+            <p className="team-role">Founder</p>
+            <p className="team-bio">Frontend Developer</p>
           </div>
+          <div className="team-card">
+          <img className="team-avatar" src="/Sahil.png" alt="Tushar" />
+            <h3>Sahil Singh</h3>
+            <p className="team-role">Founder</p>
+            <p className="team-bio">Frontend Developer</p>
+            <p className="team-bio"></p>
+          </div>
+          
         </div>
       </div>
 
