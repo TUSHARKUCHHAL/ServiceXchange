@@ -440,7 +440,7 @@ const RestaurantSignUp = () => {
         setSuccess('Restaurant registration successful! Redirecting to login...');
         // Redirect to login after 3 seconds
         setTimeout(() => {
-          window.location.href = '/login';
+          window.location.href = '/restaurant/login';
         }, 3000);
       } else {
         throw new Error(data.message || 'Verification failed');

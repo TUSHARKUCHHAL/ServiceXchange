@@ -244,7 +244,7 @@ const MyDonations = () => {
           </div>
           <h3>No donations found</h3>
           <p>Share your surplus food with those in need and help reduce food waste</p>
-          <button className="btn-primary" onClick={() => window.location.href = '/donations/new'}>
+          <button className="btn-primary" onClick={() => window.location.href = '/restaurant/donate'}>
             <i className="fas fa-plus-circle"></i> Create Your First Donation
           </button>
         </div>
