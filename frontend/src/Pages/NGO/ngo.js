@@ -354,7 +354,7 @@ const NGOConnect = () => {
           )}
         </section>
 
-        <section className="testimonials">
+        {/* <section className="testimonials">
           <h2>What Our Volunteers Say</h2>
           <div 
             className="testimonial-slider"
@@ -389,7 +389,7 @@ const NGOConnect = () => {
               ))}
             </div>
           </div>
-        </section>
+        </section> */}
 
         <section className="how-it-works">
           <h2>How It Works</h2>
