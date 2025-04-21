@@ -316,10 +316,6 @@
     box-shadow: 0 6px 25px rgba(230, 57, 70, 0.5);
   }
   
-  .hospital-container .pulse-animation {
-    animation: pulse 2s infinite;
-  }
-  
   /* Stats Section */
   .hospital-container .stats-container {
     display: flex;
