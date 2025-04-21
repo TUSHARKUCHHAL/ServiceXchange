@@ -342,7 +342,7 @@ const About = () => {
       </div>
 
       <div className="testimonial-section animate-on-scroll">
-  <h2 className="section-title">What People Say</h2>
+  {/* <h2 className="section-title">What People Say</h2>
   <div className="testimonial-container">
     {testimonials.map((testimonial, index) => (
       <div key={index} className="testimonial-card">
@@ -354,7 +354,7 @@ const About = () => {
         <p className="testimonial-role">{testimonial.role}</p>
       </div>
     ))}
-  </div>
+  </div> */}
 </div>
 
       <div className="faq-section animate-on-scroll">
